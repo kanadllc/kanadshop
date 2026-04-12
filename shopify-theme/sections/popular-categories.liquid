@@ -1,0 +1,100 @@
+<div class="popular-categories">
+  <div class="popular-categories__inner">
+    <div class="section-header">
+      <h2 class="section-header__title">{{ section.settings.title | escape }}</h2>
+      {%- if section.settings.view_all_link != blank -%}
+        <a href="{{ section.settings.view_all_link }}" class="section-header__link">View all</a>
+      {%- endif -%}
+    </div>
+    
+    <div class="popular-categories__grid">
+      {%- for block in section.blocks -%}
+        <a href="{{ block.settings.collection.url | default: '#' }}" class="category-card" {{ block.shopify_attributes }}>
+          <div class="category-card__image-wrapper">
+            {%- if block.settings.image != blank -%}
+              <img 
+                src="{{ block.settings.image | image_url: width: 200 }}" 
+                alt="{{ block.settings.image.alt | escape }}"
+                class="category-card__image"
+                loading="lazy"
+                width="200"
+                height="{{ 200 | divided_by: block.settings.image.aspect_ratio | ceil }}"
+              >
+            {%- elsif block.settings.collection.image != blank -%}
+              <img 
+                src="{{ block.settings.collection.image | image_url: width: 200 }}" 
+                alt="{{ block.settings.collection.image.alt | escape }}"
+                class="category-card__image"
+                loading="lazy"
+                width="200"
+                height="{{ 200 | divided_by: block.settings.collection.image.aspect_ratio | ceil }}"
+              >
+            {%- else -%}
+              {{ 'collection-1' | placeholder_svg_tag: 'category-card__image placeholder-svg' }}
+            {%- endif -%}
+          </div>
+          <h3 class="category-card__title">{{ block.settings.title | default: block.settings.collection.title | default: 'Category' }}</h3>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Popular categories",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Popular categories"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View all link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom image",
+          "info": "Overrides the collection image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Custom heading",
+          "info": "Overrides the collection title"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Popular categories",
+      "blocks": [
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" }
+      ]
+    }
+  ]
+}
+{% endschema %}

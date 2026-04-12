@@ -1,0 +1,197 @@
+<div class="hero-slider" data-autoplay="{{ section.settings.autoplay }}" data-speed="{{ section.settings.autoplay_speed | times: 1000 }}">
+  <div class="hero-slider__track">
+    {%- for block in section.blocks -%}
+      <div class="hero-slide" {{ block.shopify_attributes }}>
+        {%- if block.settings.image != blank -%}
+          <img 
+            src="{{ block.settings.image | image_url: width: 2000 }}" 
+            alt="{{ block.settings.image.alt | escape }}"
+            class="hero-slide__image"
+            loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+            width="2000"
+            height="{{ 2000 | divided_by: block.settings.image.aspect_ratio | ceil }}"
+          >
+        {%- else -%}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'hero-slide__image placeholder-svg' }}
+        {%- endif -%}
+        
+        <div class="hero-slide__overlay"></div>
+        
+        <div class="hero-slide__content-wrapper">
+          <div class="hero-slide__content text-{{ block.settings.text_alignment }}">
+            {%- if block.settings.subheading != blank -%}
+              <p class="hero-slide__subheading">{{ block.settings.subheading | escape }}</p>
+            {%- endif -%}
+            
+            {%- if block.settings.title != blank -%}
+              <h2 class="hero-slide__title">{{ block.settings.title | escape }}</h2>
+            {%- endif -%}
+            
+            {%- if block.settings.button_label != blank and block.settings.button_link != blank -%}
+              <a href="{{ block.settings.button_link }}" class="hero-slide__button button">
+                {{ block.settings.button_label | escape }}
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  {%- if section.blocks.size > 1 -%}
+    <button class="hero-slider__arrow hero-slider__arrow--prev" aria-label="Previous slide">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
+    <button class="hero-slider__arrow hero-slider__arrow--next" aria-label="Next slide">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+    
+    <div class="hero-slider__dots">
+      {%- for block in section.blocks -%}
+        <button class="hero-slider__dot {% if forloop.first %}is-active{% endif %}" aria-label="Go to slide {{ forloop.index }}" data-index="{{ forloop.index0 }}"></button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const sliders = document.querySelectorAll('.hero-slider');
+    
+    sliders.forEach(slider => {
+      const track = slider.querySelector('.hero-slider__track');
+      const slides = slider.querySelectorAll('.hero-slide');
+      const prevBtn = slider.querySelector('.hero-slider__arrow--prev');
+      const nextBtn = slider.querySelector('.hero-slider__arrow--next');
+      const dots = slider.querySelectorAll('.hero-slider__dot');
+      
+      if (slides.length <= 1) return;
+      
+      let currentIndex = 0;
+      const autoplay = slider.dataset.autoplay === 'true';
+      const speed = parseInt(slider.dataset.speed, 10) || 5000;
+      let interval;
+      
+      function goToSlide(index) {
+        if (index < 0) index = slides.length - 1;
+        if (index >= slides.length) index = 0;
+        
+        track.style.transform = `translateX(-${index * 100}%)`;
+        
+        dots.forEach(dot => dot.classList.remove('is-active'));
+        if(dots[index]) dots[index].classList.add('is-active');
+        
+        currentIndex = index;
+      }
+      
+      function nextSlide() { goToSlide(currentIndex + 1); }
+      function prevSlide() { goToSlide(currentIndex - 1); }
+      
+      if (prevBtn) prevBtn.addEventListener('click', () => { prevSlide(); resetAutoplay(); });
+      if (nextBtn) nextBtn.addEventListener('click', () => { nextSlide(); resetAutoplay(); });
+      
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+          goToSlide(index);
+          resetAutoplay();
+        });
+      });
+      
+      function startAutoplay() {
+        if (autoplay) {
+          interval = setInterval(nextSlide, speed);
+        }
+      }
+      
+      function resetAutoplay() {
+        clearInterval(interval);
+        startAutoplay();
+      }
+      
+      startAutoplay();
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Slideshow",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto-rotate slides",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Change slides every",
+      "default": 5
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "New Collection"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Spring 2026"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Slideshow",
+      "blocks": [
+        { "type": "slide" },
+        { "type": "slide" }
+      ]
+    }
+  ]
+}
+{% endschema %}

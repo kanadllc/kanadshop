@@ -1,0 +1,73 @@
+{
+  "sections": {
+    "hero_slider": {
+      "type": "hero-slider",
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "subheading": "Top Brands 2026",
+            "title": "Smartphones & Accessories",
+            "button_label": "Shop Now",
+            "text_alignment": "left"
+          }
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "subheading": "Weekend Deal",
+            "title": "Up to 50% Off on Electronics",
+            "button_label": "Discover Now",
+            "text_alignment": "left"
+          }
+        }
+      },
+      "block_order": [
+        "slide_1",
+        "slide_2"
+      ],
+      "settings": {
+        "autoplay": true,
+        "autoplay_speed": 5
+      }
+    },
+    "features_bar": {
+      "type": "features-bar",
+      "blocks": {
+        "feature_1": { "type": "feature", "settings": { "icon": "truck", "title": "Free Shipping", "text": "For all orders over $50" } },
+        "feature_2": { "type": "feature", "settings": { "icon": "shield", "title": "Secure Payment", "text": "100% secure payment" } },
+        "feature_3": { "type": "feature", "settings": { "icon": "clock", "title": "24/7 Support", "text": "Dedicated support" } },
+        "feature_4": { "type": "feature", "settings": { "icon": "credit-card", "title": "Money Back", "text": "If goods have problems" } }
+      },
+      "block_order": ["feature_1", "feature_2", "feature_3", "feature_4"]
+    },
+    "popular_categories": {
+      "type": "popular-categories",
+      "blocks": {
+        "cat_1": { "type": "category", "settings": { "title": "Electronics" } },
+        "cat_2": { "type": "category", "settings": { "title": "Fashion" } },
+        "cat_3": { "type": "category", "settings": { "title": "Home & Kitchen" } },
+        "cat_4": { "type": "category", "settings": { "title": "Beauty" } },
+        "cat_5": { "type": "category", "settings": { "title": "Sports" } },
+        "cat_6": { "type": "category", "settings": { "title": "Toys" } }
+      },
+      "block_order": ["cat_1", "cat_2", "cat_3", "cat_4", "cat_5", "cat_6"],
+      "settings": {
+        "title": "Popular Categories"
+      }
+    },
+    "featured_collection": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Deals of the Week",
+        "products_to_show": 4
+      }
+    }
+  },
+  "order": [
+    "hero_slider",
+    "features_bar",
+    "popular_categories",
+    "featured_collection"
+  ]
+}

@@ -1,0 +1,97 @@
+{{ 'theme.css' | asset_url | stylesheet_tag }}
+
+<div class="featured-collection">
+  {% if section.settings.title != blank %}
+    <h2 class="featured-collection__title">{{ section.settings.title | escape }}</h2>
+  {% endif %}
+
+  <div class="featured-collection__grid">
+    {%- assign collection = collections[section.settings.collection] -%}
+    
+    {%- if collection != blank and collection.products_count > 0 -%}
+      {%- for product in collection.products limit: section.settings.products_to_show -%}
+        <div class="product-card">
+          <a href="{{ product.url }}">
+            {%- if product.featured_image -%}
+              <img class="product-card__image"
+                   src="{{ product.featured_image | image_url: width: 500 }}"
+                   alt="{{ product.featured_image.alt | escape }}"
+                   loading="lazy"
+                   width="500"
+                   height="{{ 500 | divided_by: product.featured_image.aspect_ratio | ceil }}">
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag: 'product-card__image' }}
+            {%- endif -%}
+          </a>
+          <div class="product-card__info">
+            <h3 class="product-card__title">
+              <a href="{{ product.url }}">{{ product.title | escape }}</a>
+            </h3>
+            <div class="product-card__price">
+              {%- if product.price_varies -%}
+                {{ product.price_min | money }} - {{ product.price_max | money }}
+              {%- else -%}
+                {{ product.price | money }}
+              {%- endif -%}
+              {%- if product.selected_or_first_available_variant.unit_price_measurement -%}
+                <p class="product-card__unit-price">
+                  Unit price: {{ product.selected_or_first_available_variant.unit_price | money }}
+                  /
+                  {%- if product.selected_or_first_available_variant.unit_price_measurement.reference_value != 1 -%}
+                    {{ product.selected_or_first_available_variant.unit_price_measurement.reference_value }}
+                  {%- endif -%}
+                  {{ product.selected_or_first_available_variant.unit_price_measurement.reference_unit }}
+                </p>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      {%- for i in (1..section.settings.products_to_show) -%}
+        <div class="product-card">
+          {{ 'product-' | append: i | placeholder_svg_tag: 'product-card__image' }}
+          <div class="product-card__info">
+            <h3 class="product-card__title">Example Product {{ i }}</h3>
+            <div class="product-card__price">$19.99</div>
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured collection",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Featured collection",
+      "label": "Heading"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4,
+      "label": "Maximum products to show"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured collection"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,86 @@
+<div class="blog-page">
+  <header class="blog-page__header">
+    <h1 class="blog-page__title">{{ blog.title | escape }}</h1>
+  </header>
+
+  {%- paginate blog.articles by section.settings.articles_per_page -%}
+    <div class="blog-page__grid">
+      {%- for article in blog.articles -%}
+        <article class="blog-card">
+          <a href="{{ article.url }}" class="blog-card__image-link" aria-label="Read more about {{ article.title | escape }}">
+            {%- if article.image -%}
+              <img
+                src="{{ article.image | image_url: width: 600 }}"
+                alt="{{ article.image.alt | escape | default: article.title | escape }}"
+                class="blog-card__image"
+                loading="lazy"
+                width="600"
+                height="{{ 600 | divided_by: article.image.aspect_ratio | ceil }}"
+              >
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'blog-card__image placeholder-svg' }}
+            {%- endif -%}
+          </a>
+          <div class="blog-card__content">
+            <div class="blog-card__meta">
+              {%- if section.settings.show_date -%}
+                <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | time_tag: format: 'date' }}</time>
+              {%- endif -%}
+              {%- if section.settings.show_author -%}
+                <span class="blog-card__author">by {{ article.author }}</span>
+              {%- endif -%}
+            </div>
+            <h2 class="blog-card__title">
+              <a href="{{ article.url }}">{{ article.title | escape }}</a>
+            </h2>
+            <p class="blog-card__excerpt">
+              {%- if article.excerpt.size > 0 -%}
+                {{ article.excerpt | strip_html | truncatewords: 30 }}
+              {%- else -%}
+                {{ article.content | strip_html | truncatewords: 30 }}
+              {%- endif -%}
+            </p>
+            <a href="{{ article.url }}" class="blog-card__read-more" aria-label="Read more about {{ article.title | escape }}">Read more</a>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+
+    {%- if paginate.pages > 1 -%}
+      <nav class="pagination" role="navigation" aria-label="Pagination">
+        {{ paginate | default_pagination }}
+      </nav>
+    {%- endif -%}
+  {%- endpaginate -%}
+</div>
+
+{% schema %}
+{
+  "name": "Blog posts",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "articles_per_page",
+      "min": 3,
+      "max": 12,
+      "step": 3,
+      "default": 6,
+      "label": "Blog posts per page"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "default": true,
+      "label": "Show date"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "default": false,
+      "label": "Show author"
+    }
+  ]
+}
+{% endschema %}

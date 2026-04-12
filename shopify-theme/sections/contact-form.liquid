@@ -1,0 +1,50 @@
+<section class="contact-section section-spacing">
+  <div class="page-width contact-layout">
+    <div class="rte">
+      <h1>{{ page.title | default: 'Contact' }}</h1>
+      {{ page.content }}
+    </div>
+
+    {%- form 'contact', class: 'contact-form' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="form-status" tabindex="-1">Thanks for reaching out. We will get back to you soon.</p>
+      {%- endif -%}
+
+      {{ form.errors | default_errors }}
+
+      <div class="field-grid">
+        <div>
+          <label for="ContactFormName-{{ section.id }}">Name</label>
+          <input id="ContactFormName-{{ section.id }}" type="text" name="contact[name]" value="{{ form.name }}" autocomplete="name">
+        </div>
+        <div>
+          <label for="ContactFormEmail-{{ section.id }}">Email</label>
+          <input id="ContactFormEmail-{{ section.id }}" type="email" name="contact[email]" value="{{ form.email }}" autocomplete="email" autocorrect="off" autocapitalize="off" required>
+        </div>
+      </div>
+
+      <div>
+        <label for="ContactFormPhone-{{ section.id }}">Phone</label>
+        <input id="ContactFormPhone-{{ section.id }}" type="tel" name="contact[phone]" value="{{ form.phone }}" autocomplete="tel">
+      </div>
+
+      <div>
+        <label for="ContactFormBody-{{ section.id }}">Message</label>
+        <textarea id="ContactFormBody-{{ section.id }}" name="contact[body]" rows="6" required>{{ form.body }}</textarea>
+      </div>
+
+      <button class="button" type="submit">Send message</button>
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact form",
+  "presets": [
+    {
+      "name": "Contact form"
+    }
+  ]
+}
+{% endschema %}

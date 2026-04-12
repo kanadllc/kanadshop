@@ -1,0 +1,22 @@
+<section class="section-spacing">
+  <div class="page-width customer-auth">
+    <div class="customer-auth__panel">
+      <h1>{{ 'customer.activate_account.title' | t }}</h1>
+      {%- form 'activate_customer_password' -%}
+        {{ form.errors | default_errors }}
+        <div>
+          <label for="ActivatePassword">{{ 'customer.activate_account.password' | t }}</label>
+          <input id="ActivatePassword" type="password" name="customer[password]" autocomplete="new-password" required>
+        </div>
+        <div>
+          <label for="ActivatePasswordConfirmation">{{ 'customer.activate_account.password_confirm' | t }}</label>
+          <input id="ActivatePasswordConfirmation" type="password" name="customer[password_confirmation]" autocomplete="new-password" required>
+        </div>
+        <div class="customer-auth__actions">
+          <button class="button" type="submit">{{ 'customer.activate_account.submit' | t }}</button>
+          <button class="button" name="decline" type="submit">{{ 'customer.activate_account.cancel' | t }}</button>
+        </div>
+      {%- endform -%}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,87 @@
+<section class="article-page section-spacing">
+  <div class="page-width article-page__inner">
+    <article>
+      <header class="article-page__header">
+        <h1>{{ article.title }}</h1>
+        <p>{{ article.published_at | time_tag: format: 'date' }}</p>
+      </header>
+
+      {%- if article.image -%}
+        <img src="{{ article.image | image_url: width: 1200 }}" alt="{{ article.image.alt | escape | default: article.title | escape }}" loading="lazy" width="1200" height="{{ 1200 | divided_by: article.image.aspect_ratio | ceil }}">
+      {%- endif -%}
+
+      <div class="rte">
+        {{ article.content }}
+      </div>
+    </article>
+
+    {%- if blog.comments_enabled? -%}
+      <section class="article-comments">
+        <h2>Comments</h2>
+
+        {%- paginate article.comments by 10 -%}
+          {%- if article.comments_count > 0 -%}
+            <div class="comment-list">
+              {%- for comment in article.comments -%}
+                <article class="comment-card">
+                  <h3>{{ comment.author }}</h3>
+                  <p>{{ comment.created_at | time_tag: format: 'date' }}</p>
+                  <div class="rte">{{ comment.content }}</div>
+                </article>
+              {%- endfor -%}
+            </div>
+          {%- else -%}
+            <p>No comments yet.</p>
+          {%- endif -%}
+
+          {%- if paginate.pages > 1 -%}
+            <nav class="pagination" aria-label="Comment pagination">
+              {{ paginate | default_pagination }}
+            </nav>
+          {%- endif -%}
+        {%- endpaginate -%}
+
+        {%- form 'new_comment', article, class: 'article-comment-form' -%}
+          <h3>Leave a comment</h3>
+
+          {%- if form.posted_successfully? and blog.moderated? -%}
+            <p class="form-status" tabindex="-1">Your comment was submitted and will appear once approved.</p>
+          {%- elsif form.posted_successfully? -%}
+            <p class="form-status" tabindex="-1">Your comment was posted successfully.</p>
+          {%- endif -%}
+
+          {{ form.errors | default_errors }}
+
+          <div class="field-grid">
+            <div>
+              <label for="CommentAuthor-{{ section.id }}">Name</label>
+              <input id="CommentAuthor-{{ section.id }}" type="text" name="comment[author]" value="{{ form.author }}" required>
+            </div>
+            <div>
+              <label for="CommentEmail-{{ section.id }}">Email</label>
+              <input id="CommentEmail-{{ section.id }}" type="email" name="comment[email]" value="{{ form.email }}" required>
+            </div>
+          </div>
+
+          <div>
+            <label for="CommentBody-{{ section.id }}">Comment</label>
+            <textarea id="CommentBody-{{ section.id }}" name="comment[body]" rows="6" required>{{ form.body }}</textarea>
+          </div>
+
+          <button class="button" type="submit">Post comment</button>
+        {%- endform -%}
+      </section>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Article",
+  "presets": [
+    {
+      "name": "Article"
+    }
+  ]
+}
+{% endschema %}

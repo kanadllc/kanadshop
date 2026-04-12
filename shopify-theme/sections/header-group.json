@@ -1,0 +1,17 @@
+{
+  "name": "Header group",
+  "type": "header",
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {
+        "menu": "main-menu",
+        "mega_menu_promo_text": "New arrival",
+        "mega_menu_promo_link_text": "Shop now"
+      }
+    }
+  },
+  "order": [
+    "header"
+  ]
+}

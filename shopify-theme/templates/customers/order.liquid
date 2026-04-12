@@ -1,0 +1,58 @@
+<section class="section-spacing">
+  <div class="page-width order-page">
+    <header>
+      <h1>{{ order.name }}</h1>
+      <p>{{ order.created_at | time_tag: format: 'date' }}</p>
+      <p><a href="{{ routes.account_url }}">Back to account</a></p>
+    </header>
+
+    <div class="cart-items">
+      {%- for line_item in order.line_items -%}
+        <article class="cart-item">
+          <div class="cart-item__media">
+            {%- if line_item.image -%}
+              <img src="{{ line_item.image | image_url: width: 320 }}" alt="{{ line_item.image.alt | escape | default: line_item.title | escape }}" loading="lazy" width="320" height="{{ 320 | divided_by: line_item.image.aspect_ratio | ceil }}">
+            {%- endif -%}
+          </div>
+          <div class="cart-item__details">
+            <h2>{{ line_item.title }}</h2>
+
+            {%- if line_item.options_with_values.size > 0 -%}
+              <ul class="cart-meta-list">
+                {%- for option in line_item.options_with_values -%}
+                  <li>{{ option.name }}: {{ option.value }}</li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+
+            {%- if line_item.selling_plan_allocation -%}
+              <p>{{ line_item.selling_plan_allocation.selling_plan.name }}</p>
+            {%- endif -%}
+
+            {%- if line_item.unit_price_measurement -%}
+              <p>
+                Unit price: {{ line_item.unit_price | money }}
+                /
+                {%- if line_item.unit_price_measurement.reference_value != 1 -%}
+                  {{ line_item.unit_price_measurement.reference_value }}
+                {%- endif -%}
+                {{ line_item.unit_price_measurement.reference_unit }}
+              </p>
+            {%- endif -%}
+
+            <div class="cart-item__pricing">
+              <span>{{ line_item.final_price | money }}</span>
+              <span>Qty {{ line_item.quantity }}</span>
+            </div>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+
+    <aside class="cart-summary">
+      <h2>Summary</h2>
+      <p>Subtotal: {{ order.line_items_subtotal_price | money }}</p>
+      <p>Total: {{ order.total_price | money }}</p>
+    </aside>
+  </div>
+</section>

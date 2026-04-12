@@ -1,0 +1,39 @@
+<section class="section-spacing">
+  <div class="page-width">
+    <h1>Collections</h1>
+
+    {%- paginate collections by 12 -%}
+      <div class="collection-list-grid">
+        {%- for collection in collections -%}
+          <article class="collection-list-card">
+            <a href="{{ collection.url }}">
+              {%- if collection.featured_image -%}
+                <img src="{{ collection.featured_image | image_url: width: 720 }}" alt="{{ collection.featured_image.alt | escape | default: collection.title | escape }}" loading="lazy" width="720" height="{{ 720 | divided_by: collection.featured_image.aspect_ratio | ceil }}">
+              {%- else -%}
+                {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+              <h2>{{ collection.title }}</h2>
+            </a>
+          </article>
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="pagination" aria-label="Collections pagination">
+          {{ paginate | default_pagination }}
+        </nav>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection list",
+  "presets": [
+    {
+      "name": "Collection list"
+    }
+  ]
+}
+{% endschema %}

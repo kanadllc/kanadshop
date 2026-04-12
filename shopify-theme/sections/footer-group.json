@@ -1,0 +1,22 @@
+{
+  "name": "Footer group",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "heading": "About the shop",
+        "body_text": "<p>Share store details, promotions, or brand content with your customers.</p>",
+        "menu": "footer",
+        "show_newsletter": true,
+        "newsletter_heading": "Subscribe to our emails",
+        "newsletter_text": "Share what customers will receive after subscribing.",
+        "show_social_icons": true,
+        "show_follow_on_shop": true
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

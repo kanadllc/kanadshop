@@ -1,0 +1,119 @@
+<section class="search-page section-spacing">
+  <div class="page-width">
+    <header class="search-page__header">
+      <h1>Search</h1>
+      <predictive-search class="search-page__predictive-search">
+        <form action="{{ routes.search_url }}" method="get" role="search" class="search-inline-form">
+          <label class="visually-hidden" for="SearchInput-{{ section.id }}">Search the store</label>
+          <input id="SearchInput-{{ section.id }}" type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search the store" role="combobox" aria-expanded="false" aria-owns="predictive-search-results" aria-controls="predictive-search-results" aria-haspopup="listbox" aria-autocomplete="list">
+          <input type="hidden" name="options[prefix]" value="last">
+          <button type="submit">Search</button>
+          <div class="predictive-search-results" data-predictive-search tabindex="-1"></div>
+        </form>
+      </predictive-search>
+    </header>
+
+    {%- if search.performed -%}
+      {%- paginate search.results by 12 -%}
+        <p class="search-page__summary">{{ search.results_count }} results for “{{ search.terms | escape }}”.</p>
+
+        <div class="search-type-links" role="list">
+          <a href="{{ routes.search_url }}?q={{ search.terms | url_encode }}" class="search-type-link{% if search.types == blank %} is-active{% endif %}">All</a>
+          <a href="{{ routes.search_url }}?q={{ search.terms | url_encode }}&type=product" class="search-type-link{% if search.types contains 'product' and search.types.size == 1 %} is-active{% endif %}">Products</a>
+          <a href="{{ routes.search_url }}?q={{ search.terms | url_encode }}&type=page" class="search-type-link{% if search.types contains 'page' and search.types.size == 1 %} is-active{% endif %}">Pages</a>
+          <a href="{{ routes.search_url }}?q={{ search.terms | url_encode }}&type=article" class="search-type-link{% if search.types contains 'article' and search.types.size == 1 %} is-active{% endif %}">Articles</a>
+          <a href="{{ routes.search_url }}?q={{ search.terms | url_encode }}&type=collection" class="search-type-link{% if search.types contains 'collection' and search.types.size == 1 %} is-active{% endif %}">Collections</a>
+        </div>
+
+        {%- if search.filters.size > 0 -%}
+          <form action="{{ routes.search_url }}" method="get" class="search-filters">
+            <input type="hidden" name="q" value="{{ search.terms | escape }}">
+            <input type="hidden" name="options[prefix]" value="last">
+            {%- if search.types != blank -%}
+              <input type="hidden" name="type" value="{{ search.types | join: ',' }}">
+            {%- endif -%}
+
+            {%- for filter in search.filters -%}
+              <div class="filter-group">
+                <h2 class="filter-group__title">{{ filter.label }}</h2>
+                {%- case filter.type -%}
+                  {%- when 'boolean' or 'list' -%}
+                    <ul class="filter-group__list">
+                      {%- for filter_value in filter.values -%}
+                        <li class="filter-group__item">
+                          <label class="filter-checkbox">
+                            <input type="checkbox" name="{{ filter_value.param_name }}" value="{{ filter_value.value }}" {% if filter_value.active %}checked{% endif %} {% if filter_value.count == 0 and filter_value.active == false %}disabled{% endif %}>
+                            <span class="filter-checkbox__label">{{ filter_value.label }}</span>
+                            <span class="filter-checkbox__count">({{ filter_value.count }})</span>
+                          </label>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- when 'price_range' -%}
+                    <div class="filter-price">
+                      <div class="filter-price__inputs">
+                        <input name="{{ filter.min_value.param_name }}" type="number" min="0" placeholder="0" value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}">
+                        <span>-</span>
+                        <input name="{{ filter.max_value.param_name }}" type="number" min="0" placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}" value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}">
+                      </div>
+                    </div>
+                {%- endcase -%}
+              </div>
+            {%- endfor -%}
+
+            <button class="button" type="submit">Apply filters</button>
+          </form>
+        {%- endif -%}
+
+        {%- if search.results_count == 0 -%}
+          <p>No results found. Try a different search term.</p>
+        {%- else -%}
+          <div class="search-results-grid">
+            {%- for item in search.results -%}
+              <article class="search-result-card search-result-card--{{ item.object_type }}">
+                <p class="search-result-card__type">{{ item.object_type | capitalize }}</p>
+                <h2><a href="{{ item.url }}">{{ item.title }}</a></h2>
+
+                {%- if item.object_type == 'product' and item.featured_image -%}
+                  <a href="{{ item.url }}">
+                    <img src="{{ item.featured_image | image_url: width: 640 }}" alt="{{ item.featured_image.alt | escape | default: item.title | escape }}" loading="lazy" width="640" height="{{ 640 | divided_by: item.featured_image.aspect_ratio | ceil }}">
+                  </a>
+                  <p>{{ item.price | money }}</p>
+                {%- elsif item.object_type == 'article' and item.image -%}
+                  <a href="{{ item.url }}">
+                    <img src="{{ item.image | image_url: width: 640 }}" alt="{{ item.image.alt | escape | default: item.title | escape }}" loading="lazy" width="640" height="{{ 640 | divided_by: item.image.aspect_ratio | ceil }}">
+                  </a>
+                {%- endif -%}
+
+                <div class="rte">
+                  {%- if item.object_type == 'article' -%}
+                    {{ item.excerpt_or_content | strip_html | truncatewords: 30 }}
+                  {%- else -%}
+                    {{ item.content | default: item.description | strip_html | truncatewords: 30 }}
+                  {%- endif -%}
+                </div>
+              </article>
+            {%- endfor -%}
+          </div>
+
+          {%- if paginate.pages > 1 -%}
+            <nav class="pagination" aria-label="Search pagination">
+              {{ paginate | default_pagination }}
+            </nav>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endpaginate -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Search",
+  "presets": [
+    {
+      "name": "Search"
+    }
+  ]
+}
+{% endschema %}

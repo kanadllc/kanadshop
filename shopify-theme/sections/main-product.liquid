@@ -1,0 +1,349 @@
+{%- liquid
+  assign selected_variant = product.selected_or_first_available_variant
+-%}
+
+<section class="product-page section-spacing" data-product-root>
+  <div class="page-width product-page__layout">
+    <div class="product-page__media">
+      <div class="product-media-grid" data-product-media-grid>
+        {%- for media in product.media -%}
+          <div class="product-media-item{% if selected_variant.featured_media and media.id == selected_variant.featured_media.id %} is-active{% endif %}" data-media-id="{{ media.id }}">
+            {%- case media.media_type -%}
+              {%- when 'image' -%}
+                <img src="{{ media | image_url: width: 1200 }}" alt="{{ media.alt | escape | default: product.title | escape }}" width="1200" height="{{ 1200 | divided_by: media.aspect_ratio | ceil }}" loading="lazy">
+              {%- when 'video' -%}
+                {{ media | video_tag: controls: true, image_size: '1200x' }}
+              {%- when 'external_video' -%}
+                {{ media | external_video_tag }}
+              {%- when 'model' -%}
+                {{ media | model_viewer_tag }}
+              {%- else -%}
+                {{ media | media_tag }}
+            {%- endcase -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <div class="product-page__info">
+      {%- for block in section.blocks -%}
+        <div class="product-block" {{ block.shopify_attributes }}>
+          {%- case block.type -%}
+            {%- when '@app' -%}
+              {% render block %}
+            {%- when 'title' -%}
+              <h1>{{ product.title }}</h1>
+            {%- when 'price' -%}
+              <div class="product-page__price" data-price-root>
+                <p class="product-page__price-current" data-product-price>{{ selected_variant.price | money }}</p>
+                <p class="product-page__price-compare" data-product-compare-price>
+                  {%- if selected_variant.compare_at_price > selected_variant.price -%}
+                    <s>{{ selected_variant.compare_at_price | money }}</s>
+                  {%- endif -%}
+                </p>
+                {%- if selected_variant.unit_price_measurement -%}
+                  <p data-product-unit-price>
+                    Unit price: {{ selected_variant.unit_price | money }}
+                    /
+                    {%- if selected_variant.unit_price_measurement.reference_value != 1 -%}
+                      {{ selected_variant.unit_price_measurement.reference_value }}
+                    {%- endif -%}
+                    {{ selected_variant.unit_price_measurement.reference_unit }}
+                  </p>
+                {%- endif -%}
+                {%- if cart.taxes_included -%}
+                  <p>Taxes included.</p>
+                {%- endif -%}
+                {%- if selected_variant.selling_plan_allocations.size > 0 -%}
+                  <span class="product-page__subscription-badge">Subscription available</span>
+                {%- endif -%}
+              </div>
+            {%- when 'variant_picker' -%}
+              <div class="product-options" data-product-options>
+                {%- for option in product.options_with_values -%}
+                  <div class="product-option-group">
+                    <label for="Option-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
+                    {%- liquid
+                      assign has_swatches = false
+                      for option_value in option.values
+                        if option_value.swatch.image != blank or option_value.swatch.color != blank
+                          assign has_swatches = true
+                          break
+                        endif
+                      endfor
+                    -%}
+                    {%- if has_swatches -%}
+                      <div class="product-option-swatches" role="list">
+                        {%- for value in option.values -%}
+                          {%- assign value_label = value.name | default: value -%}
+                          <button
+                            type="button"
+                            class="product-option-swatch{% if option.selected_value == value_label %} is-active{% endif %}"
+                            data-option-target="Option-{{ section.id }}-{{ forloop.parentloop.index0 }}"
+                            data-option-value="{{ value_label | escape }}"
+                            aria-label="{{ option.name }} {{ value_label }}"
+                          >
+                            {%- if value.swatch.image != blank -%}
+                              <img src="{{ value.swatch.image | image_url: width: 80 }}" alt="{{ value_label | escape }}" loading="lazy" width="40" height="40">
+                            {%- elsif value.swatch.color != blank -%}
+                              <span style="background: {{ value.swatch.color }}"></span>
+                            {%- else -%}
+                              <span>{{ value_label }}</span>
+                            {%- endif -%}
+                          </button>
+                        {%- endfor -%}
+                      </div>
+                    {%- endif -%}
+                    <select id="Option-{{ section.id }}-{{ forloop.index0 }}" data-option-position="{{ option.position }}">
+                      {%- for value in option.values -%}
+                        {%- assign value_label = value.name | default: value -%}
+                        <option value="{{ value_label | escape }}" {% if option.selected_value == value_label %}selected{% endif %}>{{ value_label }}</option>
+                      {%- endfor -%}
+                    </select>
+                  </div>
+                {%- endfor -%}
+              </div>
+            {%- when 'buy_buttons' -%}
+              {%- form 'product', product, class: 'product-form', data-product-form: '' -%}
+                <input type="hidden" name="id" value="{{ selected_variant.id }}" data-product-variant-id>
+                <input type="hidden" name="selling_plan" value="" data-selling-plan-id>
+
+                <label for="Quantity-{{ section.id }}">Quantity</label>
+                <input id="Quantity-{{ section.id }}" type="number" name="quantity" min="1" value="1">
+
+                {%- if product.selling_plan_groups.size > 0 -%}
+                  <div class="selling-plan-group">
+                    <label for="SellingPlan-{{ section.id }}">Purchase options</label>
+                    <select id="SellingPlan-{{ section.id }}" data-selling-plan-selector>
+                      <option value="">One-time purchase</option>
+                      {%- for selling_plan_group in product.selling_plan_groups -%}
+                        {%- for selling_plan in selling_plan_group.selling_plans -%}
+                          <option value="{{ selling_plan.id }}">{{ selling_plan_group.name }} - {{ selling_plan.name }}</option>
+                        {%- endfor -%}
+                      {%- endfor -%}
+                    </select>
+                  </div>
+                {%- endif -%}
+
+                {%- if product.gift_card? -%}
+                  <recipient-form class="recipient-form" data-section-id="{{ section.id }}">
+                    <input id="Recipient-checkbox-{{ section.id }}" type="checkbox" name="properties[__shopify_send_gift_card_to_recipient]" disabled>
+                    <label class="recipient-checkbox" for="Recipient-checkbox-{{ section.id }}">Send to a recipient</label>
+                    <p id="Recipient-fields-live-region-{{ section.id }}" class="visually-hidden" role="status"></p>
+                    <div class="recipient-fields">
+                      <label for="Recipient-email-{{ section.id }}">Recipient email</label>
+                      <input id="Recipient-email-{{ section.id }}" type="email" name="properties[Recipient email]" value="{{ form.email }}" disabled>
+                      <label for="Recipient-name-{{ section.id }}">Recipient name</label>
+                      <input id="Recipient-name-{{ section.id }}" type="text" name="properties[Recipient name]" value="{{ form.name }}" disabled>
+                      <label for="Recipient-message-{{ section.id }}">Message</label>
+                      <textarea id="Recipient-message-{{ section.id }}" name="properties[Message]" rows="4" disabled>{{ form.message }}</textarea>
+                      <label for="Recipient-send-on-{{ section.id }}">Send on</label>
+                      <input id="Recipient-send-on-{{ section.id }}" type="date" name="properties[Send on]" value="{{ form.send_on }}" pattern="\d{4}-\d{2}-\d{2}" disabled>
+                    </div>
+                    <input type="hidden" id="Recipient-control-{{ section.id }}" name="properties[__shopify_send_gift_card_to_recipient]" value="if_present">
+                    <input type="hidden" id="Recipient-timezone-offset-{{ section.id }}" name="properties[__shopify_offset]" value="" disabled>
+                  </recipient-form>
+                {%- endif -%}
+
+                <button class="button button--primary" type="submit" name="add" data-add-to-cart {% unless selected_variant.available %}disabled{% endunless %}>
+                  {% if selected_variant.available %}Add to cart{% else %}Sold out{% endif %}
+                </button>
+                {{ form | payment_button }}
+                {{ form | payment_terms }}
+              {%- endform -%}
+
+              {%- if selected_variant.store_availabilities.size > 0 -%}
+                <div class="pickup-availability">
+                  <p>Pickup available at {{ selected_variant.store_availabilities.first.location.name }}</p>
+                </div>
+              {%- endif -%}
+            {%- when 'description' -%}
+              <div class="rte">{{ product.description }}</div>
+            {%- when 'text' -%}
+              <p>{{ block.settings.text }}</p>
+            {%- when 'custom_liquid' -%}
+              {{ block.settings.custom_liquid }}
+          {%- endcase -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <script type="application/json" data-product-variants>
+    {{ product.variants | json }}
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const productRoot = document.querySelector('[data-product-root]');
+      if (!productRoot) return;
+
+      const variantData = productRoot.querySelector('[data-product-variants]');
+      const optionSelects = productRoot.querySelectorAll('[data-option-position]');
+      const variantInput = productRoot.querySelector('[data-product-variant-id]');
+      const priceNode = productRoot.querySelector('[data-product-price]');
+      const compareNode = productRoot.querySelector('[data-product-compare-price]');
+      const addButton = productRoot.querySelector('[data-add-to-cart]');
+      const mediaNodes = productRoot.querySelectorAll('[data-media-id]');
+      const sellingPlanInput = productRoot.querySelector('[data-selling-plan-id]');
+      const sellingPlanSelector = productRoot.querySelector('[data-selling-plan-selector]');
+      const swatchButtons = productRoot.querySelectorAll('[data-option-target]');
+
+      if (!variantData || !variantInput || optionSelects.length === 0) return;
+
+      const variants = JSON.parse(variantData.textContent);
+
+      function getSelectedOptions() {
+        return Array.from(optionSelects).map(function (select) {
+          return select.value;
+        });
+      }
+
+      function findVariant() {
+        const selectedOptions = getSelectedOptions();
+        return variants.find(function (variant) {
+          return [variant.option1, variant.option2, variant.option3].filter(Boolean).every(function (value, index) {
+            return value === selectedOptions[index];
+          });
+        });
+      }
+
+      function formatMoney(cents) {
+        return new Intl.NumberFormat(undefined, { style: 'currency', currency: '{{ cart.currency.iso_code | default: shop.currency }}' }).format(cents / 100);
+      }
+
+      function updateMedia(variant) {
+        if (!variant || !variant.featured_media || !variant.featured_media.id) return;
+        mediaNodes.forEach(function (node) {
+          node.classList.toggle('is-active', String(node.dataset.mediaId) === String(variant.featured_media.id));
+        });
+      }
+
+      function updateVariant() {
+        const variant = findVariant();
+        if (!variant) return;
+
+        variantInput.value = variant.id;
+        if (priceNode) priceNode.textContent = formatMoney(variant.price);
+
+        if (compareNode) {
+          compareNode.innerHTML = variant.compare_at_price && variant.compare_at_price > variant.price
+            ? '<s>' + formatMoney(variant.compare_at_price) + '</s>'
+            : '';
+        }
+
+        if (addButton) {
+          addButton.disabled = !variant.available;
+          addButton.textContent = variant.available ? 'Add to cart' : 'Sold out';
+        }
+
+        updateMedia(variant);
+      }
+
+      optionSelects.forEach(function (select) {
+        select.addEventListener('change', updateVariant);
+      });
+
+      swatchButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+          const targetSelect = productRoot.querySelector('#' + button.dataset.optionTarget);
+          if (!targetSelect) return;
+          targetSelect.value = button.dataset.optionValue;
+          productRoot.querySelectorAll('[data-option-target="' + button.dataset.optionTarget + '"]').forEach(function (sibling) {
+            sibling.classList.toggle('is-active', sibling === button);
+          });
+          targetSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+      });
+
+      if (sellingPlanSelector && sellingPlanInput) {
+        sellingPlanSelector.addEventListener('change', function () {
+          sellingPlanInput.value = sellingPlanSelector.value;
+        });
+      }
+
+      updateVariant();
+    });
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "Product",
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1
+    },
+    {
+      "type": "variant_picker",
+      "name": "Variant picker",
+      "limit": 1
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy buttons",
+      "limit": 1
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Share product details that help customers make a purchase decision."
+        }
+      ]
+    },
+    {
+      "type": "custom_liquid",
+      "name": "Custom liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Custom liquid"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product",
+      "blocks": [
+        {
+          "type": "title"
+        },
+        {
+          "type": "price"
+        },
+        {
+          "type": "variant_picker"
+        },
+        {
+          "type": "buy_buttons"
+        },
+        {
+          "type": "description"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

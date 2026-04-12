@@ -1,0 +1,123 @@
+{%- liquid
+  assign featured_product = all_products[section.settings.product]
+  assign current_variant = featured_product.selected_or_first_available_variant
+-%}
+
+{%- if featured_product != blank -%}
+  <section class="product-page section-spacing">
+    <div class="page-width product-page__layout">
+      <div>
+        {%- if featured_product.featured_media -%}
+          <img src="{{ featured_product.featured_media | image_url: width: 900 }}" alt="{{ featured_product.featured_media.alt | escape | default: featured_product.title | escape }}" width="900" height="{{ 900 | divided_by: featured_product.featured_media.aspect_ratio | ceil }}" loading="lazy">
+        {%- endif -%}
+      </div>
+
+      <div class="product-page__info">
+        {%- for block in section.blocks -%}
+          <div {{ block.shopify_attributes }}>
+            {%- case block.type -%}
+              {%- when '@app' -%}
+                {% render block %}
+              {%- when 'title' -%}
+                <h2>{{ featured_product.title }}</h2>
+              {%- when 'price' -%}
+                <div class="product-page__price">
+                  <p>{{ current_variant.price | money }}</p>
+                  {%- if current_variant.compare_at_price > current_variant.price -%}
+                    <s>{{ current_variant.compare_at_price | money }}</s>
+                  {%- endif -%}
+                  {%- if current_variant.unit_price_measurement -%}
+                    <p>
+                      Unit price: {{ current_variant.unit_price | money }}
+                      /
+                      {%- if current_variant.unit_price_measurement.reference_value != 1 -%}
+                        {{ current_variant.unit_price_measurement.reference_value }}
+                      {%- endif -%}
+                      {{ current_variant.unit_price_measurement.reference_unit }}
+                    </p>
+                  {%- endif -%}
+                </div>
+              {%- when 'description' -%}
+                <div class="rte">{{ featured_product.description }}</div>
+              {%- when 'buy_buttons' -%}
+                {%- form 'product', featured_product -%}
+                  <input type="hidden" name="id" value="{{ current_variant.id }}">
+                  <button class="button button--primary" type="submit" {% unless current_variant.available %}disabled{% endunless %}>
+                    {% if current_variant.available %}Add to cart{% else %}Sold out{% endif %}
+                  </button>
+                  {{ form | payment_button }}
+                  {{ form | payment_terms }}
+                {%- endform -%}
+              {%- when 'custom_liquid' -%}
+                {{ block.settings.custom_liquid }}
+            {%- endcase -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Featured product",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "title",
+      "name": "Title"
+    },
+    {
+      "type": "price",
+      "name": "Price"
+    },
+    {
+      "type": "description",
+      "name": "Description"
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy buttons"
+    },
+    {
+      "type": "custom_liquid",
+      "name": "Custom liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Custom liquid"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured product",
+      "blocks": [
+        {
+          "type": "title"
+        },
+        {
+          "type": "price"
+        },
+        {
+          "type": "description"
+        },
+        {
+          "type": "buy_buttons"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

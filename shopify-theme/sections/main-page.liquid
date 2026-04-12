@@ -1,0 +1,27 @@
+<section class="page-section section-spacing">
+  <div class="page-width rte">
+    {%- if section.settings.show_title -%}
+      <h1>{{ page.title }}</h1>
+    {%- endif -%}
+    {{ page.content }}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show page title",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Page"
+    }
+  ]
+}
+{% endschema %}

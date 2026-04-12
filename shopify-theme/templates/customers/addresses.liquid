@@ -1,0 +1,81 @@
+<section class="section-spacing">
+  <div class="page-width customer-addresses">
+    <header>
+      <h1>{{ 'customer.addresses.title' | t }}</h1>
+      <p><a href="{{ routes.account_url }}">{{ 'customer.account.back' | t }}</a></p>
+    </header>
+
+    <div class="customer-auth__panel">
+      <h2>{{ 'customer.addresses.add' | t }}</h2>
+      {%- form 'customer_address', customer.new_address -%}
+        <div class="field-grid">
+          <div>
+            <label for="AddressFirstNameNew">{{ 'customer.register.first_name' | t }}</label>
+            <input id="AddressFirstNameNew" type="text" name="address[first_name]" value="{{ form.first_name }}">
+          </div>
+          <div>
+            <label for="AddressLastNameNew">{{ 'customer.register.last_name' | t }}</label>
+            <input id="AddressLastNameNew" type="text" name="address[last_name]" value="{{ form.last_name }}">
+          </div>
+        </div>
+        <div>
+          <label for="AddressCompanyNew">Company</label>
+          <input id="AddressCompanyNew" type="text" name="address[company]" value="{{ form.company }}">
+        </div>
+        <div>
+          <label for="AddressAddress1New">Address line 1</label>
+          <input id="AddressAddress1New" type="text" name="address[address1]" value="{{ form.address1 }}">
+        </div>
+        <div>
+          <label for="AddressAddress2New">Address line 2</label>
+          <input id="AddressAddress2New" type="text" name="address[address2]" value="{{ form.address2 }}">
+        </div>
+        <div class="field-grid">
+          <div>
+            <label for="AddressCityNew">City</label>
+            <input id="AddressCityNew" type="text" name="address[city]" value="{{ form.city }}">
+          </div>
+          <div>
+            <label for="AddressZipNew">Postal code</label>
+            <input id="AddressZipNew" type="text" name="address[zip]" value="{{ form.zip }}">
+          </div>
+        </div>
+        <div class="field-grid">
+          <div>
+            <label for="AddressCountryNew">Country</label>
+            <select id="AddressCountryNew" name="address[country]" data-default="{{ form.country }}">{{ all_country_option_tags }}</select>
+          </div>
+          <div>
+            <label for="AddressProvinceNew">Province or state</label>
+            <input id="AddressProvinceNew" type="text" name="address[province]" value="{{ form.province }}">
+          </div>
+        </div>
+        <div>
+          <label for="AddressPhoneNew">Phone</label>
+          <input id="AddressPhoneNew" type="tel" name="address[phone]" value="{{ form.phone }}">
+        </div>
+        <label>
+          <input type="checkbox" name="address[default]" value="1">
+          {{ 'customer.addresses.default' | t }}
+        </label>
+        <button class="button" type="submit">Save address</button>
+      {%- endform -%}
+    </div>
+
+    <div class="address-card-grid">
+      {%- for address in customer.addresses -%}
+        <article class="address-card">
+          <h2>{{ address.name }}</h2>
+          {%- if address == customer.default_address -%}
+            <p><strong>{{ 'customer.addresses.default' | t }}</strong></p>
+          {%- endif -%}
+          <div>{{ address | format_address }}</div>
+          <div class="address-card__actions">
+            <a class="button" href="#EditAddress_{{ address.id }}">Edit</a>
+            <button class="button" type="button" onclick="Shopify.postLink('{{ address.url }}', {parameters: {_method: 'delete'}})">Delete</button>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>

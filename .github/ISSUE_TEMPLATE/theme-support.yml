@@ -1,0 +1,40 @@
+name: Theme support request
+description: Collect merchant support requests in GitHub during pre-launch testing.
+title: "[Support]: "
+labels:
+  - support
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Name
+    validations:
+      required: true
+  - type: input
+    id: email
+    attributes:
+      label: Email address
+    validations:
+      required: true
+  - type: input
+    id: store_url
+    attributes:
+      label: Store URL
+      placeholder: https://storename.myshopify.com
+    validations:
+      required: true
+  - type: input
+    id: theme_name
+    attributes:
+      label: Theme name
+      value: Kanad
+  - type: input
+    id: subject
+    attributes:
+      label: Subject
+  - type: textarea
+    id: description
+    attributes:
+      label: Description of problem
+    validations:
+      required: true

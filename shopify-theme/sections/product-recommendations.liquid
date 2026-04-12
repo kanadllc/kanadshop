@@ -1,0 +1,85 @@
+{%- if recommendations.performed and recommendations.products_count > 0 -%}
+  <section class="section-spacing" data-product-recommendations-section>
+    <div class="page-width">
+      <div class="section-header">
+        <h2 class="section-header__title">{{ section.settings.heading }}</h2>
+      </div>
+
+      <div class="featured-collection__grid">
+        {%- for product in recommendations.products limit: section.settings.products_to_show -%}
+          <div class="product-card">
+            <a href="{{ product.url }}">
+              {%- if product.featured_image -%}
+                <img class="product-card__image" src="{{ product.featured_image | image_url: width: 500 }}" alt="{{ product.featured_image.alt | escape | default: product.title | escape }}" loading="lazy" width="500" height="{{ 500 | divided_by: product.featured_image.aspect_ratio | ceil }}">
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'product-card__image placeholder-svg' }}
+              {%- endif -%}
+            </a>
+            <div class="product-card__info">
+              <h3 class="product-card__title"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+              <div class="product-card__price">
+                {{ product.price | money }}
+                {%- if product.selected_or_first_available_variant.unit_price_measurement -%}
+                  <p class="product-card__unit-price">
+                    Unit price: {{ product.selected_or_first_available_variant.unit_price | money }}
+                    /
+                    {%- if product.selected_or_first_available_variant.unit_price_measurement.reference_value != 1 -%}
+                      {{ product.selected_or_first_available_variant.unit_price_measurement.reference_value }}
+                    {%- endif -%}
+                    {{ product.selected_or_first_available_variant.unit_price_measurement.reference_unit }}
+                  </p>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- else -%}
+  <section class="section-spacing" data-product-recommendations data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.products_to_show }}&intent={{ section.settings.intent }}"></section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product recommendations",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "You may also like"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "intent",
+      "label": "Recommendation type",
+      "options": [
+        {
+          "value": "related",
+          "label": "Related"
+        },
+        {
+          "value": "complementary",
+          "label": "Complementary"
+        }
+      ],
+      "default": "related"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product recommendations"
+    }
+  ]
+}
+{% endschema %}
