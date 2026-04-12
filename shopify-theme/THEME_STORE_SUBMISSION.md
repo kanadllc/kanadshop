@@ -1,30 +1,37 @@
 # Shopify Theme Store Submission Notes
 
-This theme now includes the baseline Shopify Online Store 2.0 scaffolding required for a Theme Store submission review:
+Current code package status:
 
-- Required templates added: 404, article, blog, cart, collection, homepage, list collections, page, page contact, password, product, search, and gift card.
-- Required config files added: config/settings_schema.json and config/settings_data.json.
-- Section groups added for the header and footer.
-- Custom liquid section added.
-- Core storefront sections added for product, cart, search, article, page, contact, password, and collection list pages.
-- SEO metadata and social sharing tags added.
-- Gift card template added with code, QR code, and Apple Wallet support.
+- Shopify Theme Check passes with no offenses.
+- Latest submission package version: `1.0.1`.
+- Latest GitHub storefront sync: commit `1e34c3f` on `main`.
+- Latest staging theme sync: `Kanad Sync` (`149599879319`).
 
-Remaining blockers before an actual Shopify Theme Store submission:
+Code-side Theme Store coverage currently in place:
 
-1. Confirm that the published documentation URLs in config/settings_schema.json resolve correctly.
-2. Publish a Shopify support page that uses the `page.support` template so support requests go to the store admin email.
-3. Validate the theme on a Shopify development store with realistic products, collections, blog posts, gift cards, discounts, subscriptions, and multiple variants.
-4. Run Lighthouse, accessibility tests, and manual browser QA against the benchmark data set.
-5. Complete merchant-content review: demo copy, imagery rights, originality, theme naming, and preset naming.
+1. Required templates, config files, section groups, and core storefront sections are present.
+2. SEO metadata, social sharing tags, structured data, and payment icons are implemented.
+3. Product, cart, search, article, blog, customer, password, page, and gift card experiences are implemented.
+4. Localization selectors, Follow on Shop, predictive search, recommendations, accelerated checkout, selling plans, unit pricing, and pickup availability are implemented.
+5. Branding, favicon, logo, typography, and color settings are implemented.
+
+Remaining submission blockers before an actual Shopify Theme Store submission:
+
+1. Finalize a Theme Store-safe theme name and preset naming strategy.
+2. Finalize a public support workflow that includes file uploads and autoresponder behavior.
+3. Validate the theme on a populated Shopify demo store with realistic products, discounts, subscriptions, gift cards, articles, and collections.
+4. Run Lighthouse and accessibility audits against benchmark-like data for home, collection, and product pages.
+5. Complete originality review, browser QA, and webview QA.
 6. Complete Partner-side submission tasks following `THEME_STORE_LAUNCH_PLAN.md`.
 
-GitHub and Partner-side steps that cannot be completed from this workspace alone:
+Partner-side steps that cannot be completed from this workspace alone:
 
-1. Publish this code to a GitHub repository you control.
-2. Enable GitHub Pages or deploy the docs to your final support domain.
-3. Connect the support form to your email/helpdesk workflow and configure auto-response.
-4. Upload the theme zip or connect the repository from your Shopify Partner account.
-5. Submit through https://partners.shopify.com/ after the live-store validation passes.
+1. Configure and verify the public support workflow and merchant response process.
+2. Choose the final theme listing name and any preset names.
+3. Upload the submission zip or connect the repository in Shopify Partners.
+4. Provide demo store access and submission metadata in the Partner Dashboard.
+5. Submit through `https://partners.shopify.com/` after the external validation passes.
 
+Detailed requirement-by-requirement audit: see `THEME_STORE_REQUIREMENTS_AUDIT.md`.
+Release notes reference: see `../THEME_RELEASE_NOTES.md`.
 Launch plan reference: see `THEME_STORE_LAUNCH_PLAN.md`.
