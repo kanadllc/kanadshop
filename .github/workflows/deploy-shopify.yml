@@ -1,0 +1,108 @@
+name: Deploy Shopify Theme
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - shopify-theme/**
+      - package.json
+      - package-lock.json
+      - .github/workflows/deploy-shopify.yml
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Deployment target
+        required: true
+        default: staging
+        type: choice
+        options:
+          - staging
+          - live
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-staging:
+    if: github.event_name == 'push' || github.event.inputs.target == 'staging'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify Shopify staging secrets
+        env:
+          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+          SHOPIFY_STAGING_THEME_ID: ${{ secrets.SHOPIFY_STAGING_THEME_ID }}
+        run: |
+          test -n "$SHOPIFY_STORE" || (echo "Missing SHOPIFY_STORE secret" && exit 1)
+          test -n "$SHOPIFY_CLI_THEME_TOKEN" || (echo "Missing SHOPIFY_CLI_THEME_TOKEN secret" && exit 1)
+          test -n "$SHOPIFY_STAGING_THEME_ID" || (echo "Missing SHOPIFY_STAGING_THEME_ID secret" && exit 1)
+
+      - name: Deploy to Shopify staging theme
+        env:
+          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+          SHOPIFY_STAGING_THEME_ID: ${{ secrets.SHOPIFY_STAGING_THEME_ID }}
+        run: >
+          npx shopify theme push
+          --strict
+          --json
+          --store "$SHOPIFY_STORE"
+          --password "$SHOPIFY_CLI_THEME_TOKEN"
+          --path shopify-theme
+          --theme "$SHOPIFY_STAGING_THEME_ID"
+
+  deploy-live:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.target == 'live'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify Shopify live secrets
+        env:
+          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+          SHOPIFY_LIVE_THEME_ID: ${{ secrets.SHOPIFY_LIVE_THEME_ID }}
+        run: |
+          test -n "$SHOPIFY_STORE" || (echo "Missing SHOPIFY_STORE secret" && exit 1)
+          test -n "$SHOPIFY_CLI_THEME_TOKEN" || (echo "Missing SHOPIFY_CLI_THEME_TOKEN secret" && exit 1)
+          test -n "$SHOPIFY_LIVE_THEME_ID" || (echo "Missing SHOPIFY_LIVE_THEME_ID secret" && exit 1)
+
+      - name: Deploy to Shopify live theme
+        env:
+          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+          SHOPIFY_LIVE_THEME_ID: ${{ secrets.SHOPIFY_LIVE_THEME_ID }}
+        run: >
+          npx shopify theme push
+          --strict
+          --json
+          --allow-live
+          --store "$SHOPIFY_STORE"
+          --password "$SHOPIFY_CLI_THEME_TOKEN"
+          --path shopify-theme
+          --theme "$SHOPIFY_LIVE_THEME_ID"
