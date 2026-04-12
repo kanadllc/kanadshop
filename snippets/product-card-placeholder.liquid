@@ -1,0 +1,24 @@
+{%- comment -%}
+  Renders a placeholder product card.
+  Accepts:
+  - index: {Integer} Placeholder index number (optional)
+{%- endcomment -%}
+
+<div class="card-wrapper">
+  <div class="card">
+    <div class="card__media">
+      {{ 'product-' | append: index | placeholder_svg_tag: 'placeholder-svg' }}
+    </div>
+    <div class="card__info">
+      <h3 class="card__title">
+        <a href="#">{{ 'onboarding.product_title' | t }}</a>
+      </h3>
+      <div class="card__price">
+        <span class="price">{{ 1999 | money }}</span>
+      </div>
+      <button class="button button--primary card__add-to-cart" disabled>
+        {{ 'products.product.add_to_cart' | t }}
+      </button>
+    </div>
+  </div>
+</div>

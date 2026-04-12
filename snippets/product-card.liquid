@@ -1,0 +1,91 @@
+{%- comment -%}
+  Renders a product card.
+  Accepts:
+  - product: {Object} Product object (required)
+  - lazy_load: {Boolean} Image should be lazy loaded (optional, default: true)
+  - show_vendor: {Boolean} Show vendor name (optional, default: false)
+  - show_rating: {Boolean} Show rating (optional, default: false)
+{%- endcomment -%}
+
+{%- assign lazy_load = lazy_load | default: true -%}
+
+<div class="card-wrapper">
+  <div class="card">
+    <a href="{{ product.url }}" class="card__media-link" tabindex="-1" aria-hidden="true">
+      <div class="card__media">
+        {%- if product.featured_media -%}
+          {{
+            product.featured_media
+            | image_url: width: 600
+            | image_tag:
+              loading: lazy_load,
+              sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
+              widths: '165, 360, 533, 720, 940, 1066',
+              alt: product.featured_media.alt | default: product.title
+          }}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+
+        {%- if product.media[1] != blank -%}
+          {{
+            product.media[1]
+            | image_url: width: 600
+            | image_tag:
+              loading: 'lazy',
+              class: 'card__media-secondary',
+              sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 100vw',
+              widths: '165, 360, 533, 720, 940, 1066',
+              alt: product.media[1].alt | default: product.title
+          }}
+        {%- endif -%}
+      </div>
+    </a>
+
+    <div class="card__badges">
+      {%- if product.available == false -%}
+        <span class="badge badge--sold-out">{{ 'products.product.sold_out' | t }}</span>
+      {%- elsif product.compare_at_price > product.price and product.available -%}
+        {%- assign savings_percent = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
+        <span class="badge badge--sale">-{{ savings_percent }}%</span>
+      {%- endif -%}
+    </div>
+
+    <div class="card__info">
+      {%- if show_vendor and product.vendor != blank -%}
+        <div class="card__vendor">{{ product.vendor }}</div>
+      {%- endif -%}
+
+      <h3 class="card__title">
+        <a href="{{ product.url }}">{{ product.title | escape }}</a>
+      </h3>
+
+      <div class="card__price">
+        {%- if product.compare_at_price > product.price -%}
+          <span class="price price--sale">{{ product.price | money }}</span>
+          <span class="price price--compare">{{ product.compare_at_price | money }}</span>
+        {%- else -%}
+          <span class="price">{{ product.price | money }}</span>
+        {%- endif -%}
+      </div>
+
+      {%- if product.available -%}
+        <form method="post" action="/cart/add" class="product-form card__add-to-cart-form">
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          <input type="hidden" name="quantity" value="1">
+          <button
+            type="submit"
+            class="button button--primary card__add-to-cart"
+            data-add-to-cart="{{ 'products.product.add_to_cart' | t }}"
+          >
+            {{ 'products.product.add_to_cart' | t }}
+          </button>
+        </form>
+      {%- else -%}
+        <button class="button button--secondary card__add-to-cart" disabled>
+          {{ 'products.product.sold_out' | t }}
+        </button>
+      {%- endif -%}
+    </div>
+  </div>
+</div>

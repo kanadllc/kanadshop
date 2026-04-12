@@ -1,0 +1,46 @@
+{% if section.settings.show_announcement %}
+  <div class="announcement-bar" role="region" aria-label="{{ 'sections.header.announcement' | t }}">
+    <div class="announcement-bar__message">
+      {% if section.settings.announcement_link != blank %}
+        <a href="{{ section.settings.announcement_link }}">{{ section.settings.announcement_text }}</a>
+      {% else %}
+        {{ section.settings.announcement_text }}
+      {% endif %}
+    </div>
+    {% if section.settings.show_announcement_close %}
+      <button class="announcement-bar__close visually-hidden" aria-label="Dismiss announcement">×</button>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "t:sections.announcement-bar.name",
+  "class": "announcement-bar-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "default": true,
+      "label": "t:sections.announcement-bar.settings.show_announcement.label"
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "default": "Free shipping on orders over $50 — Shop now",
+      "label": "t:sections.announcement-bar.settings.text.label"
+    },
+    {
+      "type": "url",
+      "id": "announcement_link",
+      "label": "t:sections.announcement-bar.settings.link.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_announcement_close",
+      "default": false,
+      "label": "t:sections.announcement-bar.settings.show_close.label"
+    }
+  ]
+}
+{% endschema %}

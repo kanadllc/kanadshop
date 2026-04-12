@@ -1,0 +1,42 @@
+{%- if settings.cart_type == 'drawer' -%}
+  <div
+    id="cart-drawer"
+    class="cart-drawer"
+    role="dialog"
+    aria-modal="true"
+    aria-label="{{ 'sections.cart.title' | t }}"
+    aria-hidden="true"
+  >
+    <div class="cart-drawer__header">
+      <h2 class="cart-drawer__title">{{ 'sections.cart.title' | t }}</h2>
+      <button class="cart-drawer__close" aria-label="{{ 'accessibility.close' | t }}">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="cart-drawer__body" data-cart-items>
+      <div class="cart-drawer__empty">
+        <p>{{ 'sections.cart.empty' | t }}</p>
+      </div>
+    </div>
+
+    <div class="cart-drawer__footer">
+      <div class="cart-drawer__subtotal">
+        <span>{{ 'sections.cart.subtotal' | t }}</span>
+        <span data-cart-subtotal>{{ cart.total_price | money }}</span>
+      </div>
+      <p style="font-size:1.3rem; opacity:0.6; margin-bottom:1rem;">{{ 'sections.cart.taxes_and_shipping_policy_at_checkout_html' | t }}</p>
+      <a href="{{ routes.checkout }}" class="button button--primary cart-drawer__checkout">
+        {{ 'sections.cart.checkout' | t }}
+      </a>
+      <a href="{{ routes.cart_url }}" style="display:block; text-align:center; margin-top:1rem; font-size:1.4rem;">
+        {{ 'sections.cart.view_cart' | t }}
+      </a>
+    </div>
+  </div>
+
+  <div class="cart-drawer__overlay" aria-hidden="true"></div>
+{%- endif -%}

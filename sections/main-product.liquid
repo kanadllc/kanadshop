@@ -1,0 +1,200 @@
+<div class="product section-padding">
+  <div class="page-width">
+    <nav class="breadcrumbs" aria-label="{{ 'general.breadcrumbs.aria_label' | t }}">
+      <ol class="breadcrumbs__list" role="list">
+        <li class="breadcrumbs__item">
+          <a href="{{ routes.root_url }}">{{ 'general.breadcrumbs.home' | t }}</a>
+        </li>
+        {%- if product.collections.size > 0 -%}
+          <li class="breadcrumbs__item">
+            <a href="{{ product.collections[0].url }}">{{ product.collections[0].title }}</a>
+          </li>
+        {%- endif -%}
+        <li class="breadcrumbs__item" aria-current="page">{{ product.title }}</li>
+      </ol>
+    </nav>
+
+    <div class="product__wrapper">
+      <!-- Media gallery -->
+      <div class="product__media-gallery">
+        <div class="product__main-image">
+          {%- if product.selected_or_first_available_variant.featured_media != blank -%}
+            {{
+              product.selected_or_first_available_variant.featured_media
+              | image_url: width: 1000
+              | image_tag:
+                loading: 'eager',
+                fetchpriority: 'high',
+                sizes: '(min-width: 750px) 50vw, 100vw',
+                widths: '375, 750, 1000',
+                alt: product.selected_or_first_available_variant.featured_media.alt | default: product.title,
+                id: 'ProductMainImage'
+            }}
+          {%- elsif product.featured_image != blank -%}
+            {{
+              product.featured_image
+              | image_url: width: 1000
+              | image_tag:
+                loading: 'eager',
+                fetchpriority: 'high',
+                sizes: '(min-width: 750px) 50vw, 100vw',
+                widths: '375, 750, 1000',
+                alt: product.featured_image.alt | default: product.title,
+                id: 'ProductMainImage'
+            }}
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+
+        {%- if product.media.size > 1 -%}
+          <div class="product__thumbnails">
+            {%- for media in product.media -%}
+              <button
+                class="product__thumbnail{% if forloop.first %} is-active{% endif %}"
+                data-src="{{ media | image_url: width: 1000 }}"
+                data-alt="{{ media.alt | default: product.title }}"
+                aria-label="{{ 'products.product.media.load_image' | t: index: forloop.index }}"
+              >
+                {{
+                  media
+                  | image_url: width: 150
+                  | image_tag: loading: 'lazy', alt: media.alt | default: product.title
+                }}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <!-- Product info -->
+      <div class="product__info">
+        {%- if section.settings.show_vendor and product.vendor != blank -%}
+          <p class="product__vendor">{{ product.vendor }}</p>
+        {%- endif -%}
+
+        <h1 class="product__title">{{ product.title }}</h1>
+
+        <div class="product__price">
+          {%- if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price -%}
+            <span class="price product__price--sale">
+              {{- product.selected_or_first_available_variant.price | money -}}
+            </span>
+            <span class="price product__price--compare">
+              {{- product.selected_or_first_available_variant.compare_at_price | money -}}
+            </span>
+          {%- else -%}
+            <span class="price">{{ product.selected_or_first_available_variant.price | money }}</span>
+          {%- endif -%}
+        </div>
+
+        {%- if product.description != blank -%}
+          <div class="product__description rte">
+            {{ product.description }}
+          </div>
+        {%- endif -%}
+
+        {%- form 'product', product, class: 'product__form product-form' -%}
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+          {%- unless product.has_only_default_variant -%}
+            {%- for option in product.options_with_values -%}
+              <div class="product__variants">
+                <p class="product__variant-label">
+                  {{ option.name }}:
+                  <span class="product__variant-selected">{{ option.selected_value }}</span>
+                </p>
+                <div class="product__variant-pills">
+                  {%- for value in option.values -%}
+                    {%- assign variant_available = false -%}
+                    {%- for variant in product.variants -%}
+                      {%- if variant.available and variant.option1 == value or variant.option2 == value or variant.option3 == value -%}
+                        {%- assign variant_available = true -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+                    <button
+                      type="button"
+                      class="variant-pill{% if option.selected_value == value %} is-active{% endif %}{% unless variant_available %} is-disabled{% endunless %}"
+                      data-variant-value="{{ value | escape }}"
+                    >
+                      {{- value -}}
+                    </button>
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- endunless -%}
+
+          {%- if section.settings.show_quantity_selector -%}
+            <div>
+              <p class="product__variant-label">{{ 'products.product.quantity.label' | t }}</p>
+              <div class="product__quantity">
+                <button type="button" class="product__quantity-btn" data-action="decrease" aria-label="{{ 'products.product.quantity.decrease' | t }}">−</button>
+                <input
+                  type="number"
+                  class="product__quantity-input"
+                  name="quantity"
+                  value="1"
+                  min="1"
+                  aria-label="{{ 'products.product.quantity.input_label' | t }}"
+                >
+                <button type="button" class="product__quantity-btn" data-action="increase" aria-label="{{ 'products.product.quantity.increase' | t }}">+</button>
+              </div>
+            </div>
+          {%- endif -%}
+
+          <div>
+            {%- if product.selected_or_first_available_variant.available -%}
+              <button
+                type="submit"
+                name="add"
+                class="button button--primary product__add-to-cart"
+                data-add-to-cart="{{ 'products.product.add_to_cart' | t }}"
+              >
+                {{- 'products.product.add_to_cart' | t -}}
+              </button>
+            {%- else -%}
+              <button type="button" class="button button--secondary product__add-to-cart" disabled>
+                {{ 'products.product.sold_out' | t }}
+              </button>
+            {%- endif -%}
+          </div>
+
+          {%- if section.settings.show_share_buttons -%}
+            <div class="product__share">
+              {{- share_url | default: product.url | prepend: shop.url -}}
+            </div>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-product.name",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": true,
+      "label": "t:sections.main-product.settings.show_vendor.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quantity_selector",
+      "default": true,
+      "label": "t:sections.main-product.settings.show_quantity_selector.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_share_buttons",
+      "default": true,
+      "label": "t:sections.main-product.settings.show_share_buttons.label"
+    }
+  ]
+}
+{% endschema %}

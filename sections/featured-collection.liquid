@@ -1,0 +1,84 @@
+{%- if section.settings.collection != blank -%}
+  {%- assign collection = collections[section.settings.collection] -%}
+{%- endif -%}
+
+<div class="featured-collection section-padding">
+  <div class="page-width">
+    <div class="featured-collection__header">
+      <h2 class="featured-collection__title">
+        {{- section.settings.title | default: collection.title | escape -}}
+      </h2>
+      {%- if section.settings.show_view_all and collection != blank -%}
+        <a href="{{ collection.url }}" class="featured-collection__view-all">
+          {{- 'sections.featured_collection.view_all' | t -}}
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div class="grid grid--{{ section.settings.columns_desktop }}-col grid--2-col-tablet-down">
+      {%- if collection != blank -%}
+        {%- for product in collection.products limit: section.settings.products_to_show -%}
+          <div class="grid__item">
+            {%- render 'product-card', product: product -%}
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..section.settings.products_to_show) -%}
+          <div class="grid__item">
+            {%- render 'product-card-placeholder', index: i -%}
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.featured-collection.name",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.featured-collection.settings.title.label",
+      "default": "Featured collection"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "t:sections.featured-collection.settings.collection.label"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4,
+      "label": "t:sections.featured-collection.settings.products_to_show.label"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4,
+      "label": "t:sections.featured-collection.settings.columns_desktop.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "default": true,
+      "label": "t:sections.featured-collection.settings.show_view_all.label"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.featured-collection.presets.name"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-cart",
+      "settings": {
+        "show_vendor": false,
+        "show_payment_button": true
+      }
+    }
+  },
+  "order": ["main"]
+}

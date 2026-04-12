@@ -1,0 +1,65 @@
+<div class="newsletter-section section-padding">
+  <div class="page-width">
+    <div class="newsletter-section__content">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="newsletter-section__title">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.text != blank -%}
+        <p class="newsletter-section__text">{{ section.settings.text }}</p>
+      {%- endif -%}
+
+      {% form 'customer', class: 'newsletter-form' %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <input
+          type="email"
+          name="contact[email]"
+          class="newsletter-form__input"
+          value="{{ customer.email }}"
+          aria-required="true"
+          autocorrect="off"
+          autocapitalize="off"
+          autocomplete="email"
+          placeholder="{{ 'newsletter.label' | t }}"
+          required
+        >
+        <button type="submit" class="button button--primary">
+          {{- 'newsletter.button_label' | t -}}
+        </button>
+        {%- if form.posted_successfully? -%}
+          <p class="form__message">{{ 'newsletter.success' | t }}</p>
+        {%- endif -%}
+        {%- if form.errors -%}
+          <p class="form__message form__message--error">{{ form.errors | default_errors }}</p>
+        {%- endif -%}
+      {% endform %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.newsletter.name",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Subscribe to our emails",
+      "label": "t:sections.newsletter.settings.heading.label"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "default": "Be the first to know about new collections and exclusive offers.",
+      "label": "t:sections.newsletter.settings.text.label"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.newsletter.presets.name"
+    }
+  ]
+}
+{% endschema %}

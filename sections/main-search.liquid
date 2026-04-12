@@ -1,0 +1,111 @@
+<div class="section-padding">
+  <div class="page-width">
+    <div class="page-hero" style="background:none; padding:3rem 0 2rem;">
+      <h1 class="page-hero__title">{{ 'sections.search.title' | t }}</h1>
+    </div>
+
+    <form action="{{ routes.search_url }}" method="get" role="search">
+      <div class="search-form" style="display:flex; gap:1rem; max-width:60rem; margin-bottom:3rem;">
+        <input
+          type="search"
+          name="q"
+          value="{{ search.terms | escape }}"
+          class="field__input"
+          placeholder="{{ 'general.search.placeholder' | t }}"
+          aria-label="{{ 'general.search.search' | t }}"
+        >
+        <button type="submit" class="button button--primary">{{ 'general.search.search' | t }}</button>
+      </div>
+    </form>
+
+    {%- if search.performed -%}
+      {%- if search.results.size > 0 -%}
+        <p style="margin-bottom:2rem; opacity:0.7;">
+          {{ 'sections.search.results_with_count' | t: terms: search.terms, count: search.results_count }}
+        </p>
+        {%- paginate search.results by section.settings.products_per_page -%}
+          <div class="grid grid--{{ section.settings.columns_desktop }}-col grid--2-col-tablet-down">
+            {%- for result in search.results -%}
+              {%- if result.object_type == 'product' -%}
+                <div class="grid__item">
+                  {%- render 'product-card', product: result -%}
+                </div>
+              {%- elsif result.object_type == 'article' -%}
+                <div class="grid__item">
+                  <article class="article-card">
+                    <div class="article-card__info">
+                      <p class="article-card__date">{{ result.published_at | date: format: 'month_day_year' }}</p>
+                      <h2 class="article-card__title"><a href="{{ result.url }}">{{ result.title }}</a></h2>
+                      {%- if result.excerpt != blank -%}
+                        <p class="article-card__excerpt">{{ result.excerpt | strip_html | truncate: 100 }}</p>
+                      {%- endif -%}
+                    </div>
+                  </article>
+                </div>
+              {%- elsif result.object_type == 'page' -%}
+                <div class="grid__item">
+                  <div class="card" style="padding:2rem;">
+                    <h3><a href="{{ result.url }}">{{ result.title }}</a></h3>
+                    <p style="font-size:1.4rem; opacity:0.7;">{{ result.content | strip_html | truncate: 100 }}</p>
+                  </div>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+
+          {%- if paginate.pages > 1 -%}
+            <nav class="pagination" aria-label="{{ 'general.pagination.label' | t }}">
+              {%- if paginate.previous -%}
+                <a href="{{ paginate.previous.url }}" class="pagination__item">&lsaquo;</a>
+              {%- endif -%}
+              {%- for part in paginate.parts -%}
+                {%- if part.is_link -%}
+                  <a href="{{ part.url }}" class="pagination__item">{{ part.title }}</a>
+                {%- elsif part.title == paginate.current_page -%}
+                  <span class="pagination__item pagination__item--current" aria-current="page">{{ part.title }}</span>
+                {%- else -%}
+                  <span class="pagination__item">{{ part.title }}</span>
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if paginate.next -%}
+                <a href="{{ paginate.next.url }}" class="pagination__item">&rsaquo;</a>
+              {%- endif -%}
+            </nav>
+          {%- endif -%}
+        {%- endpaginate -%}
+      {%- else -%}
+        <p style="font-size:1.6rem; opacity:0.7;">
+          {{ 'sections.search.no_results' | t: terms: search.terms }}
+        </p>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-search.name",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 4,
+      "max": 48,
+      "step": 4,
+      "default": 12,
+      "label": "t:sections.main-search.settings.products_per_page.label"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4,
+      "label": "t:sections.main-search.settings.columns_desktop.label"
+    }
+  ]
+}
+{% endschema %}
