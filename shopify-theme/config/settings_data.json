@@ -1,7 +1,7 @@
 {
-  "current": "Default",
+  "current": "Kanad",
   "presets": {
-    "Default": {
+    "Kanad": {
       "settings": {
         "color_background": "#f4f4f4",
         "color_foreground": "#333333",
