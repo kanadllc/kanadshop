@@ -1,0 +1,61 @@
+<section class="contact-section section-spacing">
+  <div class="page-width contact-layout">
+    <div class="rte">
+      <h1>{{ page.title | default: 'Support' }}</h1>
+      {{ page.content }}
+    </div>
+
+    {%- form 'contact', class: 'contact-form' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="form-status" tabindex="-1">Thanks for reaching out. Your support request has been sent to the store admin email.</p>
+      {%- endif -%}
+
+      {{ form.errors | default_errors }}
+
+      <div class="field-grid">
+        <div>
+          <label for="SupportFormName-{{ section.id }}">Name</label>
+          <input id="SupportFormName-{{ section.id }}" type="text" name="contact[name]" value="{{ form.name }}" autocomplete="name" required>
+        </div>
+        <div>
+          <label for="SupportFormEmail-{{ section.id }}">Email</label>
+          <input id="SupportFormEmail-{{ section.id }}" type="email" name="contact[email]" value="{{ form.email }}" autocomplete="email" autocorrect="off" autocapitalize="off" required>
+        </div>
+      </div>
+
+      <div class="field-grid">
+        <div>
+          <label for="SupportFormStoreUrl-{{ section.id }}">Store URL</label>
+          <input id="SupportFormStoreUrl-{{ section.id }}" type="url" name="contact[Store URL]" placeholder="https://storename.myshopify.com" required>
+        </div>
+        <div>
+          <label for="SupportFormThemeName-{{ section.id }}">Theme name</label>
+          <input id="SupportFormThemeName-{{ section.id }}" type="text" name="contact[Theme name]" value="Kanad">
+        </div>
+      </div>
+
+      <div>
+        <label for="SupportFormSubject-{{ section.id }}">Subject</label>
+        <input id="SupportFormSubject-{{ section.id }}" type="text" name="contact[Subject]">
+      </div>
+
+      <div>
+        <label for="SupportFormBody-{{ section.id }}">Description of problem</label>
+        <textarea id="SupportFormBody-{{ section.id }}" name="contact[body]" rows="8" required>{{ form.body }}</textarea>
+      </div>
+
+      <button class="button" type="submit">Send support request</button>
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Support form",
+  "presets": [
+    {
+      "name": "Support form"
+    }
+  ]
+}
+{% endschema %}

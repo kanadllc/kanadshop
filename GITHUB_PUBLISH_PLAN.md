@@ -13,7 +13,7 @@ This plan prepares the Kanad repository for a clean first publish, a working Git
 Update these remaining publication settings before the repository becomes public:
 
 1. Confirm that `shopify-theme/config/settings_schema.json` points to the final live documentation domain.
-2. Replace `https://formspree.io/f/REPLACE_ME` in `docs/support.html`.
+2. Publish a Shopify support page using the `page.support` template.
 3. Review merchant-facing copy in `docs/merchant-guide.html`, `docs/faq.html`, and `docs/support.html`.
 4. Review the support policy and launch sequence in `shopify-theme/THEME_STORE_SUBMISSION.md` and `shopify-theme/THEME_STORE_LAUNCH_PLAN.md`.
 

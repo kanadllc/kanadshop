@@ -13,7 +13,7 @@ This theme now includes the baseline Shopify Online Store 2.0 scaffolding requir
 Remaining blockers before an actual Shopify Theme Store submission:
 
 1. Confirm that the published documentation URLs in config/settings_schema.json resolve correctly.
-2. Connect the support form in `docs/support.html` to a real form backend that provides email delivery and auto-response.
+2. Publish a Shopify support page that uses the `page.support` template so support requests go to the store admin email.
 3. Validate the theme on a Shopify development store with realistic products, collections, blog posts, gift cards, discounts, subscriptions, and multiple variants.
 4. Run Lighthouse, accessibility tests, and manual browser QA against the benchmark data set.
 5. Complete merchant-content review: demo copy, imagery rights, originality, theme naming, and preset naming.

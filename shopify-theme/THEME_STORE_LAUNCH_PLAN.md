@@ -10,9 +10,9 @@
 
 ## 2. Finish support workflow
 
-1. Connect `docs/support.html` to a production form backend.
-2. Enable an automatic confirmation email for support requests.
-3. Route support submissions into your ticketing or email workflow.
+2. Create and publish a Shopify page using the `page.support` template.
+3. Confirm support requests are delivered to the store admin email.
+4. Route support submissions into your ticketing or email workflow if needed.
 4. Document your response-time policy and escalation path.
 
 ## 3. Build demo stores

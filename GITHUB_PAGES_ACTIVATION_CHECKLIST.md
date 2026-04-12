@@ -41,9 +41,9 @@ After the workflow succeeds, verify all of these URLs load without `404`:
 ## Support Page Checks
 
 1. Open `https://kanadllc.github.io/kanadshop/support.html`.
-2. If the form still contains the placeholder endpoint, confirm the warning is visible and the submit button is disabled.
-3. After wiring the real backend, confirm the warning disappears and the submit button is enabled.
-4. Submit a live test request and confirm delivery plus auto-response behavior.
+2. Confirm the page explains that the live support form is hosted on Shopify using the `page.support` template.
+3. Confirm the Shopify support page is published on the support store.
+4. Submit a live test request on the Shopify-hosted support page and confirm delivery to the store admin email.
 
 ## If Pages Still Returns 404
 

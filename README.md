@@ -42,7 +42,7 @@ This repository now includes:
 - Internal submission planning docs in `shopify-theme/`
 
 The theme documentation URLs in `shopify-theme/config/settings_schema.json` are already pointed at `https://kanadllc.github.io/kanadshop/`.
-Before publishing publicly, confirm that GitHub Pages is enabled for that repository and that the support form backend in `docs/support.html` is configured.
+Before publishing publicly, confirm that GitHub Pages is enabled for that repository and that the Shopify-hosted support page using the `page.support` template is published.
 
 ## GitHub Publish Workflow
 

@@ -8,79 +8,50 @@
       body { font-family: Arial, sans-serif; margin: 0; background: #f8fafc; color: #0f172a; }
       main { max-width: 880px; margin: 0 auto; padding: 48px 20px 80px; }
       section { background: #fff; border-radius: 20px; box-shadow: 0 16px 40px rgba(15,23,42,.08); padding: 24px; margin-bottom: 20px; }
-      form { display: grid; gap: 16px; }
-      input, textarea, select { width: 100%; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 12px; padding: 12px 14px; font: inherit; }
-      button { border: 0; border-radius: 999px; background: #2563eb; color: #fff; padding: 12px 22px; font-weight: 700; cursor: pointer; }
       .note { color: #475569; font-size: .95rem; }
-      .warning { color: #92400e; background: #fef3c7; border-radius: 14px; padding: 14px 16px; }
       .info { color: #1e3a8a; background: #dbeafe; border-radius: 14px; padding: 14px 16px; }
-      .hidden { display: none; }
-      button:disabled { opacity: .6; cursor: not-allowed; }
+      code { background: #e2e8f0; border-radius: 8px; padding: 2px 6px; }
+      pre { background: #0f172a; color: #e2e8f0; border-radius: 16px; padding: 18px; overflow: auto; }
+      a { color: #2563eb; }
     </style>
   </head>
   <body>
     <main>
       <section>
         <h1>Kanad Support</h1>
-        <p>Use this form to request theme support.</p>
-        <p class="note">Before publishing this page, connect the form action to your helpdesk or form provider and enable an automatic confirmation email.</p>
-        <p id="support-config-warning" class="warning hidden">This support form is not connected to a live support backend yet. Replace the placeholder endpoint before publishing this page.</p>
+        <p>Kanad support is configured to use Shopify's built-in contact system instead of an external form provider.</p>
+        <p class="note">GitHub Pages cannot process Shopify Liquid forms. The live support form must be hosted on a Shopify page that uses the theme's support template.</p>
         <div class="info">
-          <p><strong>Backend setup checklist</strong></p>
-          <p>1. Replace the form action URL with your production Formspree or helpdesk endpoint.</p>
-          <p>2. Confirm the provider accepts file uploads for the <code>attachments</code> field.</p>
-          <p>3. Enable an automatic confirmation email for the submitting merchant.</p>
-          <p>4. Submit one live test after deployment and confirm delivery to your support inbox.</p>
+          <p><strong>Live support URL</strong></p>
+          <p><a href="https://kanaddev.myshopify.com/pages/contact">https://kanaddev.myshopify.com/pages/contact</a></p>
         </div>
       </section>
 
       <section>
-        <form id="support-form" action="https://formspree.io/f/REPLACE_ME" method="post" enctype="multipart/form-data">
-          <div>
-            <label for="support-name">Name</label>
-            <input id="support-name" name="name" type="text" required>
-          </div>
-          <div>
-            <label for="support-email">Email address</label>
-            <input id="support-email" name="email" type="email" required>
-          </div>
-          <div>
-            <label for="support-store-url">Store URL</label>
-            <input id="support-store-url" name="store_url" type="url" placeholder="https://storename.myshopify.com" required>
-          </div>
-          <div>
-            <label for="support-theme-name">Theme name</label>
-            <input id="support-theme-name" name="theme_name" type="text" value="Kanad">
-          </div>
-          <div>
-            <label for="support-subject">Subject</label>
-            <input id="support-subject" name="subject" type="text">
-          </div>
-          <div>
-            <label for="support-description">Description of problem</label>
-            <textarea id="support-description" name="description" rows="8" required></textarea>
-          </div>
-          <div>
-            <label for="support-files">File upload</label>
-            <input id="support-files" name="attachments" type="file" multiple>
-          </div>
-          <button id="support-submit" type="submit">Send support request</button>
-        </form>
+        <div class="info">
+          <p><strong>Native Shopify support flow</strong></p>
+          <p>1. In Shopify admin, create a page named <code>Support</code>.</p>
+          <p>2. Assign the <code>page.support</code> template to that page.</p>
+          <p>3. If the custom template is not yet uploaded to Shopify, use the existing <code>contact</code> template.</p>
+          <p>4. Publish the page and use its public store URL as your support form URL.</p>
+          <p>5. The current live store contact page is the URL above.</p>
+          <p>6. Support emails will be sent to the store admin email through Shopify's built-in contact handling.</p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Implemented Liquid form</h2>
+        <p>This repository now includes a Shopify-native support form in the theme. It uses Shopify's contact handling and does not require Formspree or another external backend.</p>
+        <pre><code>{% form 'contact' %}
+  &lt;input type="text" name="contact[name]" required&gt;
+  &lt;input type="email" name="contact[email]" required&gt;
+  &lt;textarea name="contact[body]" required&gt;&lt;/textarea&gt;
+  &lt;button type="submit"&gt;Send&lt;/button&gt;
+{% endform %}</code></pre>
+        <p>Theme files added for this flow:</p>
+        <p><a href="../shopify-theme/sections/support-form.liquid">shopify-theme/sections/support-form.liquid</a></p>
+        <p><a href="../shopify-theme/templates/page.support.json">shopify-theme/templates/page.support.json</a></p>
       </section>
     </main>
-
-    <script>
-      (function () {
-        var form = document.getElementById('support-form');
-        var button = document.getElementById('support-submit');
-        var warning = document.getElementById('support-config-warning');
-        if (!form || !button || !warning) return;
-
-        if (form.action.indexOf('REPLACE_ME') !== -1) {
-          button.disabled = true;
-          warning.classList.remove('hidden');
-        }
-      })();
-    </script>
   </body>
 </html>
