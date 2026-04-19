@@ -67,6 +67,24 @@ Setup:
 6. For merchant-side content generation, call `/api/ai/product-copy` from an authenticated admin app, internal dashboard, or app proxy.
 7. Open `/admin/ai-copy?shop=your-store.myshopify.com` to search products, generate copy, and save it back to Shopify Admin.
 
+## Deploy The AI Gateway
+
+This repo is now prepared for a real Node deployment on Render using [render.yaml](render.yaml).
+
+Recommended production flow:
+
+1. Create a new Render Blueprint or Web Service from this repository.
+2. Set `SHOPIFY_THEME_ID` to the theme whose settings the gateway should read.
+3. Set `SHOPIFY_ADMIN_ACCESS_TOKEN` if you want the gateway to read live theme settings or use the merchant admin copy console.
+4. Set one or more provider keys such as `GOOGLE_API_KEY` when you want the gateway to resolve keys from environment variables instead of theme settings.
+5. After deploy, use `https://your-render-host/api/ai/chat` as the Shopify theme setting `AI gateway endpoint URL`.
+6. Optionally open `https://your-render-host/admin/ai-copy?shop=your-store.myshopify.com` for the merchant copy console.
+
+Build and start commands used by Render:
+
+- `npm run ai:gateway:build`
+- `npm run ai:gateway:start`
+
 Additional implementation notes are in [shopify-theme/AI_INTEGRATION.md](shopify-theme/AI_INTEGRATION.md).
 
 ## GitHub Publication Prep
