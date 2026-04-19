@@ -63,6 +63,7 @@ jobs:
           --store "$SHOPIFY_STORE"
           --password "$SHOPIFY_CLI_THEME_TOKEN"
           --path shopify-theme
+          --ignore "config/settings_data.json"
           --theme "$SHOPIFY_STAGING_THEME_ID"
 
   deploy-live:
@@ -105,4 +106,5 @@ jobs:
           --store "$SHOPIFY_STORE"
           --password "$SHOPIFY_CLI_THEME_TOKEN"
           --path shopify-theme
+          --ignore "config/settings_data.json"
           --theme "$SHOPIFY_LIVE_THEME_ID"
