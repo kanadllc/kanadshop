@@ -230,6 +230,28 @@ function initializeAIConcierge() {
     window.speechSynthesis.speak(utterance);
   };
 
+  const buildGatewayError = async (response) => {
+    const contentType = response.headers.get('content-type') || '';
+
+    if (contentType.includes('application/json')) {
+      const payload = await response.json().catch(() => ({}));
+      return payload.error || payload.message || `AI gateway request failed (${response.status}).`;
+    }
+
+    const bodyText = await response.text().catch(() => '');
+    const trimmedBody = bodyText.trim();
+
+    if (trimmedBody.startsWith('<!DOCTYPE html') || trimmedBody.startsWith('<html')) {
+      return 'The AI gateway URL returned an HTML storefront page instead of JSON. Use your real gateway endpoint, for example https://your-domain.com/api/ai/chat or /apps/ai/chat.';
+    }
+
+    if (!response.ok) {
+      return trimmedBody || `AI gateway request failed (${response.status}).`;
+    }
+
+    return trimmedBody ? `AI gateway returned plain text instead of JSON: ${trimmedBody.slice(0, 160)}` : 'AI gateway returned an empty non-JSON response.';
+  };
+
   const postMessage = async (prompt, source = 'text') => {
     const trimmedPrompt = prompt.trim();
 
@@ -262,16 +284,24 @@ function initializeAIConcierge() {
         })
       });
 
-      const payload = await response.json().catch(() => ({}));
-
       if (!response.ok) {
-        throw new Error(payload.error || 'AI assistant unavailable right now.');
+        throw new Error(await buildGatewayError(response));
       }
+
+      const contentType = response.headers.get('content-type') || '';
+
+      if (!contentType.includes('application/json')) {
+        throw new Error(await buildGatewayError(response));
+      }
+
+      const payload = await response.json().catch(() => {
+        throw new Error('AI gateway returned invalid JSON.');
+      });
 
       const reply = payload.reply || payload.message;
 
       if (!reply) {
-        throw new Error('AI assistant returned an empty response.');
+        throw new Error('AI gateway responded but did not include a reply field.');
       }
 
       appendMessage('assistant', reply);
