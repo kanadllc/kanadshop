@@ -21,6 +21,7 @@ Commands:
 - `npm run shopify:dev`
 - `npm run shopify:push`
 - `npm run lint`
+- `npm run ai:gateway`
 
 ## Validation
 
@@ -31,6 +32,42 @@ Push-Location .\shopify-theme
 npm exec --yes shopify theme check
 Pop-Location
 ```
+
+Typecheck the AI gateway service:
+
+```powershell
+npx tsc --noEmit -p .\tsconfig.server.json
+```
+
+## AI Integration
+
+The Shopify theme now includes a configurable AI storefront concierge with optional browser voice input and voice playback. The merchant controls live in [shopify-theme/config/settings_schema.json](shopify-theme/config/settings_schema.json) under `AI integration`.
+
+Important limitation: product title, description, SEO, FAQ, and collection-copy generation must use a secure server or app, not raw theme JavaScript. A Shopify storefront cannot keep provider API keys secret.
+
+This workspace now supports merchant-entered provider keys in theme settings for OpenAI, Anthropic, Google Gemini, and Groq. Those settings are intended to be read only by the server-side gateway from `config/settings_data.json` or from the live theme asset through Shopify Admin API. They are not injected into the storefront runtime.
+
+This repo now includes a multi-provider AI gateway in [server/ai-gateway.ts](server/ai-gateway.ts) with:
+
+- `POST /api/ai/chat` for the storefront chatbot
+- `POST /api/ai/product-copy` for merchant content generation workflows
+- `GET /admin/ai-copy` for the merchant AI copy console
+- `GET /api/admin/products` for Shopify Admin product search and lookup
+- `POST /api/admin/products/generate-copy` for merchant content generation from admin product data
+- `POST /api/admin/products/save-copy` for writing title, description, SEO title, and SEO description back to Shopify
+- `GET /api/ai/providers` and `GET /health`
+
+Setup:
+
+1. Copy `.env.example` to `.env` and set `SHOPIFY_ADMIN_ACCESS_TOKEN` and `SHOPIFY_THEME_ID` for the store whose theme settings should be read by the gateway.
+2. In Shopify Theme Editor, add the provider API keys and provider-specific models under `AI integration`.
+3. Start the gateway with `npm run ai:gateway`.
+4. Put the deployed gateway URL into the theme setting `AI gateway endpoint URL`.
+5. Choose the default provider in the theme settings.
+6. For merchant-side content generation, call `/api/ai/product-copy` from an authenticated admin app, internal dashboard, or app proxy.
+7. Open `/admin/ai-copy?shop=your-store.myshopify.com` to search products, generate copy, and save it back to Shopify Admin.
+
+Additional implementation notes are in [shopify-theme/AI_INTEGRATION.md](shopify-theme/AI_INTEGRATION.md).
 
 ## GitHub Publication Prep
 

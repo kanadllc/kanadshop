@@ -1,7 +1,15 @@
-<div class="popular-categories">
-  <div class="popular-categories__inner">
+<section class="popular-categories color-scheme-{{ section.settings.color_scheme }}">
+  <div class="popular-categories__inner page-width">
     <div class="section-header">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="section-header__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
       <h2 class="section-header__title">{{ section.settings.title | escape }}</h2>
+        {%- if section.settings.description != blank -%}
+          <div class="section-header__description rte">{{ section.settings.description }}</div>
+        {%- endif -%}
+      </div>
       {%- if section.settings.view_all_link != blank -%}
         <a href="{{ section.settings.view_all_link }}" class="section-header__link">View all</a>
       {%- endif -%}
@@ -13,7 +21,7 @@
         {%- if category_url != blank -%}
           <a href="{{ category_url }}" class="category-card" {{ block.shopify_attributes }}>
         {%- else -%}
-          <div class="category-card" {{ block.shopify_attributes }}>
+          <article class="category-card" {{ block.shopify_attributes }}>
         {%- endif -%}
             <div class="category-card__image-wrapper">
               {%- if block.settings.image != blank -%}
@@ -38,16 +46,23 @@
                 {{ 'collection-1' | placeholder_svg_tag: 'category-card__image placeholder-svg' }}
               {%- endif -%}
             </div>
+            {%- if block.settings.overline != blank -%}
+              <p class="category-card__eyebrow">{{ block.settings.overline | escape }}</p>
+            {%- endif -%}
             <h3 class="category-card__title">{{ block.settings.title | default: block.settings.collection.title | default: 'Category' }}</h3>
+            {%- if block.settings.description != blank -%}
+              <p class="category-card__text">{{ block.settings.description | escape }}</p>
+            {%- endif -%}
+            <span class="category-card__cta">{{ block.settings.link_label | default: 'Shop category' | escape }}</span>
         {%- if category_url != blank -%}
           </a>
         {%- else -%}
-          </div>
+          </article>
         {%- endif -%}
       {%- endfor -%}
     </div>
   </div>
-</div>
+</section>
 
 {% schema %}
 {
@@ -57,14 +72,36 @@
   "settings": [
     {
       "type": "text",
+      "id": "eyebrow",
+      "label": "Section label",
+      "default": "Shop by intent"
+    },
+    {
+      "type": "text",
       "id": "title",
       "label": "Heading",
       "default": "Popular categories"
     },
     {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Guide shoppers with more contextual category cards that feel intentional, not just utilitarian.</p>"
+    },
+    {
       "type": "url",
       "id": "view_all_link",
       "label": "View all link"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        { "value": "light", "label": "Light" },
+        { "value": "soft", "label": "Soft contrast" }
+      ],
+      "default": "light"
     }
   ],
   "blocks": [
@@ -91,9 +128,25 @@
         },
         {
           "type": "text",
+          "id": "overline",
+          "label": "Label"
+        },
+        {
+          "type": "text",
           "id": "title",
           "label": "Custom heading",
           "info": "Overrides the collection title"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link label",
+          "default": "Shop now"
         }
       ]
     }

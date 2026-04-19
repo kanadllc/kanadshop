@@ -3,7 +3,37 @@
 -%}
 
 <section class="product-page section-spacing" data-product-root>
-  <div class="page-width product-page__layout">
+  <div class="page-width">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}">Home</a>
+      <span aria-hidden="true">&rsaquo;</span>
+      {%- if collection -%}
+        <a href="{{ collection.url }}">{{ collection.title }}</a>
+        <span aria-hidden="true">&rsaquo;</span>
+      {%- endif -%}
+      <span>{{ product.title }}</span>
+    </nav>
+
+    <div class="product-page__intro">
+      <div>
+        {%- if product.vendor != blank -%}
+          <p class="product-page__eyebrow">{{ product.vendor }}</p>
+        {%- endif -%}
+        <h1 class="product-page__hero-title">{{ product.title }}</h1>
+        {%- if section.settings.lead != blank -%}
+          <p class="product-page__lead">{{ section.settings.lead | escape }}</p>
+        {%- elsif product.description != blank -%}
+          <p class="product-page__lead">{{ product.description | strip_html | truncatewords: 24 }}</p>
+        {%- endif -%}
+      </div>
+      <div class="product-page__highlights">
+        {%- if section.settings.highlight_1 != blank -%}<span>{{ section.settings.highlight_1 | escape }}</span>{%- endif -%}
+        {%- if section.settings.highlight_2 != blank -%}<span>{{ section.settings.highlight_2 | escape }}</span>{%- endif -%}
+        {%- if section.settings.highlight_3 != blank -%}<span>{{ section.settings.highlight_3 | escape }}</span>{%- endif -%}
+      </div>
+    </div>
+
+    <div class="product-page__layout">
     <div class="product-page__media">
       <div class="product-media-grid" data-product-media-grid>
         {%- for media in product.media -%}
@@ -23,16 +53,44 @@
           </div>
         {%- endfor -%}
       </div>
+
+      {%- if product.media.size > 1 -%}
+        <div class="product-media-thumbs" role="list" aria-label="Product media thumbnails">
+          {%- for media in product.media -%}
+            <button
+              type="button"
+              class="product-media-thumb{% if selected_variant.featured_media and media.id == selected_variant.featured_media.id %} is-active{% elsif selected_variant.featured_media == blank and forloop.first %} is-active{% endif %}"
+              data-media-trigger="{{ media.id }}"
+              aria-pressed="{% if selected_variant.featured_media and media.id == selected_variant.featured_media.id %}true{% elsif selected_variant.featured_media == blank and forloop.first %}true{% else %}false{% endif %}"
+            >
+              {%- if media.preview_image != blank -%}
+                <img src="{{ media.preview_image | image_url: width: 180 }}" alt="{{ media.alt | escape | default: product.title | escape }}" loading="lazy" width="90" height="{{ 90 | divided_by: media.preview_image.aspect_ratio | ceil }}">
+              {%- endif -%}
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
     </div>
 
     <div class="product-page__info">
+      {%- if section.settings.support_heading != blank or section.settings.support_text != blank -%}
+        <aside class="product-page__support-card">
+          {%- if section.settings.support_heading != blank -%}
+            <h2>{{ section.settings.support_heading | escape }}</h2>
+          {%- endif -%}
+          {%- if section.settings.support_text != blank -%}
+            <p>{{ section.settings.support_text | escape }}</p>
+          {%- endif -%}
+        </aside>
+      {%- endif -%}
+
       {%- for block in section.blocks -%}
         <div class="product-block" {{ block.shopify_attributes }}>
           {%- case block.type -%}
             {%- when '@app' -%}
               {% render block %}
             {%- when 'title' -%}
-              <h1>{{ product.title }}</h1>
+              <h2 class="product-page__title">{{ product.title }}</h2>
             {%- when 'price' -%}
               <div class="product-page__price" data-price-root>
                 <p class="product-page__price-current" data-product-price>{{ selected_variant.price | money }}</p>
@@ -54,6 +112,9 @@
                 {%- if cart.taxes_included -%}
                   <p>Taxes included.</p>
                 {%- endif -%}
+                <p class="product-page__status" data-product-status>
+                  {% if selected_variant.available %}In stock and ready to ship{% else %}Currently unavailable{% endif %}
+                </p>
                 {%- if selected_variant.selling_plan_allocations.size > 0 -%}
                   <span class="product-page__subscription-badge">Subscription available</span>
                 {%- endif -%}
@@ -82,6 +143,7 @@
                             data-option-target="Option-{{ section.id }}-{{ forloop.parentloop.index0 }}"
                             data-option-value="{{ value_label | escape }}"
                             aria-label="{{ option.name }} {{ value_label }}"
+                            aria-pressed="{% if option.selected_value == value_label %}true{% else %}false{% endif %}"
                           >
                             {%- if value.swatch.image != blank -%}
                               <img src="{{ value.swatch.image | image_url: width: 80 }}" alt="{{ value_label | escape }}" loading="lazy" width="40" height="40">
@@ -169,6 +231,8 @@
     </div>
   </div>
 
+  </div>
+
   <script type="application/json" data-product-variants>
     {{ product.variants | json }}
   </script>
@@ -185,9 +249,11 @@
       const compareNode = productRoot.querySelector('[data-product-compare-price]');
       const addButton = productRoot.querySelector('[data-add-to-cart]');
       const mediaNodes = productRoot.querySelectorAll('[data-media-id]');
+      const mediaTriggers = productRoot.querySelectorAll('[data-media-trigger]');
       const sellingPlanInput = productRoot.querySelector('[data-selling-plan-id]');
       const sellingPlanSelector = productRoot.querySelector('[data-selling-plan-selector]');
       const swatchButtons = productRoot.querySelectorAll('[data-option-target]');
+      const statusNode = productRoot.querySelector('[data-product-status]');
 
       if (!variantData || !variantInput || optionSelects.length === 0) return;
 
@@ -217,11 +283,22 @@
         mediaNodes.forEach(function (node) {
           node.classList.toggle('is-active', String(node.dataset.mediaId) === String(variant.featured_media.id));
         });
+        mediaTriggers.forEach(function (trigger) {
+          const isActive = String(trigger.dataset.mediaTrigger) === String(variant.featured_media.id);
+          trigger.classList.toggle('is-active', isActive);
+          trigger.setAttribute('aria-pressed', String(isActive));
+        });
       }
 
       function updateVariant() {
         const variant = findVariant();
-        if (!variant) return;
+        if (!variant) {
+          if (addButton) {
+            addButton.disabled = true;
+            addButton.textContent = 'Unavailable';
+          }
+          return;
+        }
 
         variantInput.value = variant.id;
         if (priceNode) priceNode.textContent = formatMoney(variant.price);
@@ -237,7 +314,17 @@
           addButton.textContent = variant.available ? 'Add to cart' : 'Sold out';
         }
 
+        if (statusNode) {
+          statusNode.textContent = variant.available ? 'In stock and ready to ship' : 'Currently unavailable';
+        }
+
         updateMedia(variant);
+
+        if (variant.id) {
+          const url = new URL(window.location.href);
+          url.searchParams.set('variant', variant.id);
+          window.history.replaceState({}, '', url.toString());
+        }
       }
 
       optionSelects.forEach(function (select) {
@@ -251,8 +338,27 @@
           targetSelect.value = button.dataset.optionValue;
           productRoot.querySelectorAll('[data-option-target="' + button.dataset.optionTarget + '"]').forEach(function (sibling) {
             sibling.classList.toggle('is-active', sibling === button);
+            sibling.setAttribute('aria-pressed', String(sibling === button));
           });
           targetSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+      });
+
+      mediaTriggers.forEach(function (button) {
+        button.addEventListener('click', function () {
+          const mediaId = button.dataset.mediaTrigger;
+          mediaNodes.forEach(function (node) {
+            const isActive = String(node.dataset.mediaId) === String(mediaId);
+            node.classList.toggle('is-active', isActive);
+            if (isActive) {
+              node.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+          });
+          mediaTriggers.forEach(function (sibling) {
+            const isActive = sibling === button;
+            sibling.classList.toggle('is-active', isActive);
+            sibling.setAttribute('aria-pressed', String(isActive));
+          });
         });
       });
 
@@ -270,6 +376,43 @@
 {% schema %}
 {
   "name": "Product",
+  "settings": [
+    {
+      "type": "text",
+      "id": "lead",
+      "label": "Lead text"
+    },
+    {
+      "type": "text",
+      "id": "highlight_1",
+      "label": "Highlight 1",
+      "default": "Fast dispatch"
+    },
+    {
+      "type": "text",
+      "id": "highlight_2",
+      "label": "Highlight 2",
+      "default": "Secure checkout"
+    },
+    {
+      "type": "text",
+      "id": "highlight_3",
+      "label": "Highlight 3",
+      "default": "Support included"
+    },
+    {
+      "type": "text",
+      "id": "support_heading",
+      "label": "Support heading",
+      "default": "Need help choosing the right option?"
+    },
+    {
+      "type": "text",
+      "id": "support_text",
+      "label": "Support text",
+      "default": "Use this card for sizing help, installation notes, warranty reassurance, or other purchase guidance."
+    }
+  ],
   "blocks": [
     {
       "type": "@app"

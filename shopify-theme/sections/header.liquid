@@ -16,6 +16,15 @@
         {%- endif -%}
       </div>
       <div class="header__top-right">
+        {%- if section.settings.announcement_text != blank -%}
+          {%- if section.settings.announcement_link != blank -%}
+            <a href="{{ section.settings.announcement_link }}" class="header__announcement">
+              {{ section.settings.announcement_text | escape }}
+            </a>
+          {%- else -%}
+            <span class="header__announcement">{{ section.settings.announcement_text | escape }}</span>
+          {%- endif -%}
+        {%- endif -%}
         {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
           <localization-form class="header__localization">
             {%- form 'localization', id: 'HeaderLocalizationForm' -%}
@@ -92,7 +101,7 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="categories-btn__icon"><path d="m6 9 6 6 6-6"/></svg>
         </button>
 
-        <div class="vertical-mega-menu" id="HeaderCategoryMenu">
+        <div class="vertical-mega-menu" id="HeaderCategoryMenu" hidden>
           <ul class="vertical-mega-menu__list">
             {%- for link in linklists[section.settings.menu].links -%}
               <li class="vertical-mega-menu__item {% if link.links != blank %}has-submenu{% endif %}">
@@ -143,6 +152,7 @@
     <div class="header__right">
       <predictive-search class="header__search">
         <form action="{{ routes.search_url }}" method="get" role="search" class="header__search-form">
+          <label class="visually-hidden" for="HeaderSearchInput">Search the store</label>
           <div class="search__input-wrapper">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search__icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
             <input
@@ -166,6 +176,9 @@
       </predictive-search>
 
       <div class="header__icons">
+        {%- if section.settings.utility_highlight != blank -%}
+          <span class="header__utility-highlight">{{ section.settings.utility_highlight | escape }}</span>
+        {%- endif -%}
         <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="header__icon-link">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           <span class="header__icon-text">Account</span>
@@ -268,8 +281,25 @@
       "default": "support@kanadshop.com"
     },
     {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement text",
+      "default": "Free shipping on premium orders over $150"
+    },
+    {
+      "type": "url",
+      "id": "announcement_link",
+      "label": "Announcement link"
+    },
+    {
       "type": "header",
       "content": "Promotion"
+    },
+    {
+      "type": "text",
+      "id": "utility_highlight",
+      "label": "Utility highlight",
+      "default": "Live support 7 days a week"
     },
     {
       "type": "image_picker",

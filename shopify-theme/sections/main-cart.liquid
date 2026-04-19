@@ -1,13 +1,40 @@
 <section class="cart-page section-spacing">
   <div class="page-width">
-    <h1>Cart</h1>
+    <header class="cart-page__header">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="cart-page__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <div class="cart-page__header-main">
+        <div>
+          <h1>{{ section.settings.heading | default: 'Review your cart' | escape }}</h1>
+          <p class="cart-page__lead">{{ section.settings.lead | escape }}</p>
+        </div>
+        <div class="cart-page__meta-chips">
+          {%- if section.settings.highlight_1 != blank -%}<span>{{ section.settings.highlight_1 | escape }}</span>{%- endif -%}
+          {%- if section.settings.highlight_2 != blank -%}<span>{{ section.settings.highlight_2 | escape }}</span>{%- endif -%}
+          {%- if section.settings.highlight_3 != blank -%}<span>{{ section.settings.highlight_3 | escape }}</span>{%- endif -%}
+        </div>
+      </div>
+    </header>
 
     {%- if cart.item_count == 0 -%}
-      <div class="empty-state__inner">
-        <p>Your cart is currently empty.</p>
-        <a class="button" href="{{ routes.all_products_collection_url }}">Continue shopping</a>
-      </div>
+      <article class="empty-state__inner cart-empty-state">
+        <p class="cart-empty-state__eyebrow">Cart is empty</p>
+        <h2>{{ section.settings.empty_heading | escape }}</h2>
+        <p>{{ section.settings.empty_text | escape }}</p>
+        <div class="empty-state__actions">
+          <a class="button" href="{{ routes.all_products_collection_url }}">Continue shopping</a>
+          {%- if section.settings.empty_secondary_link != blank and section.settings.empty_secondary_label != blank -%}
+            <a class="button button--secondary" href="{{ section.settings.empty_secondary_link }}">{{ section.settings.empty_secondary_label | escape }}</a>
+          {%- endif -%}
+        </div>
+      </article>
     {%- else -%}
+      <div class="cart-page__summary-bar" aria-label="Cart summary overview">
+        <span><strong>{{ cart.item_count }}</strong> items</span>
+        <span><strong>{{ cart.total_price | money }}</strong> current total</span>
+      </div>
+
       {%- form 'cart', cart, class: 'cart-form' -%}
         <div class="cart-layout">
           <div class="cart-items">
@@ -20,6 +47,9 @@
                 </a>
 
                 <div class="cart-item__details">
+                  {%- if item.product.vendor != blank -%}
+                    <p class="cart-item__vendor">{{ item.product.vendor }}</p>
+                  {%- endif -%}
                   <h2><a href="{{ item.url }}">{{ item.product.title }}</a></h2>
 
                   {%- if item.options_with_values.size > 0 -%}
@@ -31,7 +61,7 @@
                   {%- endif -%}
 
                   {%- if item.selling_plan_allocation != blank -%}
-                    <p>{{ item.selling_plan_allocation.selling_plan.name }}</p>
+                    <p class="cart-item__selling-plan">{{ item.selling_plan_allocation.selling_plan.name }}</p>
                   {%- endif -%}
 
                   {%- if item.variant.unit_price_measurement -%}
@@ -56,22 +86,31 @@
                   {%- endif -%}
 
                   <div class="cart-item__pricing">
-                    <span>{{ item.final_price | money }}</span>
+                    <span>{{ item.final_line_price | money }}</span>
                     {%- if item.original_price != item.final_price -%}
-                      <s>{{ item.original_price | money }}</s>
+                      <s>{{ item.original_line_price | money }}</s>
                     {%- endif -%}
                   </div>
 
-                  <label for="Quantity-{{ item.index | plus: 1 }}">Quantity</label>
-                  <input id="Quantity-{{ item.index | plus: 1 }}" class="cart-item__quantity" type="number" name="updates[]" value="{{ item.quantity }}" min="0">
-
-                  <a href="{{ item.url_to_remove }}">Remove</a>
+                  <div class="cart-item__actions">
+                    <div>
+                      <label for="Quantity-{{ item.index | plus: 1 }}">Quantity</label>
+                      <input id="Quantity-{{ item.index | plus: 1 }}" class="cart-item__quantity" type="number" name="updates[]" value="{{ item.quantity }}" min="0">
+                    </div>
+                    <a href="{{ item.url_to_remove }}" class="cart-item__remove-link">Remove</a>
+                  </div>
                 </div>
               </article>
             {%- endfor -%}
           </div>
 
           <aside class="cart-summary">
+            <div class="cart-summary__header">
+              <p class="cart-summary__eyebrow">Order summary</p>
+              <h2>{{ section.settings.summary_heading | escape }}</h2>
+              <p>{{ section.settings.summary_text | escape }}</p>
+            </div>
+
             <label for="CartNote-{{ section.id }}">Order note</label>
             <textarea id="CartNote-{{ section.id }}" name="note" rows="4">{{ cart.note }}</textarea>
 
@@ -83,22 +122,31 @@
               </ul>
             {%- endif -%}
 
-            <p class="cart-summary__total">Total: {{ cart.total_price | money }}</p>
+            <div class="cart-summary__totals">
+              <p class="cart-summary__line"><span>Subtotal</span><strong>{{ cart.total_price | money }}</strong></p>
+            </div>
 
             {%- if cart.taxes_included -%}
-              <p>Taxes included. Shipping calculated at checkout.</p>
+              <p class="cart-summary__note">Taxes included. Shipping calculated at checkout.</p>
             {%- else -%}
-              <p>Taxes and shipping calculated at checkout.</p>
+              <p class="cart-summary__note">Taxes and shipping calculated at checkout.</p>
             {%- endif -%}
 
-            <button class="button" type="submit" name="update">Update cart</button>
-            <button class="button button--primary" type="submit" name="checkout">Checkout</button>
+            <div class="cart-summary__actions">
+              <button class="button button--secondary" type="submit" name="update">Update cart</button>
+              <button class="button button--primary" type="submit" name="checkout">Checkout</button>
+            </div>
 
             {%- if additional_checkout_buttons -%}
               <div class="additional-checkout-buttons">
                 {{ content_for_additional_checkout_buttons }}
               </div>
             {%- endif -%}
+
+            <div class="cart-summary__support-card">
+              <h3>{{ section.settings.support_heading | escape }}</h3>
+              <p>{{ section.settings.support_text | escape }}</p>
+            </div>
           </aside>
         </div>
       {%- endform -%}
@@ -109,6 +157,91 @@
 {% schema %}
 {
   "name": "Cart",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Section label",
+      "default": "Checkout with confidence"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Review your cart"
+    },
+    {
+      "type": "text",
+      "id": "lead",
+      "label": "Lead text",
+      "default": "Use this space to reinforce delivery timing, payment confidence, or customer support availability before checkout."
+    },
+    {
+      "type": "text",
+      "id": "highlight_1",
+      "label": "Highlight 1",
+      "default": "Secure payment"
+    },
+    {
+      "type": "text",
+      "id": "highlight_2",
+      "label": "Highlight 2",
+      "default": "Fast dispatch"
+    },
+    {
+      "type": "text",
+      "id": "highlight_3",
+      "label": "Highlight 3",
+      "default": "Support available"
+    },
+    {
+      "type": "text",
+      "id": "empty_heading",
+      "label": "Empty cart heading",
+      "default": "Your cart is waiting for something worth checking out"
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Empty cart text",
+      "default": "Guide shoppers back to featured collections, new arrivals, or bestsellers instead of leaving the page empty and inert."
+    },
+    {
+      "type": "text",
+      "id": "empty_secondary_label",
+      "label": "Empty state secondary label",
+      "default": "Browse featured collections"
+    },
+    {
+      "type": "url",
+      "id": "empty_secondary_link",
+      "label": "Empty state secondary link"
+    },
+    {
+      "type": "text",
+      "id": "summary_heading",
+      "label": "Summary heading",
+      "default": "Almost ready"
+    },
+    {
+      "type": "text",
+      "id": "summary_text",
+      "label": "Summary text",
+      "default": "Keep the summary helpful with concise fulfillment and support language rather than only a subtotal and buttons."
+    },
+    {
+      "type": "text",
+      "id": "support_heading",
+      "label": "Support heading",
+      "default": "Need help before checkout?"
+    },
+    {
+      "type": "text",
+      "id": "support_text",
+      "label": "Support text",
+      "default": "Use this area for delivery expectations, returns reassurance, or contact guidance that reduces purchase hesitation."
+    }
+  ],
   "presets": [
     {
       "name": "Cart"

@@ -1,20 +1,74 @@
 <div class="collection-page">
   <div class="collection-page__inner">
-    
-    <!-- Breadcrumbs -->
-    <nav class="breadcrumbs" aria-label="breadcrumbs">
+    {%- liquid
+      assign active_filter_count = 0
+      for filter in collection.filters
+        if filter.type == 'price_range'
+          if filter.min_value.value != blank or filter.max_value.value != blank
+            assign active_filter_count = active_filter_count | plus: 1
+          endif
+        else
+          assign active_filter_count = active_filter_count | plus: filter.active_values.size
+        endif
+      endfor
+    -%}
+
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="{{ routes.root_url }}" title="Home">Home</a>
       <span aria-hidden="true">&rsaquo;</span>
       <span>{{ collection.title }}</span>
     </nav>
 
+    <header class="collection-hero">
+      <div class="collection-hero__copy">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="collection-hero__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h1 class="collection-hero__title">{{ collection.title }}</h1>
+        {%- if collection.description != blank -%}
+          <div class="collection-hero__description rte">{{ collection.description }}</div>
+        {%- elsif section.settings.fallback_description != blank -%}
+          <p class="collection-hero__description">{{ section.settings.fallback_description | escape }}</p>
+        {%- endif -%}
+        <div class="collection-hero__stats">
+          <span><strong>{{ collection.products_count }}</strong> products</span>
+          {%- if active_filter_count > 0 -%}
+            <span><strong>{{ active_filter_count }}</strong> active filters</span>
+          {%- endif -%}
+        </div>
+
+        {%- if active_filter_count > 0 -%}
+          <div class="collection-active-filters" aria-label="Active filters">
+            {%- for filter in collection.filters -%}
+              {%- if filter.type == 'price_range' -%}
+                {%- if filter.min_value.value != blank or filter.max_value.value != blank -%}
+                  <a href="{{ filter.url_to_remove }}" class="collection-active-filter">Price</a>
+                {%- endif -%}
+              {%- else -%}
+                {%- for active_value in filter.active_values -%}
+                  <a href="{{ active_value.url_to_remove }}" class="collection-active-filter">{{ active_value.label }}</a>
+                {%- endfor -%}
+              {%- endif -%}
+            {%- endfor -%}
+            <a href="{{ collection.url }}" class="collection-active-filter collection-active-filter--reset">Clear all</a>
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- if collection.image != blank or section.settings.sidebar_image != blank -%}
+        <div class="collection-hero__media">
+          {%- assign hero_image = collection.image | default: section.settings.sidebar_image -%}
+          <img src="{{ hero_image | image_url: width: 1200 }}" alt="{{ hero_image.alt | escape | default: collection.title | escape }}" loading="lazy" width="1200" height="{{ 1200 | divided_by: hero_image.aspect_ratio | ceil }}">
+        </div>
+      {%- endif -%}
+    </header>
+
     <div class="collection-layout">
-      <!-- Sidebar Filters -->
       <aside class="collection-sidebar">
-        <form class="filter-form">
+        <form class="filter-form" method="get" data-collection-filters>
           {%- for filter in collection.filters -%}
             <div class="filter-group">
-              <h3 class="filter-group__title">{{ filter.label }}</h3>
+              <h2 class="filter-group__title">{{ filter.label }}</h2>
               
               {%- case filter.type -%}
                 {%- when 'boolean' or 'list' -%}
@@ -25,6 +79,7 @@
                           <input type="checkbox"
                             name="{{ filter_value.param_name }}"
                             value="{{ filter_value.value }}"
+                            data-auto-submit
                             {% if filter_value.active %}checked{% endif %}
                             {% if filter_value.count == 0 and filter_value.active == false %}disabled{% endif %}
                           >
@@ -64,6 +119,10 @@
               {%- endcase -%}
             </div>
           {%- endfor -%}
+
+          {%- if active_filter_count > 0 -%}
+            <a href="{{ collection.url }}" class="filter-form__reset">Clear filters</a>
+          {%- endif -%}
         </form>
         
         {%- if section.settings.sidebar_image != blank -%}
@@ -71,18 +130,23 @@
             <img src="{{ section.settings.sidebar_image | image_url: width: 400 }}" alt="{{ section.settings.sidebar_image.alt }}" loading="lazy" width="400" height="{{ 400 | divided_by: section.settings.sidebar_image.aspect_ratio | ceil }}">
           </div>
         {%- endif -%}
+
+        {%- if section.settings.sidebar_note != blank -%}
+          <div class="collection-sidebar__note">
+            <p>{{ section.settings.sidebar_note | escape }}</p>
+          </div>
+        {%- endif -%}
       </aside>
 
-      <!-- Main Content -->
       <div class="collection-main">
         {%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
         <div class="collection-toolbar">
-          <div class="collection-toolbar__count">
+          <div class="collection-toolbar__count" id="CollectionResultsCount">
             Showing {{ collection.products_count }} results
           </div>
           <div class="collection-toolbar__sort">
             <label for="SortBy">Sort by:</label>
-            <select name="sort_by" id="SortBy" aria-describedby="a11y-refresh-page-message">
+            <select name="sort_by" id="SortBy" data-collection-sort aria-describedby="CollectionResultsCount">
               {%- for option in collection.sort_options -%}
                 <option value="{{ option.value }}" {% if option.value == current_sort %}selected="selected"{% endif %}>
                   {{ option.name }}
@@ -94,9 +158,6 @@
 
         {%- if collection.description != blank or collection.image != blank -%}
           <div class="collection-intro">
-            {%- if collection.image != blank -%}
-              <img src="{{ collection.image | image_url: width: 1200 }}" alt="{{ collection.image.alt | escape | default: collection.title | escape }}" loading="lazy" width="1200" height="{{ 1200 | divided_by: collection.image.aspect_ratio | ceil }}">
-            {%- endif -%}
             {%- if collection.description != blank -%}
               <div class="rte">{{ collection.description }}</div>
             {%- endif -%}
@@ -106,7 +167,6 @@
         {%- paginate collection.products by section.settings.products_per_page -%}
           <div class="collection-grid">
             {%- for product in collection.products -%}
-              <!-- Product Card (reused structure) -->
               <div class="product-card">
                 {%- if product.compare_at_price > product.price -%}
                   <div class="product-card__badge">Sale</div>
@@ -117,6 +177,9 @@
                 </a>
 
                 <div class="product-card__info">
+                  {%- if product.vendor != blank -%}
+                    <p class="product-card__vendor">{{ product.vendor }}</p>
+                  {%- endif -%}
                   <h3 class="product-card__title"><a href="{{ product.url }}">{{ product.title }}</a></h3>
                   <div class="product-card__price">
                     <span class="price-current">
@@ -151,7 +214,11 @@
                 </div>
               </div>
             {%- else -%}
-              <p>No products found.</p>
+              <article class="empty-state__inner">
+                <h2>No products found</h2>
+                <p>Try broadening your filters or browsing the full collection again.</p>
+                <a class="button" href="{{ collection.url }}">Clear filters</a>
+              </article>
             {%- endfor -%}
           </div>
 
@@ -171,6 +238,17 @@
   "name": "Collection",
   "settings": [
     {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Section label",
+      "default": "Curated collection"
+    },
+    {
+      "type": "text",
+      "id": "fallback_description",
+      "label": "Fallback description"
+    },
+    {
       "type": "range",
       "id": "products_per_page",
       "min": 8,
@@ -183,6 +261,12 @@
       "type": "image_picker",
       "id": "sidebar_image",
       "label": "Sidebar promotional image"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_note",
+      "label": "Sidebar note",
+      "default": "Use the sidebar to add seasonal context, shipping guidance, or merchandising notes."
     }
   ],
   "presets": [

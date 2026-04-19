@@ -54,6 +54,48 @@
         predictiveSearchResults: {{ 'accessibility.predictive_search.results' | t | json }},
         predictiveSearchNoResults: {{ 'accessibility.predictive_search.no_results' | t | json }}
       };
+      window.kanadAIConfig = {
+        enabled: {{ settings.enable_ai_chatbot | json }},
+        assistantName: {{ settings.ai_assistant_label | json }},
+        welcomeMessage: {{ settings.ai_chat_welcome | json }},
+        gatewayUrl: {{ settings.ai_gateway_url | json }},
+        provider: {{ settings.ai_provider | json }},
+        model: {% case settings.ai_provider %}{% when 'anthropic' %}{{ settings.ai_anthropic_model | default: settings.ai_model | json }}{% when 'google' %}{{ settings.ai_google_model | default: settings.ai_model | json }}{% when 'groq' %}{{ settings.ai_groq_model | default: settings.ai_model | json }}{% else %}{{ settings.ai_openai_model | default: settings.ai_model | json }}{% endcase %},
+        systemPrompt: {{ settings.ai_system_prompt | strip_newlines | json }},
+        voiceInputEnabled: {{ settings.enable_ai_voice_input | json }},
+        voiceOutputEnabled: {{ settings.enable_ai_voice_output | json }},
+        voiceLocale: {{ settings.ai_voice_locale | json }},
+        voiceName: {{ settings.ai_voice_name | json }},
+        pageContext: {
+          template: {{ template.name | json }},
+          pageTitle: {{ page_title | json }},
+          canonicalUrl: {{ canonical_url | json }},
+          shopName: {{ shop.name | json }},
+          shopDomain: {{ shop.permanent_domain | json }},
+          product: {% if product %}{
+            id: {{ product.id | json }},
+            title: {{ product.title | json }},
+            handle: {{ product.handle | json }},
+            vendor: {{ product.vendor | json }},
+            type: {{ product.type | json }},
+            tags: {{ product.tags | json }},
+            priceMin: {{ product.price_min | json }},
+            priceMax: {{ product.price_max | json }}
+          }{% else %}null{% endif %},
+          collection: {% if collection %}{
+            title: {{ collection.title | json }},
+            handle: {{ collection.handle | json }}
+          }{% else %}null{% endif %},
+          article: {% if article %}{
+            title: {{ article.title | json }},
+            author: {{ article.author | json }}
+          }{% else %}null{% endif %},
+          page: {% if page %}{
+            title: {{ page.title | json }},
+            handle: {{ page.handle | json }}
+          }{% else %}null{% endif %}
+        }
+      };
     </script>
   </head>
 
@@ -73,5 +115,9 @@
     {%- unless template.name == 'password' -%}
       {% sections 'footer-group' %}
     {%- endunless -%}
+
+    {%- if settings.enable_ai_chatbot -%}
+      {% render 'ai-concierge' %}
+    {%- endif -%}
   </body>
 </html>

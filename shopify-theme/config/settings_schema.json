@@ -97,5 +97,160 @@
         "label": "TikTok"
       }
     ]
+  },
+  {
+    "name": "AI integration",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Connect the storefront AI assistant to your own secure AI gateway. Do not call OpenAI, Anthropic, Google, or other provider APIs directly from theme JavaScript with a raw API key, because storefront visitors can inspect those requests."
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_ai_chatbot",
+        "label": "Enable AI voice chatbot",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "ai_assistant_label",
+        "label": "Assistant name",
+        "default": "Kanad Concierge"
+      },
+      {
+        "type": "textarea",
+        "id": "ai_chat_welcome",
+        "label": "Welcome message",
+        "default": "Hi, I can help shoppers discover products, answer store questions, and guide them to checkout."
+      },
+      {
+        "type": "text",
+        "id": "ai_gateway_url",
+        "label": "AI gateway endpoint URL",
+        "info": "Example: https://your-domain.com/api/ai/chat or /apps/ai/chat"
+      },
+      {
+        "type": "paragraph",
+        "content": "Provider keys entered below are intended for server-side lookup by your AI gateway. Do not render these key settings in Liquid or expose them to storefront JavaScript."
+      },
+      {
+        "type": "select",
+        "id": "ai_provider",
+        "label": "Default provider",
+        "default": "openai",
+        "options": [
+          {
+            "value": "openai",
+            "label": "OpenAI"
+          },
+          {
+            "value": "anthropic",
+            "label": "Anthropic"
+          },
+          {
+            "value": "google",
+            "label": "Google Gemini"
+          },
+          {
+            "value": "groq",
+            "label": "Groq"
+          },
+          {
+            "value": "custom",
+            "label": "Custom gateway"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "ai_model",
+        "label": "Default model",
+        "default": "gpt-4.1-mini"
+      },
+      {
+        "type": "text",
+        "id": "ai_openai_api_key",
+        "label": "OpenAI API key"
+      },
+      {
+        "type": "text",
+        "id": "ai_openai_model",
+        "label": "OpenAI model",
+        "default": "gpt-4.1-mini"
+      },
+      {
+        "type": "text",
+        "id": "ai_anthropic_api_key",
+        "label": "Anthropic API key"
+      },
+      {
+        "type": "text",
+        "id": "ai_anthropic_model",
+        "label": "Anthropic model",
+        "default": "claude-3-5-sonnet-latest"
+      },
+      {
+        "type": "text",
+        "id": "ai_google_api_key",
+        "label": "Google Gemini API key"
+      },
+      {
+        "type": "text",
+        "id": "ai_google_model",
+        "label": "Google Gemini model",
+        "default": "gemini-2.5-flash"
+      },
+      {
+        "type": "text",
+        "id": "ai_groq_api_key",
+        "label": "Groq API key"
+      },
+      {
+        "type": "text",
+        "id": "ai_groq_model",
+        "label": "Groq model",
+        "default": "llama-3.3-70b-versatile"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_ai_voice_input",
+        "label": "Enable voice input",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_ai_voice_output",
+        "label": "Enable voice playback",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "ai_voice_locale",
+        "label": "Voice locale",
+        "default": "en-US"
+      },
+      {
+        "type": "text",
+        "id": "ai_voice_name",
+        "label": "Preferred browser voice name",
+        "info": "Optional. Uses the closest available browser speech synthesis voice when blank."
+      },
+      {
+        "type": "textarea",
+        "id": "ai_system_prompt",
+        "label": "Storefront assistant instructions",
+        "default": "You are a Shopify storefront assistant. Be concise, helpful, and commercial. Use the current store context, recommend relevant products, answer shipping and return questions when known, and admit when you do not know something."
+      },
+      {
+        "type": "text",
+        "id": "ai_content_console_url",
+        "label": "Merchant content automation URL",
+        "info": "Optional secure dashboard URL for product title, description, SEO, FAQ, and collection copy generation."
+      },
+      {
+        "type": "paragraph",
+        "content": "Merchant content automation should run in a secure app or gateway that stores API keys server-side. The theme can link to that workflow, but it should not expose provider secrets in storefront code."
+      }
+    ]
   }
 ]

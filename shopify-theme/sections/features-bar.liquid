@@ -1,8 +1,23 @@
-<div class="features-bar">
-  <div class="features-bar__inner">
+<section class="features-bar color-scheme-{{ section.settings.color_scheme }}">
+  <div class="features-bar__inner page-width">
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.description != blank -%}
+      <div class="section-header section-header--split">
+        <div>
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="section-header__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+          {%- endif -%}
+          {%- if section.settings.heading != blank -%}
+            <h2 class="section-header__title">{{ section.settings.heading | escape }}</h2>
+          {%- endif -%}
+        </div>
+        {%- if section.settings.description != blank -%}
+          <div class="section-header__description rte">{{ section.settings.description }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
     <div class="features-bar__grid">
       {%- for block in section.blocks -%}
-        <div class="feature-item" {{ block.shopify_attributes }}>
+        <article class="feature-item" {{ block.shopify_attributes }}>
           <div class="feature-item__icon">
             {%- if block.settings.icon == 'truck' -%}
               <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17h4V5H2v12h3"/><path d="M20 17h2v-3.34a4 4 0 0 0-1.17-2.83L19 9h-5"/><path d="M14 17h1"/><circle cx="7.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
@@ -17,14 +32,20 @@
             {%- endif -%}
           </div>
           <div class="feature-item__content">
+            {%- if block.settings.eyebrow != blank -%}
+              <p class="feature-item__eyebrow">{{ block.settings.eyebrow | escape }}</p>
+            {%- endif -%}
             <h4 class="feature-item__title">{{ block.settings.title | escape }}</h4>
             <p class="feature-item__text">{{ block.settings.text | escape }}</p>
+            {%- if block.settings.link_label != blank and block.settings.link != blank -%}
+              <a href="{{ block.settings.link }}" class="feature-item__link">{{ block.settings.link_label | escape }}</a>
+            {%- endif -%}
           </div>
-        </div>
+        </article>
       {%- endfor -%}
     </div>
   </div>
-</div>
+</section>
 
 {% schema %}
 {
@@ -32,7 +53,36 @@
   "tag": "section",
   "class": "section",
   "max_blocks": 4,
-  "settings": [],
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Section label",
+      "default": "Confidence builders"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Merchandising details that increase trust"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Use these cards to highlight operational strengths, service promises, or value-added programs with more nuance than a simple icon row.</p>"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        { "value": "light", "label": "Light" },
+        { "value": "warm", "label": "Warm" }
+      ],
+      "default": "light"
+    }
+  ],
   "blocks": [
     {
       "type": "feature",
@@ -53,6 +103,12 @@
         },
         {
           "type": "text",
+          "id": "eyebrow",
+          "label": "Label",
+          "default": "Operations"
+        },
+        {
+          "type": "text",
           "id": "title",
           "label": "Heading",
           "default": "Feature Title"
@@ -62,6 +118,16 @@
           "id": "text",
           "label": "Subheading",
           "default": "Feature description"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link label"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
         }
       ]
     }

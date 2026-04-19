@@ -6,14 +6,46 @@
     endif
   -%}
   <div class="footer__inner">
-    <div class="footer__blocks">
-      <div class="footer__block">
+    <div class="footer__intro">
+      <div class="footer__brand-copy">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="footer__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
         {%- if section.settings.heading != blank -%}
-          <h3 class="footer__title">{{ section.settings.heading | escape }}</h3>
+          <h2 class="footer__headline">{{ section.settings.heading | escape }}</h2>
         {%- endif -%}
         <div class="footer__text">
           {{ section.settings.body_text }}
         </div>
+      </div>
+
+      <div class="footer__support-card">
+        {%- if section.settings.support_heading != blank -%}
+          <h3 class="footer__title">{{ section.settings.support_heading | escape }}</h3>
+        {%- endif -%}
+        {%- if section.settings.support_text != blank -%}
+          <p>{{ section.settings.support_text | escape }}</p>
+        {%- endif -%}
+        <div class="footer__support-meta">
+          {%- if section.settings.support_email != blank -%}
+            <a href="mailto:{{ section.settings.support_email }}" class="footer__support-link">{{ section.settings.support_email }}</a>
+          {%- endif -%}
+          {%- if section.settings.support_phone != blank -%}
+            <a href="tel:{{ section.settings.support_phone | remove: ' ' }}" class="footer__support-link">{{ section.settings.support_phone }}</a>
+          {%- endif -%}
+        </div>
+        {%- if section.settings.support_link_label != blank and section.settings.support_link != blank -%}
+          <a href="{{ section.settings.support_link }}" class="button">{{ section.settings.support_link_label | escape }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="footer__blocks">
+      <div class="footer__block">
+        {%- if section.settings.brand_note_heading != blank -%}
+          <h3 class="footer__title">{{ section.settings.brand_note_heading | escape }}</h3>
+        {%- endif -%}
+        <p class="footer__muted-copy">{{ section.settings.brand_note_text | escape }}</p>
       </div>
 
       <div class="footer__block">
@@ -61,7 +93,7 @@
     </div>
 
       {%- if section.settings.show_social_icons and has_social_links -%}
-      <div class="footer__social">
+      <div class="footer__social" aria-label="Social links">
         {%- if settings.social_facebook_link != blank -%}
           <a href="{{ settings.social_facebook_link }}" class="footer__social-link" rel="noopener" aria-label="Facebook">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3h-3.1V9.1c0-.9.3-1.6 1.7-1.6H16.7V4.8c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4V11H8v3h2.5v8h3z" fill="currentColor"/></svg>
@@ -145,6 +177,12 @@
       "default": "About the shop"
     },
     {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Section label",
+      "default": "Designed for customer confidence"
+    },
+    {
       "type": "richtext",
       "id": "body_text",
       "label": "Body text",
@@ -155,6 +193,53 @@
       "id": "menu",
       "label": "Footer menu",
       "default": "footer"
+    },
+    {
+      "type": "text",
+      "id": "brand_note_heading",
+      "label": "Brand note heading",
+      "default": "Why customers come back"
+    },
+    {
+      "type": "text",
+      "id": "brand_note_text",
+      "label": "Brand note text",
+      "default": "Use this space for shipping promises, craftsmanship language, or post-purchase reassurance."
+    },
+    {
+      "type": "text",
+      "id": "support_heading",
+      "label": "Support heading",
+      "default": "Need help before or after purchase?"
+    },
+    {
+      "type": "text",
+      "id": "support_text",
+      "label": "Support text",
+      "default": "Make response expectations and support routes obvious so the footer feels useful, not ornamental."
+    },
+    {
+      "type": "text",
+      "id": "support_email",
+      "label": "Support email",
+      "default": "support@kanadshop.com"
+    },
+    {
+      "type": "text",
+      "id": "support_phone",
+      "label": "Support phone",
+      "default": "+1 234 567 890"
+    },
+    {
+      "type": "text",
+      "id": "support_link_label",
+      "label": "Support link label",
+      "default": "Visit support hub"
+    },
+    {
+      "type": "url",
+      "id": "support_link",
+      "label": "Support link"
     },
     {
       "type": "checkbox",

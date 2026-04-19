@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Kanad AI Product Copy Console</title>
+    <style>
+      :root {
+        --bg: #f4f7fb;
+        --surface: #ffffff;
+        --surface-alt: #f8fbff;
+        --text: #162033;
+        --muted: #5c6b84;
+        --accent: #0f62fe;
+        --accent-strong: #0043ce;
+        --border: #d7e1f0;
+        --success: #0f9d58;
+        --danger: #c62828;
+        --shadow: 0 18px 44px rgba(11, 32, 69, 0.12);
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: radial-gradient(circle at top right, #e7f0ff, transparent 30%), var(--bg);
+        color: var(--text);
+      }
+      .shell {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 32px 20px 48px;
+      }
+      .hero {
+        display: grid;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+      .hero h1 { margin: 0; font-size: clamp(2rem, 3vw, 3rem); }
+      .hero p { margin: 0; color: var(--muted); max-width: 72ch; }
+      .layout {
+        display: grid;
+        grid-template-columns: 360px minmax(0, 1fr);
+        gap: 24px;
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+        padding: 20px;
+      }
+      .card h2, .card h3 { margin-top: 0; }
+      .field, .field-grid { display: grid; gap: 8px; }
+      .field-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      label { font-size: 0.9rem; font-weight: 700; }
+      input, textarea, select, button {
+        font: inherit;
+      }
+      input, textarea, select {
+        width: 100%;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 12px 14px;
+        background: #fff;
+      }
+      textarea { min-height: 120px; resize: vertical; }
+      button {
+        border: 0;
+        border-radius: 999px;
+        padding: 12px 18px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .button-primary { background: linear-gradient(135deg, var(--accent), var(--accent-strong)); color: #fff; }
+      .button-secondary { background: #eef4ff; color: var(--accent-strong); }
+      .button-row { display: flex; gap: 12px; flex-wrap: wrap; }
+      .status {
+        min-height: 24px;
+        font-size: 0.95rem;
+        color: var(--muted);
+      }
+      .status[data-state="error"] { color: var(--danger); }
+      .status[data-state="success"] { color: var(--success); }
+      .product-list {
+        display: grid;
+        gap: 12px;
+        margin-top: 16px;
+        max-height: 560px;
+        overflow: auto;
+      }
+      .product-item {
+        border: 1px solid var(--border);
+        background: var(--surface-alt);
+        border-radius: 18px;
+        padding: 14px;
+        display: grid;
+        gap: 6px;
+      }
+      .product-item button { justify-self: start; }
+      .muted { color: var(--muted); }
+      .content-grid {
+        display: grid;
+        gap: 18px;
+      }
+      .content-grid textarea[name="descriptionHtml"] { min-height: 260px; }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border-radius: 999px;
+        background: #edf7f0;
+        color: #166534;
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        font-weight: 700;
+      }
+      .preview {
+        border: 1px dashed var(--border);
+        border-radius: 18px;
+        padding: 16px;
+        background: #fcfdff;
+      }
+      .preview h3, .preview p { margin-top: 0; }
+      .inline-note {
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+      @media (max-width: 980px) {
+        .layout { grid-template-columns: 1fr; }
+        .field-grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <section class="hero">
+        <span class="pill">Merchant AI console</span>
+        <h1>Generate product copy from Shopify Admin data</h1>
+        <p>Search a product, generate title and SEO-aware content with the AI provider configured in your theme settings, review the result, and save directly back to Shopify Admin.</p>
+      </section>
+
+      <div class="layout">
+        <aside class="card">
+          <h2>Product lookup</h2>
+          <div class="field">
+            <label for="shop">Shop domain</label>
+            <input id="shop" name="shop" placeholder="your-store.myshopify.com">
+          </div>
+          <div class="field">
+            <label for="query">Search</label>
+            <input id="query" name="query" placeholder="Product title, handle, vendor, or tag">
+          </div>
+          <div class="button-row">
+            <button type="button" class="button-primary" id="searchProducts">Search products</button>
+          </div>
+          <p class="inline-note">This console uses Shopify Admin API with the gateway server token. It is designed for merchant use, not storefront visitors.</p>
+          <div class="status" id="searchStatus" role="status" aria-live="polite"></div>
+          <div class="product-list" id="productList"></div>
+        </aside>
+
+        <main class="content-grid">
+          <section class="card">
+            <h2>Generation controls</h2>
+            <div class="field-grid">
+              <div class="field">
+                <label for="provider">Provider</label>
+                <select id="provider" name="provider">
+                  <option value="openai">OpenAI</option>
+                  <option value="anthropic">Anthropic</option>
+                  <option value="google">Google Gemini</option>
+                  <option value="groq">Groq</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="model">Model override</label>
+                <input id="model" name="model" placeholder="Leave blank to use theme default">
+              </div>
+              <div class="field">
+                <label for="tone">Tone</label>
+                <input id="tone" name="tone" value="Confident, helpful, conversion-focused">
+              </div>
+              <div class="field">
+                <label for="audience">Audience</label>
+                <input id="audience" name="audience" value="Online shoppers comparing options">
+              </div>
+            </div>
+            <div class="field">
+              <label for="keywords">SEO keywords</label>
+              <input id="keywords" name="keywords" placeholder="wireless headphones, noise cancelling, travel audio">
+            </div>
+            <div class="field">
+              <label for="instructions">Extra instructions</label>
+              <textarea id="instructions" name="instructions" placeholder="Mention warranty, premium materials, gifting angle, or compliance requirements"></textarea>
+            </div>
+            <div class="button-row">
+              <button type="button" class="button-primary" id="generateCopy">Generate AI copy</button>
+              <button type="button" class="button-secondary" id="reloadProduct">Reload product</button>
+            </div>
+            <div class="status" id="generateStatus" role="status" aria-live="polite"></div>
+          </section>
+
+          <section class="card">
+            <h2>Editable result</h2>
+            <div class="field">
+              <label for="productTitle">Product title</label>
+              <input id="productTitle" name="title">
+            </div>
+            <div class="field">
+              <label for="seoTitle">SEO title</label>
+              <input id="seoTitle" name="seoTitle">
+            </div>
+            <div class="field">
+              <label for="seoDescription">SEO description</label>
+              <textarea id="seoDescription" name="seoDescription"></textarea>
+            </div>
+            <div class="field">
+              <label for="descriptionHtml">Product description HTML</label>
+              <textarea id="descriptionHtml" name="descriptionHtml"></textarea>
+            </div>
+            <div class="button-row">
+              <button type="button" class="button-primary" id="saveCopy">Save to Shopify</button>
+            </div>
+            <div class="status" id="saveStatus" role="status" aria-live="polite"></div>
+          </section>
+
+          <section class="card preview">
+            <h2>Current selection</h2>
+            <p class="muted" id="currentProductMeta">No product selected.</p>
+            <div id="renderedPreview"></div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const state = {
+        product: null
+      };
+
+      const elements = {
+        shop: document.getElementById('shop'),
+        query: document.getElementById('query'),
+        provider: document.getElementById('provider'),
+        model: document.getElementById('model'),
+        tone: document.getElementById('tone'),
+        audience: document.getElementById('audience'),
+        keywords: document.getElementById('keywords'),
+        instructions: document.getElementById('instructions'),
+        productList: document.getElementById('productList'),
+        searchStatus: document.getElementById('searchStatus'),
+        generateStatus: document.getElementById('generateStatus'),
+        saveStatus: document.getElementById('saveStatus'),
+        currentProductMeta: document.getElementById('currentProductMeta'),
+        renderedPreview: document.getElementById('renderedPreview'),
+        productTitle: document.getElementById('productTitle'),
+        seoTitle: document.getElementById('seoTitle'),
+        seoDescription: document.getElementById('seoDescription'),
+        descriptionHtml: document.getElementById('descriptionHtml')
+      };
+
+      elements.shop.value = params.get('shop') || '';
+      elements.query.value = params.get('query') || '';
+      if (params.get('provider')) elements.provider.value = params.get('provider');
+
+      function setStatus(node, message, stateName) {
+        node.textContent = message || '';
+        node.dataset.state = stateName || '';
+      }
+
+      function shop() {
+        return elements.shop.value.trim();
+      }
+
+      function renderProductList(products) {
+        elements.productList.innerHTML = '';
+        if (!products.length) {
+          elements.productList.innerHTML = '<p class="muted">No products found.</p>';
+          return;
+        }
+
+        products.forEach((product) => {
+          const item = document.createElement('article');
+          item.className = 'product-item';
+          item.innerHTML = `
+            <strong>${product.title}</strong>
+            <span class="muted">${product.handle} ${product.vendor ? '&middot; ' + product.vendor : ''}</span>
+            <button type="button" class="button-secondary">Select product</button>
+          `;
+          item.querySelector('button').addEventListener('click', () => loadProduct(product.id));
+          elements.productList.appendChild(item);
+        });
+      }
+
+      function fillForm(product) {
+        state.product = product;
+        elements.productTitle.value = product.title || '';
+        elements.seoTitle.value = product.seoTitle || '';
+        elements.seoDescription.value = product.seoDescription || '';
+        elements.descriptionHtml.value = product.descriptionHtml || '';
+        elements.currentProductMeta.textContent = `${product.title} · ${product.handle} · ${product.vendor || 'Unknown vendor'}`;
+        renderPreview();
+      }
+
+      function renderPreview() {
+        if (!state.product) {
+          elements.renderedPreview.innerHTML = '';
+          return;
+        }
+        elements.renderedPreview.innerHTML = `
+          <h3>${elements.productTitle.value || ''}</h3>
+          <p><strong>SEO title:</strong> ${elements.seoTitle.value || ''}</p>
+          <p><strong>SEO description:</strong> ${elements.seoDescription.value || ''}</p>
+          <div>${elements.descriptionHtml.value || ''}</div>
+        `;
+      }
+
+      async function requestJson(url, options) {
+        const response = await fetch(url, options);
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          throw new Error(payload.error || 'Request failed.');
+        }
+        return payload;
+      }
+
+      async function searchProducts() {
+        if (!shop()) {
+          setStatus(elements.searchStatus, 'Enter the Shopify shop domain first.', 'error');
+          return;
+        }
+        setStatus(elements.searchStatus, 'Searching Shopify products...', '');
+        try {
+          const payload = await requestJson(`/api/admin/products?shop=${encodeURIComponent(shop())}&query=${encodeURIComponent(elements.query.value.trim())}`);
+          renderProductList(payload.products || []);
+          setStatus(elements.searchStatus, `Loaded ${(payload.products || []).length} products.`, 'success');
+        } catch (error) {
+          setStatus(elements.searchStatus, error.message || 'Unable to search products.', 'error');
+        }
+      }
+
+      async function loadProduct(id) {
+        setStatus(elements.searchStatus, 'Loading product...', '');
+        try {
+          const payload = await requestJson(`/api/admin/products?shop=${encodeURIComponent(shop())}&id=${encodeURIComponent(id)}`);
+          fillForm(payload.product);
+          setStatus(elements.searchStatus, 'Product loaded.', 'success');
+        } catch (error) {
+          setStatus(elements.searchStatus, error.message || 'Unable to load product.', 'error');
+        }
+      }
+
+      async function generateCopy() {
+        if (!state.product) {
+          setStatus(elements.generateStatus, 'Select a product before generating copy.', 'error');
+          return;
+        }
+        setStatus(elements.generateStatus, 'Generating copy...', '');
+        try {
+          const payload = await requestJson('/api/admin/products/generate-copy', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              shop: shop(),
+              provider: elements.provider.value,
+              model: elements.model.value.trim(),
+              tone: elements.tone.value.trim(),
+              audience: elements.audience.value.trim(),
+              keywords: elements.keywords.value.split(',').map((item) => item.trim()).filter(Boolean),
+              extraInstructions: elements.instructions.value.trim(),
+              product: {
+                ...state.product,
+                shopDomain: shop()
+              }
+            })
+          });
+
+          const structured = payload.structured || {};
+          elements.productTitle.value = structured.title || elements.productTitle.value;
+          elements.seoTitle.value = structured.seo_title || elements.seoTitle.value;
+          elements.seoDescription.value = structured.seo_description || elements.seoDescription.value;
+          elements.descriptionHtml.value = structured.description_html || elements.descriptionHtml.value;
+          renderPreview();
+          setStatus(elements.generateStatus, `Copy generated with ${payload.provider} / ${payload.model}. Review before saving.`, 'success');
+        } catch (error) {
+          setStatus(elements.generateStatus, error.message || 'Unable to generate AI copy.', 'error');
+        }
+      }
+
+      async function saveCopy() {
+        if (!state.product) {
+          setStatus(elements.saveStatus, 'Select a product before saving.', 'error');
+          return;
+        }
+        setStatus(elements.saveStatus, 'Saving to Shopify...', '');
+        try {
+          const payload = await requestJson('/api/admin/products/save-copy', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              shop: shop(),
+              id: state.product.id,
+              title: elements.productTitle.value.trim(),
+              seoTitle: elements.seoTitle.value.trim(),
+              seoDescription: elements.seoDescription.value.trim(),
+              descriptionHtml: elements.descriptionHtml.value
+            })
+          });
+
+          fillForm(payload.product);
+          setStatus(elements.saveStatus, 'Product content saved to Shopify Admin.', 'success');
+        } catch (error) {
+          setStatus(elements.saveStatus, error.message || 'Unable to save product copy.', 'error');
+        }
+      }
+
+      document.getElementById('searchProducts').addEventListener('click', searchProducts);
+      document.getElementById('generateCopy').addEventListener('click', generateCopy);
+      document.getElementById('saveCopy').addEventListener('click', saveCopy);
+      document.getElementById('reloadProduct').addEventListener('click', () => {
+        if (state.product) loadProduct(state.product.id);
+      });
+      [elements.productTitle, elements.seoTitle, elements.seoDescription, elements.descriptionHtml].forEach((field) => {
+        field.addEventListener('input', renderPreview);
+      });
+
+      if (shop() && elements.query.value.trim()) {
+        searchProducts();
+      }
+    </script>
+  </body>
+</html>

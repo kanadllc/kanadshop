@@ -1,7 +1,11 @@
 <section class="search-page section-spacing">
   <div class="page-width">
     <header class="search-page__header">
-      <h1>Search</h1>
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="search-page__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h1>{{ section.settings.heading | default: 'Search' | escape }}</h1>
+      <p class="search-page__lead">{{ section.settings.lead | escape }}</p>
       <predictive-search class="search-page__predictive-search">
         <form action="{{ routes.search_url }}" method="get" role="search" class="search-inline-form">
           <label class="visually-hidden" for="SearchInput-{{ section.id }}">Search the store</label>
@@ -15,7 +19,28 @@
 
     {%- if search.performed -%}
       {%- paginate search.results by 12 -%}
-        <p class="search-page__summary">{{ search.results_count }} results for “{{ search.terms | escape }}”.</p>
+        {%- liquid
+          assign active_search_filter_count = 0
+          for filter in search.filters
+            if filter.type == 'price_range'
+              if filter.min_value.value != blank or filter.max_value.value != blank
+                assign active_search_filter_count = active_search_filter_count | plus: 1
+              endif
+            else
+              assign active_search_filter_count = active_search_filter_count | plus: filter.active_values.size
+            endif
+          endfor
+        -%}
+
+        <div class="search-page__summary-card">
+          <p class="search-page__summary">{{ search.results_count }} results for “{{ search.terms | escape }}”.</p>
+          <div class="search-page__summary-meta">
+            <span><strong>{{ paginate.current_offset | plus: 1 | default: 1 }}</strong> start result</span>
+            {%- if active_search_filter_count > 0 -%}
+              <span><strong>{{ active_search_filter_count }}</strong> active filters</span>
+            {%- endif -%}
+          </div>
+        </div>
 
         <div class="search-type-links" role="list">
           <a href="{{ routes.search_url }}?q={{ search.terms | url_encode }}" class="search-type-link{% if search.types == blank %} is-active{% endif %}">All</a>
@@ -26,7 +51,7 @@
         </div>
 
         {%- if search.filters.size > 0 -%}
-          <form action="{{ routes.search_url }}" method="get" class="search-filters">
+          <form action="{{ routes.search_url }}" method="get" class="search-filters" data-auto-submit-form>
             <input type="hidden" name="q" value="{{ search.terms | escape }}">
             <input type="hidden" name="options[prefix]" value="last">
             {%- if search.types != blank -%}
@@ -42,7 +67,7 @@
                       {%- for filter_value in filter.values -%}
                         <li class="filter-group__item">
                           <label class="filter-checkbox">
-                            <input type="checkbox" name="{{ filter_value.param_name }}" value="{{ filter_value.value }}" {% if filter_value.active %}checked{% endif %} {% if filter_value.count == 0 and filter_value.active == false %}disabled{% endif %}>
+                            <input type="checkbox" name="{{ filter_value.param_name }}" value="{{ filter_value.value }}" data-auto-submit {% if filter_value.active %}checked{% endif %} {% if filter_value.count == 0 and filter_value.active == false %}disabled{% endif %}>
                             <span class="filter-checkbox__label">{{ filter_value.label }}</span>
                             <span class="filter-checkbox__count">({{ filter_value.count }})</span>
                           </label>
@@ -61,12 +86,24 @@
               </div>
             {%- endfor -%}
 
-            <button class="button" type="submit">Apply filters</button>
+            <div class="search-filters__actions">
+              <button class="button" type="submit">Apply filters</button>
+              {%- if active_search_filter_count > 0 -%}
+                <a class="button button--secondary" href="{{ routes.search_url }}?q={{ search.terms | url_encode }}{% if search.types != blank %}&type={{ search.types | join: ',' | url_encode }}{% endif %}">Clear filters</a>
+              {%- endif -%}
+            </div>
           </form>
         {%- endif -%}
 
         {%- if search.results_count == 0 -%}
-          <p>No results found. Try a different search term.</p>
+          <article class="empty-state__inner search-empty-state">
+            <p class="search-empty-state__eyebrow">No matching results</p>
+            <h2>{{ section.settings.empty_heading | escape }}</h2>
+            <p>{{ section.settings.empty_text | escape }}</p>
+            <div class="empty-state__actions">
+              <a class="button" href="{{ routes.all_products_collection_url }}">Browse all products</a>
+            </div>
+          </article>
         {%- else -%}
           <div class="search-results-grid">
             {%- for item in search.results -%}
@@ -78,20 +115,28 @@
                   <a href="{{ item.url }}">
                     <img src="{{ item.featured_image | image_url: width: 640 }}" alt="{{ item.featured_image.alt | escape | default: item.title | escape }}" loading="lazy" width="640" height="{{ 640 | divided_by: item.featured_image.aspect_ratio | ceil }}">
                   </a>
-                  <p>{{ item.price | money }}</p>
+                  {%- if item.vendor != blank -%}
+                    <p class="search-result-card__meta">{{ item.vendor }}</p>
+                  {%- endif -%}
+                  <p class="search-result-card__price">{{ item.price | money }}</p>
                 {%- elsif item.object_type == 'article' and item.image -%}
+                  <a href="{{ item.url }}">
+                    <img src="{{ item.image | image_url: width: 640 }}" alt="{{ item.image.alt | escape | default: item.title | escape }}" loading="lazy" width="640" height="{{ 640 | divided_by: item.image.aspect_ratio | ceil }}">
+                  </a>
+                {%- elsif item.object_type == 'collection' and item.image != blank -%}
                   <a href="{{ item.url }}">
                     <img src="{{ item.image | image_url: width: 640 }}" alt="{{ item.image.alt | escape | default: item.title | escape }}" loading="lazy" width="640" height="{{ 640 | divided_by: item.image.aspect_ratio | ceil }}">
                   </a>
                 {%- endif -%}
 
-                <div class="rte">
+                <div class="rte search-result-card__content">
                   {%- if item.object_type == 'article' -%}
                     {{ item.excerpt_or_content | strip_html | truncatewords: 30 }}
                   {%- else -%}
                     {{ item.content | default: item.description | strip_html | truncatewords: 30 }}
                   {%- endif -%}
                 </div>
+                <a href="{{ item.url }}" class="search-result-card__cta">{{ section.settings.result_link_label | escape }}</a>
               </article>
             {%- endfor -%}
           </div>
@@ -110,6 +155,44 @@
 {% schema %}
 {
   "name": "Search",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Section label",
+      "default": "Discover the catalog"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Search"
+    },
+    {
+      "type": "text",
+      "id": "lead",
+      "label": "Lead text",
+      "default": "Use the search template to make discovery feel curated, useful, and high confidence even when shoppers arrive with vague intent."
+    },
+    {
+      "type": "text",
+      "id": "empty_heading",
+      "label": "Empty state heading",
+      "default": "No results yet, but there are still strong places to start"
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Empty state text",
+      "default": "Guide shoppers toward broader collections or alternative queries instead of ending the journey with a dead end."
+    },
+    {
+      "type": "text",
+      "id": "result_link_label",
+      "label": "Result link label",
+      "default": "View details"
+    }
+  ],
   "presets": [
     {
       "name": "Search"

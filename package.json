@@ -9,6 +9,8 @@
     "preview": "vite preview",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
+    "ai:gateway": "tsx --tsconfig tsconfig.server.json server/ai-gateway.ts",
+    "ai:gateway:watch": "tsx watch --tsconfig tsconfig.server.json server/ai-gateway.ts",
     "shopify:dev": "shopify theme dev --path shopify-theme",
     "shopify:pull": "shopify theme pull --path shopify-theme",
     "shopify:push": "shopify theme push --path shopify-theme"

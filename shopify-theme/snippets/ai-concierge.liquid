@@ -1,0 +1,66 @@
+<div class="ai-concierge" data-ai-concierge hidden>
+  <button
+    type="button"
+    class="ai-concierge__toggle"
+    data-ai-toggle
+    aria-expanded="false"
+    aria-controls="AiConciergePanel"
+  >
+    <span class="ai-concierge__toggle-badge">AI</span>
+    <span>{{ settings.ai_assistant_label | default: 'Kanad Concierge' | escape }}</span>
+  </button>
+
+  <section
+    id="AiConciergePanel"
+    class="ai-concierge__panel"
+    data-ai-panel
+    hidden
+    aria-label="{{ settings.ai_assistant_label | default: 'Kanad Concierge' | escape }}"
+  >
+    <div class="ai-concierge__panel-header">
+      <div>
+        <p class="ai-concierge__eyebrow">Voice assistant</p>
+        <h2 class="ai-concierge__title">{{ settings.ai_assistant_label | default: 'Kanad Concierge' | escape }}</h2>
+      </div>
+      <button type="button" class="ai-concierge__close" data-ai-close aria-label="Close assistant">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="ai-concierge__quick-actions" aria-label="Suggested prompts">
+      <button type="button" class="ai-concierge__quick-action" data-ai-prompt="Help me find the right product for my needs.">Find the right product</button>
+      <button type="button" class="ai-concierge__quick-action" data-ai-prompt="Explain shipping, delivery, and return options.">Shipping and returns</button>
+      <button type="button" class="ai-concierge__quick-action" data-ai-prompt="What are the best products to buy together right now?">Bundle ideas</button>
+    </div>
+
+    <ul class="ai-concierge__messages" data-ai-messages role="log" aria-live="polite">
+      <li class="ai-concierge__message ai-concierge__message--assistant">
+        <p>{{ settings.ai_chat_welcome | default: 'Hi, I can help shoppers discover products, answer store questions, and guide them to checkout.' | escape }}</p>
+      </li>
+    </ul>
+
+    <div class="ai-concierge__status" data-ai-status role="status" aria-live="polite"></div>
+
+    <form class="ai-concierge__composer" data-ai-form>
+      <label class="visually-hidden" for="AiConciergeInput">Message the assistant</label>
+      <textarea
+        id="AiConciergeInput"
+        class="ai-concierge__input"
+        data-ai-input
+        rows="3"
+        placeholder="Ask about products, sizing, shipping, returns, or gift ideas"
+        required
+      ></textarea>
+      <div class="ai-concierge__actions">
+        <button type="button" class="button button--secondary ai-concierge__voice-button" data-ai-mic>
+          Speak
+        </button>
+        <button type="submit" class="button button--primary" data-ai-send>
+          Send
+        </button>
+      </div>
+    </form>
+
+    <p class="ai-concierge__note">AI responses can be imperfect. Confirm pricing, availability, and policy details before purchase.</p>
+  </section>
+</div>
