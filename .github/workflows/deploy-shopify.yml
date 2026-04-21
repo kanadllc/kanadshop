@@ -49,18 +49,45 @@ jobs:
           test -n "$SHOPIFY_STORE" || (echo "Missing SHOPIFY_STORE secret" && exit 1)
           test -n "$SHOPIFY_CLI_THEME_TOKEN" || (echo "Missing SHOPIFY_CLI_THEME_TOKEN secret" && exit 1)
 
+      - name: Print deploy diagnostics
+        env:
+          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_MAIN_THEME_ID: 149599879319
+        run: |
+          set -euo pipefail
+          echo "Node $(node --version)"
+          echo "npm $(npm --version)"
+          echo "Shopify CLI $(npx shopify version)"
+          echo "Deploy store: $SHOPIFY_STORE"
+          echo "Target theme: $SHOPIFY_MAIN_THEME_ID"
+
+      - name: Validate theme before deploy
+        run: npx shopify theme check --path shopify-theme
+
+      - name: Verify store access and theme visibility
+        env:
+          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_MAIN_THEME_ID: 149599879319
+        run: |
+          set -euo pipefail
+          npx shopify theme list --store "$SHOPIFY_STORE" --no-color
+          echo "Confirmed access to store and attempted lookup for theme $SHOPIFY_MAIN_THEME_ID"
+
       - name: Deploy to Shopify main theme
         env:
           SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
           SHOPIFY_MAIN_THEME_ID: 149599879319
-        run: >
-          npx shopify theme push
-          --allow-live
-          --store "$SHOPIFY_STORE"
-          --path shopify-theme
-          --ignore "config/settings_data.json"
-          --theme "$SHOPIFY_MAIN_THEME_ID"
+        run: |
+          set -euo pipefail
+          npx shopify theme push \
+            --allow-live \
+            --verbose \
+            --no-color \
+            --store "$SHOPIFY_STORE" \
+            --path shopify-theme \
+            --ignore "config/settings_data.json" \
+            --theme "$SHOPIFY_MAIN_THEME_ID"
 
   deploy-live:
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.target == 'live'
@@ -89,15 +116,42 @@ jobs:
           test -n "$SHOPIFY_CLI_THEME_TOKEN" || (echo "Missing SHOPIFY_CLI_THEME_TOKEN secret" && exit 1)
           test -n "$SHOPIFY_LIVE_THEME_ID" || (echo "Missing SHOPIFY_LIVE_THEME_ID secret" && exit 1)
 
+      - name: Print live deploy diagnostics
+        env:
+          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_LIVE_THEME_ID: ${{ secrets.SHOPIFY_LIVE_THEME_ID }}
+        run: |
+          set -euo pipefail
+          echo "Node $(node --version)"
+          echo "npm $(npm --version)"
+          echo "Shopify CLI $(npx shopify version)"
+          echo "Deploy store: $SHOPIFY_STORE"
+          echo "Target theme: $SHOPIFY_LIVE_THEME_ID"
+
+      - name: Validate theme before live deploy
+        run: npx shopify theme check --path shopify-theme
+
+      - name: Verify live store access and theme visibility
+        env:
+          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_LIVE_THEME_ID: ${{ secrets.SHOPIFY_LIVE_THEME_ID }}
+        run: |
+          set -euo pipefail
+          npx shopify theme list --store "$SHOPIFY_STORE" --no-color
+          echo "Confirmed access to store and attempted lookup for theme $SHOPIFY_LIVE_THEME_ID"
+
       - name: Deploy to Shopify live theme
         env:
           SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
           SHOPIFY_LIVE_THEME_ID: ${{ secrets.SHOPIFY_LIVE_THEME_ID }}
-        run: >
-          npx shopify theme push
-          --allow-live
-          --store "$SHOPIFY_STORE"
-          --path shopify-theme
-          --ignore "config/settings_data.json"
-          --theme "$SHOPIFY_LIVE_THEME_ID"
+        run: |
+          set -euo pipefail
+          npx shopify theme push \
+            --allow-live \
+            --verbose \
+            --no-color \
+            --store "$SHOPIFY_STORE" \
+            --path shopify-theme \
+            --ignore "config/settings_data.json" \
+            --theme "$SHOPIFY_LIVE_THEME_ID"
