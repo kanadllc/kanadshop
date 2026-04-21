@@ -24,7 +24,7 @@ permissions:
   contents: read
 
 jobs:
-  deploy-staging:
+  deploy-main:
     if: github.event_name == 'push' || github.event.inputs.target == 'staging'
     runs-on: ubuntu-latest
 
@@ -41,27 +41,26 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Verify Shopify staging secrets
+      - name: Verify Shopify deploy secrets
         env:
           SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
-          SHOPIFY_STAGING_THEME_ID: ${{ secrets.SHOPIFY_STAGING_THEME_ID }}
         run: |
           test -n "$SHOPIFY_STORE" || (echo "Missing SHOPIFY_STORE secret" && exit 1)
           test -n "$SHOPIFY_CLI_THEME_TOKEN" || (echo "Missing SHOPIFY_CLI_THEME_TOKEN secret" && exit 1)
-          test -n "$SHOPIFY_STAGING_THEME_ID" || (echo "Missing SHOPIFY_STAGING_THEME_ID secret" && exit 1)
 
-      - name: Deploy to Shopify staging theme
+      - name: Deploy to Shopify main theme
         env:
           SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
-          SHOPIFY_STAGING_THEME_ID: ${{ secrets.SHOPIFY_STAGING_THEME_ID }}
+          SHOPIFY_MAIN_THEME_ID: 149599879319
         run: >
           npx shopify theme push
+          --allow-live
           --store "$SHOPIFY_STORE"
           --path shopify-theme
           --ignore "config/settings_data.json"
-          --theme "$SHOPIFY_STAGING_THEME_ID"
+          --theme "$SHOPIFY_MAIN_THEME_ID"
 
   deploy-live:
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.target == 'live'
