@@ -125,6 +125,102 @@ if (!customElements.get('localization-form')) {
   );
 }
 
+function initializeEditorialMotion() {
+  const revealElements = Array.from(document.querySelectorAll('[data-editorial-reveal]'));
+  const parallaxElements = Array.from(document.querySelectorAll('[data-editorial-parallax]'));
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!revealElements.length && !parallaxElements.length) return;
+
+  revealElements.forEach((element) => {
+    element.classList.add('is-pending');
+  });
+
+  const markVisible = (element) => {
+    element.classList.add('is-in-view');
+  };
+
+  if (prefersReducedMotion) {
+    revealElements.forEach(markVisible);
+    return;
+  }
+
+  // GSAP is optional. If unavailable, the observer fallback preserves the upgraded UX safely.
+  if (window.gsap) {
+    const gsap = window.gsap;
+    const scrollTrigger = window.ScrollTrigger;
+
+    if (scrollTrigger) {
+      gsap.registerPlugin(scrollTrigger);
+    }
+
+    revealElements.forEach((element, index) => {
+      gsap.fromTo(
+        element,
+        { autoAlpha: 0, y: 30, scale: 0.985 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.9,
+          delay: index * 0.04,
+          ease: 'power3.out',
+          clearProps: 'transform',
+          scrollTrigger: scrollTrigger
+            ? {
+                trigger: element,
+                start: 'top 88%',
+                once: true
+              }
+            : undefined,
+          onStart: () => markVisible(element)
+        }
+      );
+    });
+
+    if (scrollTrigger) {
+      parallaxElements.forEach((element) => {
+        const image = element.querySelector('img, .placeholder-svg');
+        if (!image) return;
+
+        gsap.to(image, {
+          yPercent: 8,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: element,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true
+          }
+        });
+      });
+    }
+
+    return;
+  }
+
+  if (!('IntersectionObserver' in window)) {
+    revealElements.forEach(markVisible);
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        markVisible(entry.target);
+        observer.unobserve(entry.target);
+      });
+    },
+    {
+      rootMargin: '0px 0px -10% 0px',
+      threshold: 0.15
+    }
+  );
+
+  revealElements.forEach((element) => observer.observe(element));
+}
+
 function initializeAIConcierge() {
   const root = document.querySelector('[data-ai-concierge]');
   const config = window.kanadAIConfig;
@@ -158,6 +254,10 @@ function initializeAIConcierge() {
 
   let recognition;
 
+  const setUiState = (stateName) => {
+    root.dataset.state = stateName;
+  };
+
   const setOpen = (nextOpen) => {
     root.classList.toggle('is-open', nextOpen);
     panel.hidden = !nextOpen;
@@ -176,6 +276,13 @@ function initializeAIConcierge() {
 
   const setBusy = (nextBusy) => {
     state.busy = nextBusy;
+    if (nextBusy) {
+      setUiState('busy');
+    } else if (state.listening) {
+      setUiState('listening');
+    } else {
+      setUiState('ready');
+    }
     sendButton.disabled = nextBusy;
     input.disabled = nextBusy;
     if (micButton) {
@@ -353,6 +460,7 @@ function initializeAIConcierge() {
 
       recognition.addEventListener('start', () => {
         state.listening = true;
+        setUiState('listening');
         micButton.classList.add('is-listening');
         setStatus('Listening...', 'busy');
       });
@@ -370,12 +478,16 @@ function initializeAIConcierge() {
         state.listening = false;
         micButton.classList.remove('is-listening');
         if (!state.busy) {
+          setUiState('ready');
+        }
+        if (!state.busy) {
           setStatus(config.gatewayUrl ? 'Voice ready.' : 'Add an AI gateway endpoint URL to activate voice requests.', 'ready');
         }
       });
 
       recognition.addEventListener('error', () => {
         state.listening = false;
+        setUiState('ready');
         micButton.classList.remove('is-listening');
         setStatus('Voice input is not available in this browser session.', 'error');
       });
@@ -392,6 +504,7 @@ function initializeAIConcierge() {
   }
 
   root.hidden = false;
+  setUiState(config.gatewayUrl ? 'ready' : 'warning');
   setStatus(
     config.gatewayUrl
       ? 'Ask about products, policies, shipping, or recommendations.'
@@ -401,10 +514,21 @@ function initializeAIConcierge() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  initializeEditorialMotion();
   initializeAIConcierge();
 
   document.querySelectorAll('.categories-btn').forEach((button) => {
     const menu = document.getElementById(button.getAttribute('aria-controls'));
+    const wrapper = button.closest('.header__categories-wrapper');
+    const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    const openMenu = () => {
+      button.setAttribute('aria-expanded', 'true');
+      if (menu) {
+        menu.hidden = false;
+      }
+    };
+
     const closeMenu = () => {
       button.setAttribute('aria-expanded', 'false');
       if (menu) {
@@ -420,8 +544,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    if (wrapper && supportsHover) {
+      wrapper.addEventListener('mouseenter', openMenu);
+      wrapper.addEventListener('mouseleave', closeMenu);
+    }
+
     document.addEventListener('click', (event) => {
-      if (!button.closest('.header__categories-wrapper').contains(event.target)) {
+      if (wrapper && !wrapper.contains(event.target)) {
         closeMenu();
       }
     });

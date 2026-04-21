@@ -1,0 +1,36 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" rx="22" fill="#112633"/>
+  <circle cx="1015" cy="210" r="84" fill="#1D3C4B"/>
+  <circle cx="1085" cy="275" r="34" fill="#1D3C4B"/>
+  <circle cx="928" cy="286" r="30" fill="#1D3C4B"/>
+  <circle cx="992" cy="355" r="38" fill="#1D3C4B"/>
+  <ellipse cx="589" cy="771" rx="237" ry="45" fill="#0A1720"/>
+  <path d="M496 269C476 203 538 152 598 172L637 186C700 205 739 270 724 336L706 412L540 389L496 269Z" fill="#F0A568"/>
+  <path d="M478 271L444 212C428 184 445 149 477 141L526 130L530 188L478 271Z" fill="#F0A568"/>
+  <path d="M706 254L760 196C781 173 817 177 834 205L859 247L791 286L706 254Z" fill="#F0A568"/>
+  <path d="M504 252L470 208C451 184 456 148 481 131L516 107L542 154L504 252Z" fill="#F4BA90"/>
+  <path d="M720 244L782 196C808 176 846 183 864 213L887 252L807 291L720 244Z" fill="#F4BA90"/>
+  <path d="M544 407C544 307 616 228 705 228C793 228 866 307 866 407V482C866 582 793 663 705 663C616 663 544 582 544 482V407Z" fill="#F8C18F"/>
+  <path d="M614 362C614 298 661 257 723 257H744C804 257 852 306 852 365V425H614V362Z" fill="#FFFFFF"/>
+  <ellipse cx="628" cy="401" rx="47" ry="76" fill="#F0A568"/>
+  <ellipse cx="783" cy="401" rx="48" ry="76" fill="#F0A568"/>
+  <ellipse cx="682" cy="448" rx="34" ry="36" fill="#2A2421"/>
+  <ellipse cx="758" cy="448" rx="34" ry="36" fill="#2A2421"/>
+  <circle cx="684" cy="445" r="14" fill="#FFFFFF"/>
+  <circle cx="761" cy="445" r="14" fill="#FFFFFF"/>
+  <circle cx="688" cy="449" r="8" fill="#1B1B1B"/>
+  <circle cx="765" cy="449" r="8" fill="#1B1B1B"/>
+  <ellipse cx="723" cy="504" rx="39" ry="33" fill="#FFF5ED"/>
+  <path d="M718 478C739 478 755 495 755 516V618H681V516C681 495 697 478 718 478Z" fill="#FFF5ED"/>
+  <path d="M692 524C709 541 736 541 753 524" stroke="#2A2421" stroke-width="8" stroke-linecap="round"/>
+  <path d="M709 495C720 486 735 486 746 495" stroke="#2A2421" stroke-width="7" stroke-linecap="round"/>
+  <path d="M538 621C582 594 623 610 640 656L670 793H581L538 621Z" fill="#F0A568"/>
+  <path d="M635 618C667 605 699 629 702 665L708 793H642L635 618Z" fill="#FFF5ED"/>
+  <path d="M706 618C739 611 768 630 778 660L820 793H737L706 618Z" fill="#FFF5ED"/>
+  <path d="M792 608C836 591 877 615 891 657L942 793H845L792 608Z" fill="#F0A568"/>
+  <path d="M557 793H669" stroke="#0A1720" stroke-width="18" stroke-linecap="round"/>
+  <path d="M676 793H790" stroke="#0A1720" stroke-width="18" stroke-linecap="round"/>
+  <path d="M807 793H915" stroke="#0A1720" stroke-width="18" stroke-linecap="round"/>
+  <text x="676" y="774" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="62" font-weight="700">Premium Pet</text>
+  <text x="678" y="828" fill="#D9E5EA" font-family="Arial, sans-serif" font-size="31" font-weight="500">Accessories for Safe Work</text>
+</svg>

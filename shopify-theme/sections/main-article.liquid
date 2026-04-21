@@ -1,29 +1,38 @@
-<section class="article-page section-spacing">
+<section class="article-page section-spacing" data-editorial-section="article">
   <div class="page-width article-page__inner">
-    <article>
-      <header class="article-page__header">
+    <article data-editorial-reveal>
+      <header class="article-page__header" data-editorial-reveal>
+        <p class="article-page__eyebrow">Editorial story</p>
         <h1>{{ article.title }}</h1>
-        <p>{{ article.published_at | time_tag: format: 'date' }}</p>
+        <div class="article-page__meta">
+          <span>{{ article.published_at | time_tag: format: 'date' }}</span>
+          {%- if article.author != blank -%}
+            <span>By {{ article.author }}</span>
+          {%- endif -%}
+          <span>{{ article.comments_count }} comments</span>
+        </div>
       </header>
 
       {%- if article.image -%}
-        <img src="{{ article.image | image_url: width: 1200 }}" alt="{{ article.image.alt | escape | default: article.title | escape }}" loading="lazy" width="1200" height="{{ 1200 | divided_by: article.image.aspect_ratio | ceil }}">
+        <div class="article-page__media" data-editorial-parallax>
+          <img src="{{ article.image | image_url: width: 1200 }}" alt="{{ article.image.alt | escape | default: article.title | escape }}" loading="lazy" width="1200" height="{{ 1200 | divided_by: article.image.aspect_ratio | ceil }}">
+        </div>
       {%- endif -%}
 
-      <div class="rte">
+      <div class="rte article-page__content">
         {{ article.content }}
       </div>
     </article>
 
     {%- if blog.comments_enabled? -%}
-      <section class="article-comments">
+      <section class="article-comments" data-editorial-reveal>
         <h2>Comments</h2>
 
         {%- paginate article.comments by 10 -%}
           {%- if article.comments_count > 0 -%}
             <div class="comment-list">
               {%- for comment in article.comments -%}
-                <article class="comment-card">
+                <article class="comment-card" data-editorial-reveal>
                   <h3>{{ comment.author }}</h3>
                   <p>{{ comment.created_at | time_tag: format: 'date' }}</p>
                   <div class="rte">{{ comment.content }}</div>

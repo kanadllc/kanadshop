@@ -1,0 +1,203 @@
+{{ 'theme.css' | asset_url | stylesheet_tag }}
+
+{%- assign collection = collections[section.settings.collection] -%}
+
+<section class="new-arrivals" data-editorial-section="new-arrivals">
+  <div class="new-arrivals__inner">
+
+    <div class="new-arrivals__banner page-width">
+      <div class="new-arrivals__banner-left" data-editorial-reveal>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="new-arrivals__eyebrow">
+            <span class="new-arrivals__eyebrow-dot" aria-hidden="true"></span>
+            {{ section.settings.eyebrow | escape }}
+          </p>
+        {%- endif -%}
+        <h2 class="new-arrivals__title">{{ section.settings.title | default: 'New Arrivals' | escape }}</h2>
+        {%- if section.settings.description != blank -%}
+          <p class="new-arrivals__description">{{ section.settings.description | escape }}</p>
+        {%- endif -%}
+      </div>
+      <div class="new-arrivals__banner-right" data-editorial-reveal>
+        {%- if section.settings.view_all_label != blank and section.settings.view_all_link != blank -%}
+          <a href="{{ section.settings.view_all_link }}" class="new-arrivals__viewall">
+            {{ section.settings.view_all_label | escape }}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        {%- endif -%}
+        <div class="new-arrivals__ticker" aria-hidden="true">
+          <span>Just Landed</span>
+          <span>·</span>
+          <span>Just Landed</span>
+          <span>·</span>
+          <span>Just Landed</span>
+          <span>·</span>
+          <span>Just Landed</span>
+          <span>·</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="new-arrivals__scroll-wrapper">
+      <div class="new-arrivals__track">
+        {%- if collection != blank and collection.products_count > 0 -%}
+          {%- for product in collection.products limit: section.settings.products_to_show -%}
+            <article class="arr-card" data-editorial-reveal>
+              <a href="{{ product.url }}" class="arr-card__media-link">
+                <div class="arr-card__media">
+                  {%- if product.featured_image -%}
+                    <img
+                      src="{{ product.featured_image | image_url: width: 560 }}"
+                      alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                      class="arr-card__image"
+                      loading="lazy"
+                      width="560"
+                      height="{{ 560 | divided_by: product.featured_image.aspect_ratio | ceil }}"
+                    >
+                  {%- else -%}
+                    {{ 'product-' | append: forloop.index | placeholder_svg_tag: 'arr-card__image arr-card__image--placeholder' }}
+                  {%- endif -%}
+                  <div class="arr-card__overlay">
+                    <span class="arr-card__new-badge">New</span>
+                    <div class="arr-card__quick-view">
+                      <span>Quick view</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </div>
+                  </div>
+                </div>
+              </a>
+              <div class="arr-card__body">
+                <div class="arr-card__top">
+                  <div>
+                    <h3 class="arr-card__name">
+                      <a href="{{ product.url }}">{{ product.title | escape }}</a>
+                    </h3>
+                    {%- if product.vendor != blank -%}
+                      <p class="arr-card__vendor">{{ product.vendor | escape }}</p>
+                    {%- endif -%}
+                  </div>
+                  <div class="arr-card__price-block">
+                    <span class="arr-card__price">
+                      {%- if product.price_varies -%}
+                        From {{ product.price_min | money }}
+                      {%- else -%}
+                        {{ product.price | money }}
+                      {%- endif -%}
+                    </span>
+                    {%- if product.compare_at_price_max > product.price -%}
+                      <s class="arr-card__was">{{ product.compare_at_price_max | money }}</s>
+                    {%- endif -%}
+                  </div>
+                </div>
+                <form method="post" action="{{ routes.cart_add_url }}" class="arr-card__form">
+                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                  <button
+                    type="submit"
+                    class="arr-card__add"
+                    {% unless product.available %}disabled{% endunless %}
+                  >
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                    {% if product.available %}Add to cart{% else %}Sold out{% endif %}
+                  </button>
+                </form>
+              </div>
+            </article>
+          {%- endfor -%}
+        {%- else -%}
+          {%- assign arr_titles = 'Signature Harness Pro,The Venice Collar,Antler Bowl Set,Transatlantique Carrier,The Walk Kit,Grooming Ritual Set' | split: ',' -%}
+          {%- assign arr_prices = '$165,$95,$74,$380,$210,$88' | split: ',' -%}
+          {%- for i in (1..section.settings.products_to_show) -%}
+            <article class="arr-card" data-editorial-reveal>
+              <div class="arr-card__media-link">
+                <div class="arr-card__media">
+                  {{ 'product-' | append: i | placeholder_svg_tag: 'arr-card__image arr-card__image--placeholder' }}
+                  <div class="arr-card__overlay">
+                    <span class="arr-card__new-badge">New</span>
+                    <div class="arr-card__quick-view">
+                      <span>Quick view</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="arr-card__body">
+                <div class="arr-card__top">
+                  <div>
+                    <h3 class="arr-card__name"><a href="#">{{ arr_titles[forloop.index0] | default: 'New Product' }}</a></h3>
+                    <p class="arr-card__vendor">KANAD Pet</p>
+                  </div>
+                  <div class="arr-card__price-block">
+                    <span class="arr-card__price">{{ arr_prices[forloop.index0] | default: '$99' }}</span>
+                  </div>
+                </div>
+                <button type="button" class="arr-card__add" disabled>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                  Add to cart
+                </button>
+              </div>
+            </article>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "New Arrivals",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "Just Landed"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Description",
+      "default": "Fresh from the atelier — our latest additions to the collection."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "label": "Products to show",
+      "default": 4
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "View all label",
+      "default": "See all new arrivals"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View all link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "New Arrivals"
+    }
+  ]
+}
+{% endschema %}

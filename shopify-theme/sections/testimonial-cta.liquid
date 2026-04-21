@@ -1,0 +1,140 @@
+<div class="testimonial-cta">
+  {%- if section.settings.show_testimonial -%}
+    <section class="testimonial-cta__testimonial" data-editorial-reveal>
+      <div class="testimonial-cta__visual">
+        {%- if section.settings.testimonial_image != blank -%}
+          <img
+            src="{{ section.settings.testimonial_image | image_url: width: 640 }}"
+            alt="{{ section.settings.testimonial_image.alt | escape }}"
+            loading="lazy"
+            width="640"
+            height="{{ 640 | divided_by: section.settings.testimonial_image.aspect_ratio | ceil }}"
+          >
+        {%- else -%}
+          <img
+            src="{{ 'pet-testimonial-editorial.svg' | asset_url }}"
+            alt="Customer story artwork"
+            loading="lazy"
+            width="640"
+            height="640"
+          >
+        {%- endif -%}
+      </div>
+      <div class="testimonial-cta__copy">
+        <span class="testimonial-cta__quote-mark" aria-hidden="true">&ldquo;</span>
+        <blockquote class="testimonial-cta__quote">
+          {%- if section.settings.quote != blank -%}
+            {{ section.settings.quote | escape }}
+          {%- else -%}
+            Finding pieces that matched the aesthetic of our home while providing the safety Winston needs was impossible until we found {{ shop.name }}. The quality is palpable.
+          {%- endif -%}
+        </blockquote>
+        <p class="testimonial-cta__citation">
+          {%- if section.settings.author != blank -%}{{ section.settings.author | escape }}{%- else -%}Eleanor &amp; Winston{%- endif -%}
+          {%- if section.settings.author_location != blank -%}<br>{{ section.settings.author_location | escape }}{%- endif -%}
+        </p>
+      </div>
+    </section>
+  {%- endif -%}
+
+  <section class="testimonial-cta__cta" data-editorial-reveal>
+    <div class="testimonial-cta__cta-inner page-width">
+      {%- if section.settings.cta_heading != blank -%}
+        <h2 class="testimonial-cta__heading">{{ section.settings.cta_heading | escape }}</h2>
+      {%- endif -%}
+      {%- if section.settings.cta_text != blank -%}
+        <p class="testimonial-cta__text">{{ section.settings.cta_text | escape }}</p>
+      {%- endif -%}
+      <div class="testimonial-cta__actions">
+        {%- if section.settings.primary_button_label != blank and section.settings.primary_button_link != blank -%}
+          <a href="{{ section.settings.primary_button_link }}" class="testimonial-cta__button testimonial-cta__button--primary">
+            {{ section.settings.primary_button_label | escape }}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.secondary_button_label != blank and section.settings.secondary_button_link != blank -%}
+          <a href="{{ section.settings.secondary_button_link }}" class="testimonial-cta__button testimonial-cta__button--ghost">
+            {{ section.settings.secondary_button_label | escape }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Testimonial & CTA",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_testimonial",
+      "label": "Show testimonial",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "testimonial_image",
+      "label": "Testimonial image"
+    },
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Quote",
+      "default": "Finding pieces that matched the aesthetic of our home while providing the safety Winston needs was impossible until we found KANAD. The quality is palpable."
+    },
+    {
+      "type": "text",
+      "id": "author",
+      "label": "Author name",
+      "default": "Eleanor & Winston"
+    },
+    {
+      "type": "text",
+      "id": "author_location",
+      "label": "Author location",
+      "default": "London, UK"
+    },
+    {
+      "type": "text",
+      "id": "cta_heading",
+      "label": "CTA heading",
+      "default": "The thread that binds us."
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA description",
+      "default": "Explore the complete Pet Collection and find the perfect piece for your closest companion."
+    },
+    {
+      "type": "text",
+      "id": "primary_button_label",
+      "label": "Primary button label",
+      "default": "Shop the Lookbook"
+    },
+    {
+      "type": "url",
+      "id": "primary_button_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_label",
+      "label": "Secondary button label",
+      "default": "Join the Inner Circle"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Secondary button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonial & CTA"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,19 @@
+<svg width="1600" height="720" viewBox="0 0 1600 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="720" fill="#EEF5F1"/>
+  <circle cx="1328" cy="150" r="180" fill="#D6E8DB"/>
+  <rect x="150" y="110" width="620" height="500" rx="54" fill="#FBFFFC" stroke="#C6DACD" stroke-width="6"/>
+  <rect x="850" y="110" width="600" height="500" rx="54" fill="#FBFFFC"/>
+  <ellipse cx="448" cy="430" rx="152" ry="92" fill="#A96F45"/>
+  <circle cx="398" cy="272" r="82" fill="#B67A4F"/>
+  <circle cx="520" cy="280" r="72" fill="#B67A4F"/>
+  <circle cx="357" cy="230" r="36" fill="#B67A4F"/>
+  <circle cx="561" cy="238" r="32" fill="#B67A4F"/>
+  <ellipse cx="438" cy="434" rx="88" ry="54" fill="#FFF2DF"/>
+  <rect x="920" y="210" width="256" height="22" rx="11" fill="#2D4C3D" fill-opacity="0.22"/>
+  <rect x="920" y="254" width="320" height="18" rx="9" fill="#2D4C3D" fill-opacity="0.12"/>
+  <rect x="920" y="296" width="286" height="18" rx="9" fill="#2D4C3D" fill-opacity="0.12"/>
+  <rect x="920" y="360" width="172" height="76" rx="22" fill="#2D4C3D"/>
+  <rect x="1114" y="360" width="164" height="76" rx="22" fill="#C7A47D"/>
+  <text x="920" y="520" fill="#20372D" font-family="Arial, sans-serif" font-size="68" font-weight="700">Pet Play</text>
+  <text x="920" y="570" fill="#557C67" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="4">ORIGINAL GENERATED ART</text>
+</svg>

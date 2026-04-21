@@ -2,7 +2,7 @@
   assign selected_variant = product.selected_or_first_available_variant
 -%}
 
-<section class="product-page section-spacing" data-product-root>
+<section class="product-page section-spacing" data-product-root data-editorial-section="product">
   <div class="page-width">
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="{{ routes.root_url }}">Home</a>
@@ -14,7 +14,7 @@
       <span>{{ product.title }}</span>
     </nav>
 
-    <div class="product-page__intro">
+    <div class="product-page__intro" data-editorial-reveal>
       <div>
         {%- if product.vendor != blank -%}
           <p class="product-page__eyebrow">{{ product.vendor }}</p>
@@ -25,6 +25,18 @@
         {%- elsif product.description != blank -%}
           <p class="product-page__lead">{{ product.description | strip_html | truncatewords: 24 }}</p>
         {%- endif -%}
+
+        <div class="product-page__meta-strip" aria-hidden="true">
+          <span class="product-page__meta-pill{% unless selected_variant.available %} product-page__meta-pill--muted{% endunless %}">
+            {% if selected_variant.available %}Ready to ship{% else %}Currently unavailable{% endif %}
+          </span>
+          {%- if product.type != blank -%}
+            <span class="product-page__meta-pill">{{ product.type }}</span>
+          {%- endif -%}
+          {%- if product.collections.first != blank -%}
+            <span class="product-page__meta-pill">{{ product.collections.first.title }}</span>
+          {%- endif -%}
+        </div>
       </div>
       <div class="product-page__highlights">
         {%- if section.settings.highlight_1 != blank -%}<span>{{ section.settings.highlight_1 | escape }}</span>{%- endif -%}
@@ -34,7 +46,7 @@
     </div>
 
     <div class="product-page__layout">
-    <div class="product-page__media">
+    <div class="product-page__media" data-editorial-reveal>
       <div class="product-media-grid" data-product-media-grid>
         {%- for media in product.media -%}
           <div class="product-media-item{% if selected_variant.featured_media and media.id == selected_variant.featured_media.id %} is-active{% endif %}" data-media-id="{{ media.id }}">
@@ -70,9 +82,21 @@
           {%- endfor -%}
         </div>
       {%- endif -%}
+
+      <div class="product-page__assurance-grid" data-editorial-reveal>
+        {%- if section.settings.highlight_1 != blank -%}
+          <div class="product-page__assurance-card"><span>{{ section.settings.highlight_1 | escape }}</span></div>
+        {%- endif -%}
+        {%- if section.settings.highlight_2 != blank -%}
+          <div class="product-page__assurance-card"><span>{{ section.settings.highlight_2 | escape }}</span></div>
+        {%- endif -%}
+        {%- if section.settings.highlight_3 != blank -%}
+          <div class="product-page__assurance-card"><span>{{ section.settings.highlight_3 | escape }}</span></div>
+        {%- endif -%}
+      </div>
     </div>
 
-    <div class="product-page__info">
+    <div class="product-page__info" data-editorial-reveal>
       {%- if section.settings.support_heading != blank or section.settings.support_text != blank -%}
         <aside class="product-page__support-card">
           {%- if section.settings.support_heading != blank -%}
@@ -85,7 +109,7 @@
       {%- endif -%}
 
       {%- for block in section.blocks -%}
-        <div class="product-block" {{ block.shopify_attributes }}>
+        <div class="product-block product-block--{{ block.type | handleize }}" data-editorial-reveal {{ block.shopify_attributes }}>
           {%- case block.type -%}
             {%- when '@app' -%}
               {% render block %}

@@ -1,11 +1,15 @@
-<section class="section-spacing">
+<section class="section-spacing account-shell" data-editorial-section="customer-addresses">
   <div class="page-width customer-addresses">
-    <header>
-      <h1>{{ 'customer.addresses.title' | t }}</h1>
+    <header class="account-page__header" data-editorial-reveal>
+      <div>
+        <p class="account-page__eyebrow">Saved destinations</p>
+        <h1>{{ 'customer.addresses.title' | t }}</h1>
+        <p class="account-page__lead">Keep address details current so checkout stays fast and predictable.</p>
+      </div>
       <p><a href="{{ routes.account_url }}">{{ 'customer.account.back' | t }}</a></p>
     </header>
 
-    <div class="customer-auth__panel">
+    <div class="customer-auth__panel" data-editorial-reveal>
       <h2>{{ 'customer.addresses.add' | t }}</h2>
       {%- form 'customer_address', customer.new_address -%}
         <div class="field-grid">
@@ -62,9 +66,9 @@
       {%- endform -%}
     </div>
 
-    <div class="address-card-grid">
+    <div class="address-card-grid" data-editorial-reveal>
       {%- for address in customer.addresses -%}
-        <article class="address-card">
+        <article class="address-card" data-editorial-reveal>
           <h2>{{ address.name }}</h2>
           {%- if address == customer.default_address -%}
             <p><strong>{{ 'customer.addresses.default' | t }}</strong></p>

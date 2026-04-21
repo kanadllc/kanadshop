@@ -1,21 +1,27 @@
-<section class="section-spacing">
+<section class="section-spacing account-shell" data-editorial-section="account">
   <div class="page-width account-page">
-    <header>
-      <h1>Account</h1>
+    <header class="account-page__header" data-editorial-reveal>
+      <div>
+        <p class="account-page__eyebrow">Customer account</p>
+        <h1>Account</h1>
+        <p class="account-page__lead">Track orders, manage addresses, and keep future purchases frictionless.</p>
+      </div>
       <p><a href="{{ routes.account_logout_url }}">Log out</a></p>
     </header>
 
     <div class="account-page__layout">
-      <div>
+      <div data-editorial-reveal>
         <h2>Orders</h2>
         {%- if customer.orders_count > 0 -%}
           <div class="search-results-grid">
             {%- for order in customer.orders -%}
-              <article class="search-result-card">
+              <article class="search-result-card" data-editorial-reveal>
                 <h3><a href="{{ order.customer_url }}">{{ order.name }}</a></h3>
-                <p>{{ order.created_at | time_tag: format: 'date' }}</p>
-                <p>{{ order.financial_status_label }}</p>
-                <p>{{ order.fulfillment_status_label }}</p>
+                <div class="search-result-card__meta-row" aria-hidden="true">
+                  <span class="search-result-card__meta-pill">{{ order.created_at | date: format: 'date' }}</span>
+                  <span class="search-result-card__meta-pill">{{ order.financial_status_label }}</span>
+                  <span class="search-result-card__meta-pill">{{ order.fulfillment_status_label }}</span>
+                </div>
                 <p>{{ order.total_price | money }}</p>
               </article>
             {%- endfor -%}
@@ -25,7 +31,7 @@
         {%- endif -%}
       </div>
 
-      <aside class="cart-summary">
+      <aside class="cart-summary account-page__aside" data-editorial-reveal>
         <h2>Account details</h2>
         {{ customer.default_address | format_address }}
         <p><a href="{{ routes.account_addresses_url }}">Manage addresses</a></p>

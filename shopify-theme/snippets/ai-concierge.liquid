@@ -7,7 +7,10 @@
     aria-controls="AiConciergePanel"
   >
     <span class="ai-concierge__toggle-badge">AI</span>
-    <span>{{ settings.ai_assistant_label | default: 'Kanad Concierge' | escape }}</span>
+    <span class="ai-concierge__toggle-copy">
+      <strong>{{ settings.ai_assistant_label | default: 'Kanad Concierge' | escape }}</strong>
+      <small>Voice and shopping help</small>
+    </span>
   </button>
 
   <section
@@ -18,45 +21,81 @@
     aria-label="{{ settings.ai_assistant_label | default: 'Kanad Concierge' | escape }}"
   >
     <div class="ai-concierge__panel-header">
-      <div>
-        <p class="ai-concierge__eyebrow">Voice assistant</p>
-        <h2 class="ai-concierge__title">{{ settings.ai_assistant_label | default: 'Kanad Concierge' | escape }}</h2>
+      <div class="ai-concierge__panel-intro">
+        <div class="ai-concierge__signal" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div>
+          <p class="ai-concierge__eyebrow">Voice assistant</p>
+          <h2 class="ai-concierge__title">{{ settings.ai_assistant_label | default: 'Kanad Concierge' | escape }}</h2>
+          <p class="ai-concierge__subtitle">Ask naturally for product picks, policy answers, and guided checkout help.</p>
+        </div>
       </div>
       <button type="button" class="ai-concierge__close" data-ai-close aria-label="Close assistant">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
 
-    <div class="ai-concierge__quick-actions" aria-label="Suggested prompts">
-      <button type="button" class="ai-concierge__quick-action" data-ai-prompt="Help me find the right product for my needs.">Find the right product</button>
-      <button type="button" class="ai-concierge__quick-action" data-ai-prompt="Explain shipping, delivery, and return options.">Shipping and returns</button>
-      <button type="button" class="ai-concierge__quick-action" data-ai-prompt="What are the best products to buy together right now?">Bundle ideas</button>
+    <div class="ai-concierge__hero">
+      <div>
+        <p class="ai-concierge__hero-label">Live concierge</p>
+        <p class="ai-concierge__hero-copy">Use voice for hands-free shopping or type for precise questions.</p>
+      </div>
+      <div class="ai-concierge__hero-meta">
+        <span class="ai-concierge__meta-chip">Voice ready</span>
+        <span class="ai-concierge__meta-chip">Fast answers</span>
+      </div>
     </div>
 
-    <ul class="ai-concierge__messages" data-ai-messages role="log" aria-live="polite">
-      <li class="ai-concierge__message ai-concierge__message--assistant">
-        <p>{{ settings.ai_chat_welcome | default: 'Hi, I can help shoppers discover products, answer store questions, and guide them to checkout.' | escape }}</p>
-      </li>
-    </ul>
+    <div class="ai-concierge__quick-shell">
+      <div class="ai-concierge__section-heading">
+        <p>Try a shortcut</p>
+        <span>One tap prompts</span>
+      </div>
+      <div class="ai-concierge__quick-actions" aria-label="Suggested prompts">
+        <button type="button" class="ai-concierge__quick-action" data-ai-prompt="Help me find the right product for my needs.">Find the right product</button>
+        <button type="button" class="ai-concierge__quick-action" data-ai-prompt="Explain shipping, delivery, and return options.">Shipping and returns</button>
+        <button type="button" class="ai-concierge__quick-action" data-ai-prompt="What are the best products to buy together right now?">Bundle ideas</button>
+      </div>
+    </div>
+
+    <div class="ai-concierge__conversation">
+      <div class="ai-concierge__section-heading">
+        <p>Conversation</p>
+        <span>Ctrl/Cmd + Enter to send</span>
+      </div>
+      <ul class="ai-concierge__messages" data-ai-messages role="log" aria-live="polite">
+        <li class="ai-concierge__message ai-concierge__message--assistant">
+          <p>{{ settings.ai_chat_welcome | default: 'Hi, I can help shoppers discover products, answer store questions, and guide them to checkout.' | escape }}</p>
+        </li>
+      </ul>
+    </div>
 
     <div class="ai-concierge__status" data-ai-status role="status" aria-live="polite"></div>
 
     <form class="ai-concierge__composer" data-ai-form>
       <label class="visually-hidden" for="AiConciergeInput">Message the assistant</label>
-      <textarea
-        id="AiConciergeInput"
-        class="ai-concierge__input"
-        data-ai-input
-        rows="3"
-        placeholder="Ask about products, sizing, shipping, returns, or gift ideas"
-        required
-      ></textarea>
+      <div class="ai-concierge__input-shell">
+        <textarea
+          id="AiConciergeInput"
+          class="ai-concierge__input"
+          data-ai-input
+          rows="3"
+          placeholder="Ask about products, sizing, shipping, returns, or gift ideas"
+          required
+        ></textarea>
+        <p class="ai-concierge__input-hint">Be specific for better results: product type, use case, budget, or delivery question.</p>
+      </div>
       <div class="ai-concierge__actions">
         <button type="button" class="button button--secondary ai-concierge__voice-button" data-ai-mic>
-          Speak
+          <span aria-hidden="true">●</span>
+          <span>Speak</span>
         </button>
-        <button type="submit" class="button button--primary" data-ai-send>
-          Send
+        <button type="submit" class="button button--primary ai-concierge__send-button" data-ai-send>
+          <span>Send</span>
+          <span aria-hidden="true">↗</span>
         </button>
       </div>
     </form>

@@ -1,0 +1,18 @@
+<svg width="1600" height="720" viewBox="0 0 1600 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="720" fill="#F5EEE4"/>
+  <circle cx="1260" cy="160" r="210" fill="#D9E8FF"/>
+  <circle cx="250" cy="560" r="180" fill="#F2D7B6"/>
+  <rect x="160" y="130" width="540" height="460" rx="48" fill="#FFF9F2" stroke="#D8C3A8" stroke-width="6"/>
+  <rect x="770" y="110" width="660" height="500" rx="56" fill="#FFFDF9"/>
+  <path d="M430 205C470 205 514 241 514 297V431C514 471 482 503 442 503H418C378 503 346 471 346 431V297C346 241 390 205 430 205Z" fill="#2A3650"/>
+  <path d="M372 270C372 232 403 202 441 202C479 202 510 232 510 270V294H372V270Z" fill="#B8895A"/>
+  <rect x="388" y="298" width="108" height="173" rx="26" fill="#D9B48A"/>
+  <rect x="388" y="298" width="108" height="60" rx="24" fill="#F1D2AE"/>
+  <rect x="945" y="220" width="310" height="26" rx="13" fill="#B8895A" fill-opacity="0.28"/>
+  <rect x="945" y="270" width="260" height="18" rx="9" fill="#2A3650" fill-opacity="0.16"/>
+  <rect x="945" y="315" width="346" height="18" rx="9" fill="#2A3650" fill-opacity="0.16"/>
+  <rect x="945" y="375" width="180" height="78" rx="20" fill="#2A3650"/>
+  <rect x="1147" y="375" width="152" height="78" rx="20" fill="#E9D8BF"/>
+  <text x="945" y="520" fill="#2A3650" font-family="Arial, sans-serif" font-size="72" font-weight="700">Tailored Layers</text>
+  <text x="946" y="570" fill="#8B6D2D" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="4">ORIGINAL THEME ART</text>
+</svg>

@@ -1,7 +1,7 @@
-<section class="features-bar color-scheme-{{ section.settings.color_scheme }}">
+<section class="features-bar color-scheme-{{ section.settings.color_scheme }}" data-editorial-section="features">
   <div class="features-bar__inner page-width">
     {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.description != blank -%}
-      <div class="section-header section-header--split">
+      <div class="section-header section-header--split" data-editorial-reveal>
         <div>
           {%- if section.settings.eyebrow != blank -%}
             <p class="section-header__eyebrow">{{ section.settings.eyebrow | escape }}</p>
@@ -17,8 +17,10 @@
     {%- endif -%}
     <div class="features-bar__grid">
       {%- for block in section.blocks -%}
-        <article class="feature-item" {{ block.shopify_attributes }}>
-          <div class="feature-item__icon">
+        <article class="feature-item" data-editorial-reveal {{ block.shopify_attributes }}>
+          <div class="feature-item__frame">
+            <span class="feature-item__index" aria-hidden="true">{{ forloop.index | prepend: '0' }}</span>
+            <div class="feature-item__icon">
             {%- if block.settings.icon == 'truck' -%}
               <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17h4V5H2v12h3"/><path d="M20 17h2v-3.34a4 4 0 0 0-1.17-2.83L19 9h-5"/><path d="M14 17h1"/><circle cx="7.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
             {%- elsif block.settings.icon == 'shield' -%}
@@ -30,6 +32,7 @@
             {%- else -%}
               <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
             {%- endif -%}
+            </div>
           </div>
           <div class="feature-item__content">
             {%- if block.settings.eyebrow != blank -%}
@@ -38,7 +41,7 @@
             <h4 class="feature-item__title">{{ block.settings.title | escape }}</h4>
             <p class="feature-item__text">{{ block.settings.text | escape }}</p>
             {%- if block.settings.link_label != blank and block.settings.link != blank -%}
-              <a href="{{ block.settings.link }}" class="feature-item__link">{{ block.settings.link_label | escape }}</a>
+              <a href="{{ block.settings.link }}" class="feature-item__link"><span>{{ block.settings.link_label | escape }}</span><span aria-hidden="true">↗</span></a>
             {%- endif -%}
           </div>
         </article>

@@ -1,11 +1,13 @@
-<section class="contact-section section-spacing">
+<section class="contact-section section-spacing" data-editorial-section="contact">
   <div class="page-width contact-layout">
-    <div class="rte">
+    <div class="rte contact-layout__intro" data-editorial-reveal>
+      <p class="contact-layout__eyebrow">Get in touch</p>
       <h1>{{ page.title | default: 'Contact' }}</h1>
+      <p class="contact-layout__lead">Use this page for sales questions, partnership outreach, or pre-purchase guidance with a more polished brand context.</p>
       {{ page.content }}
     </div>
 
-    {%- form 'contact', class: 'contact-form' -%}
+    {%- form 'contact', class: 'contact-form', data-editorial-reveal: '' -%}
       {%- if form.posted_successfully? -%}
         <p class="form-status" tabindex="-1">Thanks for reaching out. We will get back to you soon.</p>
       {%- endif -%}
@@ -31,6 +33,11 @@
       <div>
         <label for="ContactFormBody-{{ section.id }}">Message</label>
         <textarea id="ContactFormBody-{{ section.id }}" name="contact[body]" rows="6" required>{{ form.body }}</textarea>
+      </div>
+
+      <div class="contact-form__reassurance" aria-hidden="true">
+        <span>Thoughtful replies</span>
+        <span>Store support</span>
       </div>
 
       <button class="button" type="submit">Send message</button>

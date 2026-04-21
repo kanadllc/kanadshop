@@ -1,0 +1,18 @@
+<svg width="640" height="640" viewBox="0 0 640 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="640" height="640" fill="#0F4150"/>
+  <rect x="380" y="50" width="176" height="126" fill="#8A6D4A"/>
+  <text x="402" y="92" fill="#FFFFFF" font-family="Georgia, serif" font-size="28" font-style="italic">"The perfect</text>
+  <text x="402" y="124" fill="#FFFFFF" font-family="Georgia, serif" font-size="28" font-style="italic">balance of</text>
+  <text x="402" y="156" fill="#FFFFFF" font-family="Georgia, serif" font-size="28" font-style="italic">form and</text>
+  <text x="402" y="188" fill="#FFFFFF" font-family="Georgia, serif" font-size="28" font-style="italic">function."</text>
+  <circle cx="240" cy="222" r="92" fill="#F7C882"/>
+  <path d="M147 214C147 166 186 127 234 127H246C294 127 333 166 333 214V250H147V214Z" fill="#A76A3B"/>
+  <circle cx="201" cy="220" r="16" fill="#1B1B1B"/>
+  <circle cx="280" cy="220" r="16" fill="#1B1B1B"/>
+  <path d="M208 256C228 271 253 271 273 256" stroke="#1B1B1B" stroke-width="10" stroke-linecap="round"/>
+  <rect x="130" y="290" width="220" height="212" rx="30" fill="#34B4BF"/>
+  <rect x="120" y="500" width="240" height="68" fill="#112633"/>
+  <text x="240" y="565" text-anchor="middle" fill="#FFC66A" font-family="Arial, sans-serif" font-size="58" font-weight="800">CUSTOMER</text>
+  <text x="240" y="618" text-anchor="middle" fill="#FFC66A" font-family="Arial, sans-serif" font-size="58" font-weight="800">STORY</text>
+  <text x="240" y="298" text-anchor="middle" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="16" font-weight="700" letter-spacing="3">HANDILOOM CARE COMPANIONS</text>
+</svg>

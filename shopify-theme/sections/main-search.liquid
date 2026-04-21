@@ -1,6 +1,6 @@
-<section class="search-page section-spacing">
+<section class="search-page section-spacing" data-editorial-section="search">
   <div class="page-width">
-    <header class="search-page__header">
+    <header class="search-page__header" data-editorial-reveal>
       {%- if section.settings.eyebrow != blank -%}
         <p class="search-page__eyebrow">{{ section.settings.eyebrow | escape }}</p>
       {%- endif -%}
@@ -32,7 +32,7 @@
           endfor
         -%}
 
-        <div class="search-page__summary-card">
+        <div class="search-page__summary-card" data-editorial-reveal>
           <p class="search-page__summary">{{ search.results_count }} results for “{{ search.terms | escape }}”.</p>
           <div class="search-page__summary-meta">
             <span><strong>{{ paginate.current_offset | plus: 1 | default: 1 }}</strong> start result</span>
@@ -42,7 +42,7 @@
           </div>
         </div>
 
-        <div class="search-type-links" role="list">
+        <div class="search-type-links" role="list" data-editorial-reveal>
           <a href="{{ routes.search_url }}?q={{ search.terms | url_encode }}" class="search-type-link{% if search.types == blank %} is-active{% endif %}">All</a>
           <a href="{{ routes.search_url }}?q={{ search.terms | url_encode }}&type=product" class="search-type-link{% if search.types contains 'product' and search.types.size == 1 %} is-active{% endif %}">Products</a>
           <a href="{{ routes.search_url }}?q={{ search.terms | url_encode }}&type=page" class="search-type-link{% if search.types contains 'page' and search.types.size == 1 %} is-active{% endif %}">Pages</a>
@@ -51,7 +51,7 @@
         </div>
 
         {%- if search.filters.size > 0 -%}
-          <form action="{{ routes.search_url }}" method="get" class="search-filters" data-auto-submit-form>
+          <form action="{{ routes.search_url }}" method="get" class="search-filters" data-auto-submit-form data-editorial-reveal>
             <input type="hidden" name="q" value="{{ search.terms | escape }}">
             <input type="hidden" name="options[prefix]" value="last">
             {%- if search.types != blank -%}
@@ -59,7 +59,7 @@
             {%- endif -%}
 
             {%- for filter in search.filters -%}
-              <div class="filter-group">
+              <div class="filter-group" data-editorial-reveal>
                 <h2 class="filter-group__title">{{ filter.label }}</h2>
                 {%- case filter.type -%}
                   {%- when 'boolean' or 'list' -%}
@@ -96,7 +96,7 @@
         {%- endif -%}
 
         {%- if search.results_count == 0 -%}
-          <article class="empty-state__inner search-empty-state">
+          <article class="empty-state__inner search-empty-state" data-editorial-reveal>
             <p class="search-empty-state__eyebrow">No matching results</p>
             <h2>{{ section.settings.empty_heading | escape }}</h2>
             <p>{{ section.settings.empty_text | escape }}</p>
@@ -105,9 +105,9 @@
             </div>
           </article>
         {%- else -%}
-          <div class="search-results-grid">
+          <div class="search-results-grid" data-editorial-reveal>
             {%- for item in search.results -%}
-              <article class="search-result-card search-result-card--{{ item.object_type }}">
+              <article class="search-result-card search-result-card--{{ item.object_type }}" data-editorial-reveal>
                 <p class="search-result-card__type">{{ item.object_type | capitalize }}</p>
                 <h2><a href="{{ item.url }}">{{ item.title }}</a></h2>
 
@@ -128,6 +128,13 @@
                     <img src="{{ item.image | image_url: width: 640 }}" alt="{{ item.image.alt | escape | default: item.title | escape }}" loading="lazy" width="640" height="{{ 640 | divided_by: item.image.aspect_ratio | ceil }}">
                   </a>
                 {%- endif -%}
+
+                <div class="search-result-card__meta-row" aria-hidden="true">
+                  <span class="search-result-card__meta-pill">{{ item.object_type | capitalize }}</span>
+                  {%- if item.object_type == 'product' and item.available == false -%}
+                    <span class="search-result-card__meta-pill search-result-card__meta-pill--muted">Unavailable</span>
+                  {%- endif -%}
+                </div>
 
                 <div class="rte search-result-card__content">
                   {%- if item.object_type == 'article' -%}

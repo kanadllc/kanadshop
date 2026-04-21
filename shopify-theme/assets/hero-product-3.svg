@@ -1,0 +1,18 @@
+<svg width="1600" height="720" viewBox="0 0 1600 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="720" fill="#F4F2EF"/>
+  <circle cx="1385" cy="170" r="170" fill="#D9D1C6"/>
+  <rect x="160" y="105" width="600" height="510" rx="54" fill="#FCFBF8" stroke="#D9D1C6" stroke-width="6"/>
+  <rect x="845" y="105" width="610" height="510" rx="54" fill="#FFFEFB"/>
+  <path d="M360 485L284 278C267 232 302 188 350 188H570C618 188 653 232 636 278L560 485H360Z" fill="#243447"/>
+  <path d="M383 264H537L578 440H342L383 264Z" fill="#F8F1E6"/>
+  <path d="M382 260C382 216 418 180 462 180C506 180 542 216 542 260" stroke="#243447" stroke-width="22" stroke-linecap="round"/>
+  <circle cx="412" cy="350" r="18" fill="#243447"/>
+  <circle cx="512" cy="350" r="18" fill="#243447"/>
+  <rect x="915" y="205" width="240" height="22" rx="11" fill="#243447" fill-opacity="0.2"/>
+  <rect x="915" y="250" width="300" height="18" rx="9" fill="#243447" fill-opacity="0.14"/>
+  <rect x="915" y="292" width="260" height="18" rx="9" fill="#243447" fill-opacity="0.14"/>
+  <rect x="915" y="358" width="190" height="76" rx="22" fill="#243447"/>
+  <rect x="1125" y="358" width="148" height="76" rx="22" fill="#D5B799"/>
+  <text x="915" y="520" fill="#243447" font-family="Arial, sans-serif" font-size="68" font-weight="700">Carry Daily</text>
+  <text x="915" y="570" fill="#A07C55" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="4">UNIQUE PREVIEW ART</text>
+</svg>

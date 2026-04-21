@@ -1,92 +1,192 @@
-<section class="hero-slider hero-slider--{{ section.settings.height }}" data-autoplay="{{ section.settings.autoplay }}" data-speed="{{ section.settings.autoplay_speed | times: 1000 }}" data-pause-on-hover="{{ section.settings.pause_on_hover }}">
+<section class="hero-slider hero-slider--{{ section.settings.height }} {% if section.settings.compact_product_slider %}hero-slider--product{% endif %}" data-editorial-section="hero" data-autoplay="{{ section.settings.autoplay }}" data-speed="{{ section.settings.autoplay_speed | times: 1000 }}" data-pause-on-hover="{{ section.settings.pause_on_hover }}">
   <div class="hero-slider__shell page-width">
-    {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.description != blank or section.settings.secondary_button_label != blank and section.settings.secondary_button_link != blank -%}
-      <div class="hero-slider__intro text-{{ section.settings.content_alignment }}">
-        {%- if section.settings.eyebrow != blank -%}
-          <p class="hero-slider__eyebrow">{{ section.settings.eyebrow | escape }}</p>
-        {%- endif -%}
-        {%- if section.settings.heading != blank -%}
-          <h2 class="hero-slider__heading">{{ section.settings.heading | escape }}</h2>
-        {%- endif -%}
-        {%- if section.settings.description != blank -%}
-          <div class="hero-slider__description rte">{{ section.settings.description }}</div>
-        {%- endif -%}
-        {%- if section.settings.secondary_button_label != blank and section.settings.secondary_button_link != blank -%}
-          <a href="{{ section.settings.secondary_button_link }}" class="hero-slider__secondary-link">
-            {{ section.settings.secondary_button_label | escape }}
-          </a>
-        {%- endif -%}
+    {%- if section.settings.compact_product_slider != true and section.settings.eyebrow != blank or section.settings.compact_product_slider != true and section.settings.heading != blank or section.settings.compact_product_slider != true and section.settings.description != blank or section.settings.compact_product_slider != true and section.settings.secondary_button_label != blank and section.settings.secondary_button_link != blank -%}
+      <div class="hero-slider__intro-shell">
+        <div class="hero-slider__intro text-{{ section.settings.content_alignment }}" data-editorial-reveal>
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="hero-slider__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+          {%- endif -%}
+          {%- if section.settings.heading != blank -%}
+            <h2 class="hero-slider__heading">{{ section.settings.heading | escape }}</h2>
+          {%- endif -%}
+          {%- if section.settings.description != blank -%}
+            <div class="hero-slider__description rte">{{ section.settings.description }}</div>
+          {%- endif -%}
+          <div class="hero-slider__intro-actions">
+            {%- if section.settings.secondary_button_label != blank and section.settings.secondary_button_link != blank -%}
+              <a href="{{ section.settings.secondary_button_link }}" class="hero-slider__secondary-link">
+                {{ section.settings.secondary_button_label | escape }}
+              </a>
+            {%- endif -%}
+            <div class="hero-slider__intro-note">Luxury apparel storytelling with premium-pet trust cues.</div>
+          </div>
+        </div>
+        <aside class="hero-slider__intro-aside" data-editorial-reveal>
+          <p class="hero-slider__aside-label">Built for curated commerce</p>
+          <ul class="hero-slider__aside-list" role="list">
+            <li>Editorial landing moments for fashion drops</li>
+            <li>Trust-led discovery for premium pet essentials</li>
+            <li>Responsive layouts designed for mobile-led browsing</li>
+          </ul>
+        </aside>
       </div>
     {%- endif -%}
 
+  <div class="hero-slider__viewport">
   <div class="hero-slider__track">
     {%- for block in section.blocks -%}
-      <article class="hero-slide color-scheme-{{ block.settings.color_scheme }}" {{ block.shopify_attributes }}>
-        {%- if block.settings.image != blank -%}
-          <img 
-            src="{{ block.settings.image | image_url: width: 2000 }}" 
-            alt="{{ block.settings.image.alt | escape }}"
-            class="hero-slide__image"
-            loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-            width="2000"
-            height="{{ 2000 | divided_by: block.settings.image.aspect_ratio | ceil }}"
-          >
+      {%- assign generated_asset = '' -%}
+      {%- case forloop.index -%}
+        {%- when 1 -%}
+          {%- assign generated_asset = 'hero-product-1.svg' -%}
+        {%- when 2 -%}
+          {%- assign generated_asset = 'hero-product-2.svg' -%}
+        {%- when 3 -%}
+          {%- assign generated_asset = 'hero-product-3.svg' -%}
+        {%- when 4 -%}
+          {%- assign generated_asset = 'hero-product-4.svg' -%}
+        {%- when 5 -%}
+          {%- assign generated_asset = 'hero-product-5.svg' -%}
         {%- else -%}
-          {{ 'lifestyle-2' | placeholder_svg_tag: 'hero-slide__image placeholder-svg' }}
+          {%- assign generated_asset = 'hero-product-1.svg' -%}
+      {%- endcase -%}
+      {%- assign product_ref = block.settings.product -%}
+      {%- assign slide_image = block.settings.image -%}
+      {%- assign slide_url = block.settings.button_link -%}
+      {%- assign slide_title = block.settings.title -%}
+      {%- assign slide_subheading = block.settings.subheading -%}
+      {%- assign slide_text = block.settings.text -%}
+      {%- assign primary_button_label = block.settings.button_label -%}
+      {%- assign secondary_button_label = block.settings.secondary_button_label -%}
+      {%- assign availability_label = block.settings.badge_1 -%}
+      {%- assign shipping_label = block.settings.badge_2 -%}
+      {%- assign detail_label = block.settings.badge_3 -%}
+      {%- assign metric_value = block.settings.metric_value -%}
+      {%- assign metric_label = block.settings.metric_label -%}
+
+      {%- if product_ref != blank -%}
+        {%- assign slide_image = product_ref.featured_image -%}
+        {%- assign slide_url = product_ref.url -%}
+        {%- assign slide_title = product_ref.title -%}
+        {%- if product_ref.vendor != blank and product_ref.type != blank -%}
+          {%- assign slide_subheading = product_ref.vendor | append: ' • ' | append: product_ref.type -%}
+        {%- elsif product_ref.vendor != blank -%}
+          {%- assign slide_subheading = product_ref.vendor -%}
+        {%- elsif product_ref.type != blank -%}
+          {%- assign slide_subheading = product_ref.type -%}
         {%- endif -%}
-        
-        <div class="hero-slide__overlay"></div>
+        {%- if product_ref.description != blank -%}
+          {%- assign slide_text = product_ref.description | strip_html | truncatewords: 22 -%}
+        {%- endif -%}
+        {%- assign primary_button_label = 'Shop product' -%}
+        {%- assign secondary_button_label = 'View details' -%}
+        {%- assign availability_label = product_ref.available | default: false -%}
+        {%- if product_ref.available -%}
+          {%- assign availability_label = 'In stock' -%}
+        {%- else -%}
+          {%- assign availability_label = 'Sold out' -%}
+        {%- endif -%}
+        {%- if product_ref.compare_at_price_max > product_ref.price -%}
+          {%- assign shipping_label = product_ref.compare_at_price_max | minus: product_ref.price | money | append: ' off' -%}
+        {%- else -%}
+          {%- assign shipping_label = 'Fast dispatch' -%}
+        {%- endif -%}
+        {%- assign detail_label = 'Top pick' -%}
+        {%- if product_ref.price_varies -%}
+          {%- assign metric_value = product_ref.price_min | money | append: ' - ' | append: product_ref.price_max | money -%}
+        {%- else -%}
+          {%- assign metric_value = product_ref.price | money -%}
+        {%- endif -%}
+        {%- assign metric_label = 'Current price' -%}
+      {%- endif -%}
+
+      {%- if section.settings.compact_product_slider -%}
+        {%- assign slide_subheading = blank -%}
+        {%- assign slide_text = blank -%}
+        {%- assign secondary_button_label = blank -%}
+        {%- assign availability_label = blank -%}
+        {%- assign shipping_label = blank -%}
+        {%- assign detail_label = blank -%}
+      {%- endif -%}
+
+      <article class="hero-slide {% if section.settings.compact_product_slider %}hero-slide--product{% endif %} {% if forloop.first %}is-active{% endif %} color-scheme-{{ block.settings.color_scheme }}" {{ block.shopify_attributes }}>
+        <div class="hero-slide__media" data-editorial-parallax>
+          {%- if slide_image != blank -%}
+            <img 
+              src="{{ slide_image | image_url: width: 1600 }}" 
+              alt="{{ slide_image.alt | default: slide_title | escape }}"
+              class="hero-slide__image"
+              loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+              width="1600"
+              height="{{ 1600 | divided_by: slide_image.aspect_ratio | ceil }}"
+            >
+          {%- else -%}
+            <img
+              src="{{ generated_asset | asset_url }}"
+              alt="{{ slide_title | default: shop.name | escape }}"
+              class="hero-slide__image"
+              loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+              width="1600"
+              height="720"
+            >
+          {%- endif -%}
+          <div class="hero-slide__overlay"></div>
+        </div>
         
         <div class="hero-slide__content-wrapper">
           <div class="hero-slide__content text-{{ block.settings.text_alignment }}">
-            {%- if block.settings.kicker != blank -%}
-              <p class="hero-slide__kicker">{{ block.settings.kicker | escape }}</p>
-            {%- endif -%}
-            {%- if block.settings.subheading != blank -%}
-              <p class="hero-slide__subheading">{{ block.settings.subheading | escape }}</p>
-            {%- endif -%}
-            
-            {%- if block.settings.title != blank -%}
-              <h2 class="hero-slide__title">{{ block.settings.title | escape }}</h2>
-            {%- endif -%}
+            <div class="hero-slide__content-top">
+              {%- if block.settings.kicker != blank -%}
+                <p class="hero-slide__kicker">{{ block.settings.kicker | escape }}</p>
+              {%- endif -%}
+              {%- if slide_subheading != blank -%}
+                <p class="hero-slide__subheading">{{ slide_subheading | escape }}</p>
+              {%- endif -%}
+              
+              {%- if slide_title != blank -%}
+                <h2 class="hero-slide__title">{{ slide_title | escape }}</h2>
+              {%- endif -%}
 
-            {%- if block.settings.text != blank -%}
-              <div class="hero-slide__text rte">{{ block.settings.text }}</div>
-            {%- endif -%}
+              {%- if slide_text != blank -%}
+                <div class="hero-slide__text rte">{{ slide_text }}</div>
+              {%- endif -%}
+            </div>
 
-            {%- if block.settings.badge_1 != blank or block.settings.badge_2 != blank or block.settings.badge_3 != blank -%}
+            {%- if availability_label != blank or shipping_label != blank or detail_label != blank -%}
               <ul class="hero-slide__badges" role="list">
-                {%- if block.settings.badge_1 != blank -%}
-                  <li>{{ block.settings.badge_1 | escape }}</li>
+                {%- if availability_label != blank -%}
+                  <li>{{ availability_label | escape }}</li>
                 {%- endif -%}
-                {%- if block.settings.badge_2 != blank -%}
-                  <li>{{ block.settings.badge_2 | escape }}</li>
+                {%- if shipping_label != blank -%}
+                  <li>{{ shipping_label | escape }}</li>
                 {%- endif -%}
-                {%- if block.settings.badge_3 != blank -%}
-                  <li>{{ block.settings.badge_3 | escape }}</li>
+                {%- if detail_label != blank -%}
+                  <li>{{ detail_label | escape }}</li>
                 {%- endif -%}
               </ul>
             {%- endif -%}
             
-            {%- if block.settings.button_label != blank and block.settings.button_link != blank or block.settings.secondary_button_label != blank and block.settings.secondary_button_link != blank -%}
+            {%- if primary_button_label != blank and slide_url != blank or secondary_button_label != blank and slide_url != blank -%}
               <div class="hero-slide__actions">
-                {%- if block.settings.button_label != blank and block.settings.button_link != blank -%}
-                  <a href="{{ block.settings.button_link }}" class="hero-slide__button button">
-                    {{ block.settings.button_label | escape }}
+                {%- if primary_button_label != blank and slide_url != blank -%}
+                  <a href="{{ slide_url }}" class="hero-slide__button button">
+                    {{ primary_button_label | escape }}
                   </a>
                 {%- endif -%}
-                {%- if block.settings.secondary_button_label != blank and block.settings.secondary_button_link != blank -%}
-                  <a href="{{ block.settings.secondary_button_link }}" class="hero-slide__button hero-slide__button--secondary">
-                    {{ block.settings.secondary_button_label | escape }}
+                {%- if secondary_button_label != blank and slide_url != blank -%}
+                  <a href="{{ slide_url }}" class="hero-slide__button hero-slide__button--secondary">
+                    {{ secondary_button_label | escape }}
                   </a>
                 {%- endif -%}
               </div>
             {%- endif -%}
 
-            {%- if block.settings.metric_label != blank and block.settings.metric_value != blank -%}
-              <div class="hero-slide__metric" aria-label="{{ block.settings.metric_label | escape }}">
-                <strong>{{ block.settings.metric_value | escape }}</strong>
-                <span>{{ block.settings.metric_label | escape }}</span>
+            {%- if metric_label != blank and metric_value != blank -%}
+              <div class="hero-slide__metric-wrap">
+                <div class="hero-slide__metric" aria-label="{{ metric_label | escape }}">
+                  <strong>{{ metric_value }}</strong>
+                  <span>{{ metric_label | escape }}</span>
+                </div>
               </div>
             {%- endif -%}
           </div>
@@ -94,19 +194,23 @@
       </article>
     {%- endfor -%}
   </div>
+  </div>
 
   {%- if section.blocks.size > 1 -%}
-    <button class="hero-slider__arrow hero-slider__arrow--prev" aria-label="Previous slide">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-    </button>
-    <button class="hero-slider__arrow hero-slider__arrow--next" aria-label="Next slide">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-    </button>
-    
-    <div class="hero-slider__dots">
-      {%- for block in section.blocks -%}
-        <button class="hero-slider__dot {% if forloop.first %}is-active{% endif %}" aria-label="Go to slide {{ forloop.index }}" data-index="{{ forloop.index0 }}"></button>
-      {%- endfor -%}
+    <div class="hero-slider__nav" aria-label="Slider navigation">
+      <button class="hero-slider__arrow hero-slider__arrow--prev" aria-label="Previous slide">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+
+      <div class="hero-slider__dots">
+        {%- for block in section.blocks -%}
+          <button class="hero-slider__dot {% if forloop.first %}is-active{% endif %}" aria-label="Go to slide {{ forloop.index }}" data-index="{{ forloop.index0 }}"></button>
+        {%- endfor -%}
+      </div>
+
+      <button class="hero-slider__arrow hero-slider__arrow--next" aria-label="Next slide">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
     </div>
   {%- endif -%}
     {%- if section.settings.show_scroll_hint -%}
@@ -135,12 +239,68 @@
       const speed = parseInt(slider.dataset.speed, 10) || 5000;
       const pauseOnHover = slider.dataset.pauseOnHover === 'true';
       let interval;
+
+      const supportsInteractiveTilt = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+      function resetTilt(slide) {
+        slide.removeAttribute('data-tilting');
+        slide.style.removeProperty('--hero-rotate-x');
+        slide.style.removeProperty('--hero-rotate-y');
+        slide.style.removeProperty('--hero-depth');
+      }
+
+      function initializeSlideTilt() {
+        slides.forEach((slide) => {
+          const media = slide.querySelector('.hero-slide__media');
+          if (!media) return;
+
+          resetTilt(slide);
+
+          if (!supportsInteractiveTilt) return;
+
+          let tiltTimer;
+
+          media.addEventListener('pointermove', (event) => {
+            if (!slide.classList.contains('is-active')) return;
+
+            const bounds = media.getBoundingClientRect();
+            const relativeX = (event.clientX - bounds.left) / bounds.width;
+            const relativeY = (event.clientY - bounds.top) / bounds.height;
+            const rotateY = (relativeX - 0.5) * 18;
+            const rotateX = (0.5 - relativeY) * 14;
+
+            slide.setAttribute('data-tilting', '1');
+            slide.style.setProperty('--hero-rotate-x', `${rotateX.toFixed(2)}deg`);
+            slide.style.setProperty('--hero-rotate-y', `${rotateY.toFixed(2)}deg`);
+            slide.style.setProperty('--hero-depth', '40px');
+
+            clearTimeout(tiltTimer);
+          });
+
+          media.addEventListener('pointerleave', () => {
+            tiltTimer = setTimeout(() => resetTilt(slide), 600);
+          });
+        });
+      }
+
+      function updateTrackPosition(index) {
+        const slideWidth = slides[0].getBoundingClientRect().width;
+        track.style.transform = `translateX(-${index * slideWidth}px)`;
+      }
       
+      function setActiveSlide(index) {
+        slides.forEach((slide, slideIndex) => {
+          slide.classList.toggle('is-active', slideIndex === index);
+          resetTilt(slide);
+        });
+      }
+
       function goToSlide(index) {
         if (index < 0) index = slides.length - 1;
         if (index >= slides.length) index = 0;
         
-        track.style.transform = `translateX(-${index * 100}%)`;
+        updateTrackPosition(index);
+        setActiveSlide(index);
         
         dots.forEach(dot => dot.classList.remove('is-active'));
         if(dots[index]) dots[index].classList.add('is-active');
@@ -176,6 +336,14 @@
         slider.addEventListener('mouseenter', () => clearInterval(interval));
         slider.addEventListener('mouseleave', startAutoplay);
       }
+
+      initializeSlideTilt();
+      window.addEventListener('resize', () => {
+        updateTrackPosition(currentIndex);
+      });
+
+      setActiveSlide(currentIndex);
+      updateTrackPosition(currentIndex);
       
       startAutoplay();
     });
@@ -240,6 +408,12 @@
     },
     {
       "type": "checkbox",
+      "id": "compact_product_slider",
+      "label": "Use compact product slider layout",
+      "default": true
+    },
+    {
+      "type": "checkbox",
       "id": "autoplay",
       "label": "Auto-rotate slides",
       "default": true
@@ -279,6 +453,11 @@
       "name": "Slide",
       "limit": 5,
       "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
         {
           "type": "image_picker",
           "id": "image",

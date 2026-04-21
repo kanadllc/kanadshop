@@ -1,14 +1,17 @@
-<section class="section-spacing">
+<section class="section-spacing account-shell" data-editorial-section="customer-order">
   <div class="page-width order-page">
-    <header>
-      <h1>{{ order.name }}</h1>
-      <p>{{ order.created_at | time_tag: format: 'date' }}</p>
+    <header class="account-page__header" data-editorial-reveal>
+      <div>
+        <p class="account-page__eyebrow">Order history</p>
+        <h1>{{ order.name }}</h1>
+        <p class="account-page__lead">Placed {{ order.created_at | date: format: 'date' }}. Review line items, totals, and status in one place.</p>
+      </div>
       <p><a href="{{ routes.account_url }}">Back to account</a></p>
     </header>
 
-    <div class="cart-items">
+    <div class="cart-items" data-editorial-reveal>
       {%- for line_item in order.line_items -%}
-        <article class="cart-item">
+        <article class="cart-item" data-editorial-reveal>
           <div class="cart-item__media">
             {%- if line_item.image -%}
               <img src="{{ line_item.image | image_url: width: 320 }}" alt="{{ line_item.image.alt | escape | default: line_item.title | escape }}" loading="lazy" width="320" height="{{ 320 | divided_by: line_item.image.aspect_ratio | ceil }}">
@@ -49,7 +52,7 @@
       {%- endfor -%}
     </div>
 
-    <aside class="cart-summary">
+    <aside class="cart-summary" data-editorial-reveal>
       <h2>Summary</h2>
       <p>Subtotal: {{ order.line_items_subtotal_price | money }}</p>
       <p>Total: {{ order.total_price | money }}</p>

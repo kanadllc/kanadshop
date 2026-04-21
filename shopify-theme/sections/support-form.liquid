@@ -1,11 +1,13 @@
-<section class="contact-section section-spacing">
+<section class="contact-section section-spacing" data-editorial-section="support">
   <div class="page-width contact-layout">
-    <div class="rte">
+    <div class="rte contact-layout__intro" data-editorial-reveal>
+      <p class="contact-layout__eyebrow">Theme support</p>
       <h1>{{ page.title | default: 'Support' }}</h1>
+      <p class="contact-layout__lead">Collect the key context up front so support conversations move faster and feel more premium.</p>
       {{ page.content }}
     </div>
 
-    {%- form 'contact', class: 'contact-form' -%}
+    {%- form 'contact', class: 'contact-form', data-editorial-reveal: '' -%}
       {%- if form.posted_successfully? -%}
         <p class="form-status" tabindex="-1">Thanks for reaching out. Your support request has been sent to the store admin email.</p>
       {%- endif -%}
@@ -42,6 +44,11 @@
       <div>
         <label for="SupportFormBody-{{ section.id }}">Description of problem</label>
         <textarea id="SupportFormBody-{{ section.id }}" name="contact[body]" rows="8" required>{{ form.body }}</textarea>
+      </div>
+
+      <div class="contact-form__reassurance" aria-hidden="true">
+        <span>Issue triage</span>
+        <span>Theme guidance</span>
       </div>
 
       <button class="button" type="submit">Send support request</button>

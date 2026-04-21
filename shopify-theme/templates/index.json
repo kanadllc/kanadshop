@@ -6,104 +6,232 @@
         "slide_1": {
           "type": "slide",
           "settings": {
-            "kicker": "Summer drop",
-            "subheading": "New arrivals for fast-moving electronics retailers",
-            "title": "Launch your next best-selling device edit",
-            "text": "<p>Merchandise headline products with richer storytelling, service cues, and curated category paths that feel more premium from the first scroll.</p>",
-            "button_label": "Shop new tech",
-            "secondary_button_label": "See launch bundles",
-            "badge_1": "Express delivery",
-            "badge_2": "Built-in trust cues",
-            "badge_3": "Editorial layouts",
-            "metric_value": "4.9/5",
-            "metric_label": "Average product rating",
+            "kicker": "The Companion Guide",
+            "subheading": "Premium Pet Collection",
+            "title": "Elevated Living for Kindred Spirits.",
+            "text": "<p>We believe excellence should extend to every member of the home. KANAD Pet presents a curated collection where high fashion meets uncompromising safety.</p>",
+            "button_label": "Discover All",
+            "secondary_button_label": "Our Philosophy",
+            "badge_1": "",
+            "badge_2": "",
+            "badge_3": "",
+            "metric_value": "",
+            "metric_label": "",
             "text_alignment": "left",
-            "color_scheme": "dark"
+            "color_scheme": "light"
           }
         },
         "slide_2": {
           "type": "slide",
           "settings": {
-            "kicker": "Seasonal campaign",
-            "subheading": "Merchandise promotions without looking discount-bin generic",
-            "title": "Create polished moments for collections, capsules, and weekend drops",
-            "text": "<p>Each slide now supports layered copy, secondary actions, proof points, and a configurable overlay treatment for more deliberate campaign design.</p>",
-            "button_label": "Explore campaigns",
-            "secondary_button_label": "View accessories",
-            "badge_1": "Flexible messaging",
-            "badge_2": "Mobile-ready",
-            "badge_3": "High-impact CTA stack",
-            "metric_value": "72h",
-            "metric_label": "Campaign turnaround",
+            "kicker": "The Harness Edit",
+            "subheading": "Walk Collection",
+            "title": "The Signature Harness.",
+            "text": "<p>Designed for the dog that knows its worth. Adjustable, padded, and styled for the streets.</p>",
+            "button_label": "Shop Harnesses",
+            "secondary_button_label": "View Details",
+            "badge_1": "",
+            "badge_2": "",
+            "badge_3": "",
+            "metric_value": "$145",
+            "metric_label": "Starting from",
             "text_alignment": "left",
-            "color_scheme": "accent"
+            "color_scheme": "dark"
+          }
+        },
+        "slide_3": {
+          "type": "slide",
+          "settings": {
+            "kicker": "Carrier Collection",
+            "subheading": "Travel in Style",
+            "title": "Transatlantique Carrier.",
+            "text": "<p>Breathable side-panel interior. Built for cabin travel and city strolls alike.</p>",
+            "button_label": "Shop Carriers",
+            "secondary_button_label": "Explore",
+            "badge_1": "",
+            "badge_2": "",
+            "badge_3": "",
+            "metric_value": "$380",
+            "metric_label": "Starting from",
+            "text_alignment": "left",
+            "color_scheme": "dark"
           }
         }
       },
       "block_order": [
         "slide_1",
-        "slide_2"
+        "slide_2",
+        "slide_3"
       ],
       "settings": {
-        "eyebrow": "Modern retail storytelling",
-        "heading": "A more intentional homepage system for premium catalogs",
-        "description": "<p>The slideshow, trust row, and category discovery sections now ship with stronger visual hierarchy and merchant controls so the default preset feels closer to a theme-store candidate.</p>",
-        "secondary_button_label": "Browse curated collections",
+        "eyebrow": "The Companion Guide",
+        "heading": "Elevated Living for Kindred Spirits.",
+        "description": "<p>We believe excellence should extend to every member of the home. KANAD Pet presents a curated collection where high fashion meets uncompromising safety.</p>",
+        "secondary_button_label": "Our Philosophy",
         "content_alignment": "left",
         "height": "large",
         "autoplay": true,
-        "autoplay_speed": 5,
+        "autoplay_speed": 6,
         "pause_on_hover": true,
-        "show_scroll_hint": true,
-        "scroll_hint_label": "Scroll for curated discovery"
+        "show_scroll_hint": false,
+        "scroll_hint_label": "Scroll to discover"
       }
     },
     "features_bar": {
       "type": "features-bar",
       "blocks": {
-        "feature_1": { "type": "feature", "settings": { "icon": "truck", "eyebrow": "Fulfillment", "title": "Fast shipping promises", "text": "Highlight delivery windows, local pickup, or region-specific logistics without using vague filler copy.", "link_label": "Shipping details" } },
-        "feature_2": { "type": "feature", "settings": { "icon": "shield", "eyebrow": "Trust", "title": "Purchase protection", "text": "Surface warranties, secure checkout messaging, and post-purchase reassurance in a more polished card layout.", "link_label": "Protection policy" } },
-        "feature_3": { "type": "feature", "settings": { "icon": "clock", "eyebrow": "Service", "title": "Support that feels credible", "text": "Give merchants room to explain response times, setup help, or guided shopping instead of a bare icon-and-label row.", "link_label": "Get support" } },
-        "feature_4": { "type": "feature", "settings": { "icon": "credit-card", "eyebrow": "Flexibility", "title": "Flexible payment options", "text": "Use the fourth card for installment messaging, trade-in programs, or store-credit offers tied to your catalog.", "link_label": "Payment options" } }
+        "feature_1": {
+          "type": "feature",
+          "settings": {
+            "icon": "shield",
+            "eyebrow": "Certified",
+            "title": "Safety Certified",
+            "text": "Rigorous in-house strength testing on all hardware to ensure security throughout the most spirited walks.",
+            "link_label": ""
+          }
+        },
+        "feature_2": {
+          "type": "feature",
+          "settings": {
+            "icon": "leaf",
+            "eyebrow": "Materials",
+            "title": "Non-Toxic Materials",
+            "text": "Vegetable-tanned leathers and organic cotton, free from synthetic dyes, fillers, and heavy chemicals.",
+            "link_label": ""
+          }
+        },
+        "feature_3": {
+          "type": "feature",
+          "settings": {
+            "icon": "tool",
+            "eyebrow": "Craft",
+            "title": "Artisan Craft",
+            "text": "Hand-sewn details in our atelier with double-reinforced stitching at all critical pressure points.",
+            "link_label": ""
+          }
+        }
       },
-      "block_order": ["feature_1", "feature_2", "feature_3", "feature_4"],
+      "block_order": [
+        "feature_1",
+        "feature_2",
+        "feature_3"
+      ],
       "settings": {
-        "eyebrow": "Confidence builders",
-        "heading": "Trust cues that feel considered, not ornamental",
-        "description": "<p>These cards support more specific operational and service messaging so merchants can match the nuance of their offer.</p>",
+        "eyebrow": "Standards of Excellence",
+        "heading": "Built on a Foundation of Trust.",
+        "description": "<p>Every thread is tested. Every colour is balanced. Our commitment to safety is as uncompromising as our aesthetics.</p>",
         "color_scheme": "light"
-      }
-    },
-    "popular_categories": {
-      "type": "popular-categories",
-      "blocks": {
-        "cat_1": { "type": "category", "settings": { "overline": "Portable audio", "title": "Headphones & earbuds", "description": "Performance-led picks for commuters, creators, and gamers.", "link_label": "Shop audio" } },
-        "cat_2": { "type": "category", "settings": { "overline": "Smart living", "title": "Home tech essentials", "description": "Connected lighting, security, and automation for upgrade-ready homes.", "link_label": "Shop smart home" } },
-        "cat_3": { "type": "category", "settings": { "overline": "Creator kits", "title": "Streaming & studio gear", "description": "Cameras, mics, lights, and setups tailored to content workflows.", "link_label": "Build your setup" } },
-        "cat_4": { "type": "category", "settings": { "overline": "Daily carry", "title": "Mobile accessories", "description": "Chargers, cases, batteries, and practical add-ons with margin upside.", "link_label": "Shop accessories" } },
-        "cat_5": { "type": "category", "settings": { "overline": "Fitness tech", "title": "Wearables & recovery", "description": "Trackers, smart scales, and recovery tools for performance-minded shoppers.", "link_label": "Explore wellness" } },
-        "cat_6": { "type": "category", "settings": { "overline": "Work smarter", "title": "Desk & productivity", "description": "Displays, peripherals, and workspace upgrades for focused setups.", "link_label": "Refresh your desk" } }
-      },
-      "block_order": ["cat_1", "cat_2", "cat_3", "cat_4", "cat_5", "cat_6"],
-      "settings": {
-        "eyebrow": "Shop by intent",
-        "title": "Discovery cards with more context and stronger hierarchy",
-        "description": "<p>Each category card now carries an image, supporting line, and action label so the browsing experience feels more merchandised.</p>",
-        "color_scheme": "soft"
       }
     },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
-        "title": "Bestsellers worth featuring with richer storytelling above",
+        "title": "Best Sellers for Companions",
         "products_to_show": 4
+      }
+    },
+    "popular_categories": {
+      "type": "popular-categories",
+      "blocks": {
+        "cat_1": {
+          "type": "category",
+          "settings": {
+            "overline": "Walk & Travel",
+            "title": "Harnesses & Leads",
+            "description": "Premium hardware and padded designs for dogs who walk in style.",
+            "link_label": "Shop the edit"
+          }
+        },
+        "cat_2": {
+          "type": "category",
+          "settings": {
+            "overline": "Travel Ready",
+            "title": "Carriers & Bags",
+            "description": "Cabin-approved carriers and tote bags built for the modern pet parent.",
+            "link_label": "Explore carriers"
+          }
+        },
+        "cat_3": {
+          "type": "category",
+          "settings": {
+            "overline": "Dining",
+            "title": "Bowls & Feeders",
+            "description": "Elevated feeding essentials in ceramic, steel, and natural materials.",
+            "link_label": "Discover dining"
+          }
+        },
+        "cat_4": {
+          "type": "category",
+          "settings": {
+            "overline": "Wellbeing",
+            "title": "Grooming & Care",
+            "description": "Curated grooming, wellness, and care staples presented with trust and clarity.",
+            "link_label": "Explore care"
+          }
+        },
+        "cat_5": {
+          "type": "category",
+          "settings": {
+            "overline": "Rest",
+            "title": "Beds & Blankets",
+            "description": "Lush, washable comfort pieces for rest and lounging.",
+            "link_label": "Shop bedding"
+          }
+        },
+        "cat_6": {
+          "type": "category",
+          "settings": {
+            "overline": "Play",
+            "title": "Toys & Accessories",
+            "description": "Thoughtfully designed play pieces that are as safe as they are engaging.",
+            "link_label": "Browse toys"
+          }
+        }
+      },
+      "block_order": [
+        "cat_1",
+        "cat_2",
+        "cat_3",
+        "cat_4",
+        "cat_5",
+        "cat_6"
+      ],
+      "settings": {
+        "eyebrow": "The Collection",
+        "title": "Shop by Category",
+        "description": "<p>Find the perfect piece for your closest companion.</p>",
+        "color_scheme": "soft"
+      }
+    },
+    "popular_products": {
+      "type": "popular-products",
+      "settings": {
+        "eyebrow": "Customer Favourites",
+        "title": "Popular Products",
+        "description": "The pieces our community returns to, season after season.",
+        "products_to_show": 4,
+        "view_all_label": "View all products",
+        "view_all_link": "/collections/all"
+      }
+    },
+    "new_arrivals": {
+      "type": "new-arrivals",
+      "settings": {
+        "eyebrow": "Just Landed",
+        "title": "New Arrivals",
+        "description": "Fresh from the atelier — our latest additions to the collection.",
+        "products_to_show": 4,
+        "view_all_label": "See all new arrivals",
+        "view_all_link": "/collections/new-arrivals"
       }
     }
   },
   "order": [
     "hero_slider",
-    "features_bar",
+    "popular_products",
+    "new_arrivals",
+    "featured_collection",
     "popular_categories",
-    "featured_collection"
+    "features_bar"
   ]
 }

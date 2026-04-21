@@ -1,0 +1,683 @@
+{%- assign nav_type = nav_type | default: 'horizontal' -%}
+
+{%- capture search_base -%}{{ routes.search_url }}?q={%- endcapture -%}
+
+{%- if nav_type == 'vertical' -%}
+  <ul class="vertical-mega-menu__list" role="list">
+    <li class="vertical-mega-menu__item has-submenu">
+      <a href="{{ search_base }}{{ 'clothing apparel' | url_encode }}" class="vertical-mega-menu__link">
+        <span>Clothing &amp; Apparel</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      </a>
+      <div class="submenu-pane submenu-pane--editorial">
+        <div class="submenu-pane__inner">
+          <div class="submenu-pane__column">
+            <a href="{{ search_base }}{{ 'mens apparel' | url_encode }}" class="submenu-pane__title">Mens</a>
+            <ul class="submenu-pane__list" role="list">
+              <li><a href="{{ search_base }}{{ 'tailored blazers' | url_encode }}" class="submenu-pane__link">Tailored blazers</a></li>
+              <li><a href="{{ search_base }}{{ 'premium denim' | url_encode }}" class="submenu-pane__link">Premium denim</a></li>
+              <li><a href="{{ search_base }}{{ 'street activewear' | url_encode }}" class="submenu-pane__link">Street activewear</a></li>
+              <li><a href="{{ search_base }}{{ 'resort shirts' | url_encode }}" class="submenu-pane__link">Resort shirts</a></li>
+            </ul>
+          </div>
+          <div class="submenu-pane__column">
+            <a href="{{ search_base }}{{ 'womens apparel' | url_encode }}" class="submenu-pane__title">Womens</a>
+            <ul class="submenu-pane__list" role="list">
+              <li><a href="{{ search_base }}{{ 'occasion dresses' | url_encode }}" class="submenu-pane__link">Occasion dresses</a></li>
+              <li><a href="{{ search_base }}{{ 'co ord sets' | url_encode }}" class="submenu-pane__link">Co-ord sets</a></li>
+              <li><a href="{{ search_base }}{{ 'knit loungewear' | url_encode }}" class="submenu-pane__link">Knit loungewear</a></li>
+              <li><a href="{{ search_base }}{{ 'modest fashion' | url_encode }}" class="submenu-pane__link">Modest fashion</a></li>
+            </ul>
+          </div>
+          <div class="submenu-pane__column">
+            <a href="{{ search_base }}{{ 'kids clothing' | url_encode }}" class="submenu-pane__title">Kids</a>
+            <ul class="submenu-pane__list" role="list">
+              <li><a href="{{ search_base }}{{ 'school essentials for kids' | url_encode }}" class="submenu-pane__link">School essentials</a></li>
+              <li><a href="{{ search_base }}{{ 'playtime outfits' | url_encode }}" class="submenu-pane__link">Playtime outfits</a></li>
+              <li><a href="{{ search_base }}{{ 'mini festive wear' | url_encode }}" class="submenu-pane__link">Mini festive wear</a></li>
+              <li><a href="{{ search_base }}{{ 'baby gift sets' | url_encode }}" class="submenu-pane__link">Baby gift sets</a></li>
+            </ul>
+          </div>
+          <div class="submenu-pane__promo submenu-pane__promo--editorial">
+            <span class="submenu-pane__promo-label">Capsule drop</span>
+            <h3>Fresh wardrobe stories for every age.</h3>
+            <p>Build full looks from desk-ready tailoring to family weekend layers.</p>
+            <ul class="submenu-pane__feature-list" role="list">
+              <li>Travel-light layering</li>
+              <li>Seasonal color stories</li>
+              <li>Premium fabric edit</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li class="vertical-mega-menu__item has-submenu">
+      <a href="{{ search_base }}{{ 'jewelry' | url_encode }}" class="vertical-mega-menu__link">
+        <span>Jewelry</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      </a>
+      <div class="submenu-pane submenu-pane--editorial">
+        <div class="submenu-pane__inner">
+          <div class="submenu-pane__column">
+            <a href="{{ search_base }}{{ 'fine jewelry' | url_encode }}" class="submenu-pane__title">Fine jewelry</a>
+            <ul class="submenu-pane__list" role="list">
+              <li><a href="{{ search_base }}{{ 'diamond pendants' | url_encode }}" class="submenu-pane__link">Diamond pendants</a></li>
+              <li><a href="{{ search_base }}{{ 'gold chains' | url_encode }}" class="submenu-pane__link">Gold chains</a></li>
+              <li><a href="{{ search_base }}{{ 'heirloom rings' | url_encode }}" class="submenu-pane__link">Heirloom rings</a></li>
+              <li><a href="{{ search_base }}{{ 'luxury bracelets' | url_encode }}" class="submenu-pane__link">Luxury bracelets</a></li>
+            </ul>
+          </div>
+          <div class="submenu-pane__column">
+            <a href="{{ search_base }}{{ 'everyday jewelry' | url_encode }}" class="submenu-pane__title">Everyday shine</a>
+            <ul class="submenu-pane__list" role="list">
+              <li><a href="{{ search_base }}{{ 'stacking rings' | url_encode }}" class="submenu-pane__link">Stacking rings</a></li>
+              <li><a href="{{ search_base }}{{ 'minimal hoops' | url_encode }}" class="submenu-pane__link">Minimal hoops</a></li>
+              <li><a href="{{ search_base }}{{ 'birthstone pieces' | url_encode }}" class="submenu-pane__link">Birthstone pieces</a></li>
+              <li><a href="{{ search_base }}{{ 'daily charms' | url_encode }}" class="submenu-pane__link">Daily charms</a></li>
+            </ul>
+          </div>
+          <div class="submenu-pane__column">
+            <a href="{{ search_base }}{{ 'bridal jewelry' | url_encode }}" class="submenu-pane__title">Bridal &amp; gifting</a>
+            <ul class="submenu-pane__list" role="list">
+              <li><a href="{{ search_base }}{{ 'wedding sets' | url_encode }}" class="submenu-pane__link">Wedding sets</a></li>
+              <li><a href="{{ search_base }}{{ 'anniversary gifts' | url_encode }}" class="submenu-pane__link">Anniversary gifts</a></li>
+              <li><a href="{{ search_base }}{{ 'personalized lockets' | url_encode }}" class="submenu-pane__link">Personalized lockets</a></li>
+              <li><a href="{{ search_base }}{{ 'watch and charm boxes' | url_encode }}" class="submenu-pane__link">Watch &amp; charm boxes</a></li>
+            </ul>
+          </div>
+          <div class="submenu-pane__promo submenu-pane__promo--editorial">
+            <span class="submenu-pane__promo-label">Gift atelier</span>
+            <h3>Curated sparkle for milestones and everyday wear.</h3>
+            <p>Combine signature metals, modern silhouettes, and occasion-ready keepsakes.</p>
+            <ul class="submenu-pane__feature-list" role="list">
+              <li>Layer-ready picks</li>
+              <li>Modern bridal sets</li>
+              <li>Signature gift wrapping</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li class="vertical-mega-menu__item has-submenu">
+      <a href="{{ search_base }}{{ 'fashion accessories' | url_encode }}" class="vertical-mega-menu__link">
+        <span>Fashion</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      </a>
+      <div class="submenu-pane submenu-pane--editorial">
+        <div class="submenu-pane__inner">
+          <div class="submenu-pane__column">
+            <a href="{{ search_base }}{{ 'footwear' | url_encode }}" class="submenu-pane__title">Footwear</a>
+            <ul class="submenu-pane__list" role="list">
+              <li><a href="{{ search_base }}{{ 'sneakers' | url_encode }}" class="submenu-pane__link">Sneakers</a></li>
+              <li><a href="{{ search_base }}{{ 'formal shoes' | url_encode }}" class="submenu-pane__link">Formal shoes</a></li>
+              <li><a href="{{ search_base }}{{ 'sandals' | url_encode }}" class="submenu-pane__link">Sandals</a></li>
+              <li><a href="{{ search_base }}{{ 'boots' | url_encode }}" class="submenu-pane__link">Boots</a></li>
+            </ul>
+          </div>
+          <div class="submenu-pane__column">
+            <a href="{{ search_base }}{{ 'bags and wallets' | url_encode }}" class="submenu-pane__title">Bags &amp; wallets</a>
+            <ul class="submenu-pane__list" role="list">
+              <li><a href="{{ search_base }}{{ 'crossbody bags' | url_encode }}" class="submenu-pane__link">Crossbody bags</a></li>
+              <li><a href="{{ search_base }}{{ 'work totes' | url_encode }}" class="submenu-pane__link">Work totes</a></li>
+              <li><a href="{{ search_base }}{{ 'travel duffels' | url_encode }}" class="submenu-pane__link">Travel duffels</a></li>
+              <li><a href="{{ search_base }}{{ 'slim wallets' | url_encode }}" class="submenu-pane__link">Slim wallets</a></li>
+            </ul>
+          </div>
+          <div class="submenu-pane__column">
+            <a href="{{ search_base }}{{ 'sunglasses and accessories' | url_encode }}" class="submenu-pane__title">Accent pieces</a>
+            <ul class="submenu-pane__list" role="list">
+              <li><a href="{{ search_base }}{{ 'sunglasses' | url_encode }}" class="submenu-pane__link">Sunglasses</a></li>
+              <li><a href="{{ search_base }}{{ 'statement belts' | url_encode }}" class="submenu-pane__link">Statement belts</a></li>
+              <li><a href="{{ search_base }}{{ 'scarves' | url_encode }}" class="submenu-pane__link">Scarves</a></li>
+              <li><a href="{{ search_base }}{{ 'caps and hats' | url_encode }}" class="submenu-pane__link">Caps &amp; hats</a></li>
+            </ul>
+          </div>
+          <div class="submenu-pane__promo submenu-pane__promo--editorial">
+            <span class="submenu-pane__promo-label">Style lab</span>
+            <h3>Accessories that finish every look with intent.</h3>
+            <p>Mix statement footwear, travel-ready bags, and refined finishing touches.</p>
+            <ul class="submenu-pane__feature-list" role="list">
+              <li>Trend-led drops</li>
+              <li>Smart everyday utility</li>
+              <li>Color-matched styling</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li class="vertical-mega-menu__item has-submenu">
+      <a href="{{ search_base }}{{ 'electronics' | url_encode }}" class="vertical-mega-menu__link">
+        <span>Electronics</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      </a>
+      <div class="submenu-pane submenu-pane--editorial">
+        <div class="submenu-pane__inner">
+          <div class="submenu-pane__column">
+            <a href="{{ search_base }}{{ 'smart home devices' | url_encode }}" class="submenu-pane__title">Smart living</a>
+            <ul class="submenu-pane__list" role="list">
+              <li><a href="{{ search_base }}{{ 'smart lighting' | url_encode }}" class="submenu-pane__link">Smart lighting</a></li>
+              <li><a href="{{ search_base }}{{ 'home security cameras' | url_encode }}" class="submenu-pane__link">Security cameras</a></li>
+              <li><a href="{{ search_base }}{{ 'robot vacuum' | url_encode }}" class="submenu-pane__link">Robot vacuum</a></li>
+              <li><a href="{{ search_base }}{{ 'voice assistants' | url_encode }}" class="submenu-pane__link">Voice assistants</a></li>
+            </ul>
+          </div>
+          <div class="submenu-pane__column">
+            <a href="{{ search_base }}{{ 'audio and gaming' | url_encode }}" class="submenu-pane__title">Audio &amp; gaming</a>
+            <ul class="submenu-pane__list" role="list">
+              <li><a href="{{ search_base }}{{ 'wireless earbuds' | url_encode }}" class="submenu-pane__link">Wireless earbuds</a></li>
+              <li><a href="{{ search_base }}{{ 'soundbars' | url_encode }}" class="submenu-pane__link">Soundbars</a></li>
+              <li><a href="{{ search_base }}{{ 'gaming accessories' | url_encode }}" class="submenu-pane__link">Gaming accessories</a></li>
+              <li><a href="{{ search_base }}{{ 'portable speakers' | url_encode }}" class="submenu-pane__link">Portable speakers</a></li>
+            </ul>
+          </div>
+          <div class="submenu-pane__column">
+            <a href="{{ search_base }}{{ 'mobile and work tech' | url_encode }}" class="submenu-pane__title">Mobile &amp; work tech</a>
+            <ul class="submenu-pane__list" role="list">
+              <li><a href="{{ search_base }}{{ 'fast chargers' | url_encode }}" class="submenu-pane__link">Fast chargers</a></li>
+              <li><a href="{{ search_base }}{{ 'tablet keyboards' | url_encode }}" class="submenu-pane__link">Tablet keyboards</a></li>
+              <li><a href="{{ search_base }}{{ 'monitor arms' | url_encode }}" class="submenu-pane__link">Monitor arms</a></li>
+              <li><a href="{{ search_base }}{{ 'webcam kits' | url_encode }}" class="submenu-pane__link">Webcam kits</a></li>
+            </ul>
+          </div>
+          <div class="submenu-pane__promo submenu-pane__promo--editorial">
+            <span class="submenu-pane__promo-label">Tech picks</span>
+            <h3>Upgrade daily routines with connected essentials.</h3>
+            <p>Blend smart-home comfort, immersive sound, and productivity gear in one hub.</p>
+            <ul class="submenu-pane__feature-list" role="list">
+              <li>Desk-to-home setup</li>
+              <li>Compact premium gadgets</li>
+              <li>Best-seller bundles</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li class="vertical-mega-menu__item has-submenu">
+      <a href="{{ search_base }}{{ 'pet supplies' | url_encode }}" class="vertical-mega-menu__link">
+        <span>Pet Supplies</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      </a>
+      <div class="submenu-pane submenu-pane--editorial">
+        <div class="submenu-pane__inner">
+          <div class="submenu-pane__column">
+            <a href="{{ search_base }}{{ 'cat toys and care' | url_encode }}" class="submenu-pane__title">Cat world</a>
+            <ul class="submenu-pane__list" role="list">
+              <li><a href="{{ search_base }}{{ 'cat teaser toys' | url_encode }}" class="submenu-pane__link">Teaser toys</a></li>
+              <li><a href="{{ search_base }}{{ 'cat towers' | url_encode }}" class="submenu-pane__link">Cat towers</a></li>
+              <li><a href="{{ search_base }}{{ 'litter solutions' | url_encode }}" class="submenu-pane__link">Litter solutions</a></li>
+              <li><a href="{{ search_base }}{{ 'calming beds for cats' | url_encode }}" class="submenu-pane__link">Calming beds</a></li>
+            </ul>
+          </div>
+          <div class="submenu-pane__column">
+            <a href="{{ search_base }}{{ 'dog training and toys' | url_encode }}" class="submenu-pane__title">Dog training</a>
+            <ul class="submenu-pane__list" role="list">
+              <li><a href="{{ search_base }}{{ 'training clickers' | url_encode }}" class="submenu-pane__link">Training clickers</a></li>
+              <li><a href="{{ search_base }}{{ 'agility sets' | url_encode }}" class="submenu-pane__link">Agility sets</a></li>
+              <li><a href="{{ search_base }}{{ 'interactive chew toys' | url_encode }}" class="submenu-pane__link">Interactive chew toys</a></li>
+              <li><a href="{{ search_base }}{{ 'treat pouches' | url_encode }}" class="submenu-pane__link">Treat pouches</a></li>
+            </ul>
+          </div>
+          <div class="submenu-pane__column">
+            <a href="{{ search_base }}{{ 'feeding and travel gear for pets' | url_encode }}" class="submenu-pane__title">Feeding &amp; travel</a>
+            <ul class="submenu-pane__list" role="list">
+              <li><a href="{{ search_base }}{{ 'slow feeder bowls' | url_encode }}" class="submenu-pane__link">Slow feeder bowls</a></li>
+              <li><a href="{{ search_base }}{{ 'pet water fountains' | url_encode }}" class="submenu-pane__link">Water fountains</a></li>
+              <li><a href="{{ search_base }}{{ 'pet carriers' | url_encode }}" class="submenu-pane__link">Pet carriers</a></li>
+              <li><a href="{{ search_base }}{{ 'car seat covers for pets' | url_encode }}" class="submenu-pane__link">Car seat covers</a></li>
+            </ul>
+          </div>
+          <div class="submenu-pane__promo submenu-pane__promo--editorial">
+            <span class="submenu-pane__promo-label">Happy tails</span>
+            <h3>Play, train, groom, and travel with confidence.</h3>
+            <p>Create a complete pet-care aisle with durable toys and practical daily tools.</p>
+            <ul class="submenu-pane__feature-list" role="list">
+              <li>Behavior-friendly picks</li>
+              <li>Indoor enrichment toys</li>
+              <li>Travel-safe accessories</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li class="vertical-mega-menu__item has-submenu">
+      <a href="{{ search_base }}{{ 'home appliances' | url_encode }}" class="vertical-mega-menu__link">
+        <span>Home Appliances</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      </a>
+      <div class="submenu-pane submenu-pane--editorial">
+        <div class="submenu-pane__inner">
+          <div class="submenu-pane__column">
+            <a href="{{ search_base }}{{ 'kitchen appliances' | url_encode }}" class="submenu-pane__title">Kitchen power</a>
+            <ul class="submenu-pane__list" role="list">
+              <li><a href="{{ search_base }}{{ 'air fryers' | url_encode }}" class="submenu-pane__link">Air fryers</a></li>
+              <li><a href="{{ search_base }}{{ 'espresso machines' | url_encode }}" class="submenu-pane__link">Espresso machines</a></li>
+              <li><a href="{{ search_base }}{{ 'food processors' | url_encode }}" class="submenu-pane__link">Food processors</a></li>
+              <li><a href="{{ search_base }}{{ 'smart blenders' | url_encode }}" class="submenu-pane__link">Smart blenders</a></li>
+            </ul>
+          </div>
+          <div class="submenu-pane__column">
+            <a href="{{ search_base }}{{ 'cleaning appliances' | url_encode }}" class="submenu-pane__title">Laundry &amp; cleaning</a>
+            <ul class="submenu-pane__list" role="list">
+              <li><a href="{{ search_base }}{{ 'steam mops' | url_encode }}" class="submenu-pane__link">Steam mops</a></li>
+              <li><a href="{{ search_base }}{{ 'cordless vacuums' | url_encode }}" class="submenu-pane__link">Cordless vacuums</a></li>
+              <li><a href="{{ search_base }}{{ 'garment steamers' | url_encode }}" class="submenu-pane__link">Garment steamers</a></li>
+              <li><a href="{{ search_base }}{{ 'washer dryer combos' | url_encode }}" class="submenu-pane__link">Washer-dryer combos</a></li>
+            </ul>
+          </div>
+          <div class="submenu-pane__column">
+            <a href="{{ search_base }}{{ 'air and comfort appliances' | url_encode }}" class="submenu-pane__title">Air &amp; comfort</a>
+            <ul class="submenu-pane__list" role="list">
+              <li><a href="{{ search_base }}{{ 'air purifiers' | url_encode }}" class="submenu-pane__link">Air purifiers</a></li>
+              <li><a href="{{ search_base }}{{ 'humidifiers' | url_encode }}" class="submenu-pane__link">Humidifiers</a></li>
+              <li><a href="{{ search_base }}{{ 'tower fans' | url_encode }}" class="submenu-pane__link">Tower fans</a></li>
+              <li><a href="{{ search_base }}{{ 'portable heaters' | url_encode }}" class="submenu-pane__link">Portable heaters</a></li>
+            </ul>
+          </div>
+          <div class="submenu-pane__promo submenu-pane__promo--editorial">
+            <span class="submenu-pane__promo-label">Home reset</span>
+            <h3>Appliances that make the home feel faster and calmer.</h3>
+            <p>Organize cooking, cleaning, and comfort essentials into a clear destination menu.</p>
+            <ul class="submenu-pane__feature-list" role="list">
+              <li>Time-saving kitchen heroes</li>
+              <li>Compact cleaning solutions</li>
+              <li>All-season comfort tools</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li class="vertical-mega-menu__item has-submenu">
+      <a href="{{ search_base }}{{ 'cosmetics' | url_encode }}" class="vertical-mega-menu__link">
+        <span>Cosmetics</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      </a>
+      <div class="submenu-pane submenu-pane--editorial">
+        <div class="submenu-pane__inner">
+          <div class="submenu-pane__column">
+            <a href="{{ search_base }}{{ 'complexion makeup cosmetics' | url_encode }}" class="submenu-pane__title">Complexion</a>
+            <ul class="submenu-pane__list" role="list">
+              <li><a href="{{ search_base }}{{ 'primer cosmetics' | url_encode }}" class="submenu-pane__link">Primers</a></li>
+              <li><a href="{{ search_base }}{{ 'foundation cosmetics' | url_encode }}" class="submenu-pane__link">Foundations</a></li>
+              <li><a href="{{ search_base }}{{ 'concealer cosmetics' | url_encode }}" class="submenu-pane__link">Concealers</a></li>
+              <li><a href="{{ search_base }}{{ 'setting powder cosmetics' | url_encode }}" class="submenu-pane__link">Setting powders</a></li>
+            </ul>
+          </div>
+          <div class="submenu-pane__column">
+            <a href="{{ search_base }}{{ 'eye makeup cosmetics' | url_encode }}" class="submenu-pane__title">Eyes</a>
+            <ul class="submenu-pane__list" role="list">
+              <li><a href="{{ search_base }}{{ 'mascara cosmetics' | url_encode }}" class="submenu-pane__link">Mascaras</a></li>
+              <li><a href="{{ search_base }}{{ 'eyeliner cosmetics' | url_encode }}" class="submenu-pane__link">Eyeliners</a></li>
+              <li><a href="{{ search_base }}{{ 'brow pencil cosmetics' | url_encode }}" class="submenu-pane__link">Brow definers</a></li>
+              <li><a href="{{ search_base }}{{ 'eyeshadow palettes cosmetics' | url_encode }}" class="submenu-pane__link">Eyeshadow palettes</a></li>
+            </ul>
+          </div>
+          <div class="submenu-pane__column">
+            <a href="{{ search_base }}{{ 'lip makeup and beauty tools cosmetics' | url_encode }}" class="submenu-pane__title">Lips &amp; tools</a>
+            <ul class="submenu-pane__list" role="list">
+              <li><a href="{{ search_base }}{{ 'lipstick cosmetics' | url_encode }}" class="submenu-pane__link">Lipsticks</a></li>
+              <li><a href="{{ search_base }}{{ 'lip liner cosmetics' | url_encode }}" class="submenu-pane__link">Lip liners</a></li>
+              <li><a href="{{ search_base }}{{ 'lip gloss cosmetics' | url_encode }}" class="submenu-pane__link">Lip gloss</a></li>
+              <li><a href="{{ search_base }}{{ 'makeup brushes cosmetics' | url_encode }}" class="submenu-pane__link">Brush sets</a></li>
+            </ul>
+          </div>
+          <div class="submenu-pane__promo submenu-pane__promo--editorial">
+            <span class="submenu-pane__promo-label">Beauty edit</span>
+            <h3>Core beauty categories arranged the way shoppers actually browse.</h3>
+            <p>Lead with complexion, eyes, and lip essentials so the cosmetics menu feels closer to a real catalog structure.</p>
+            <ul class="submenu-pane__feature-list" role="list">
+              <li>Complexion staples</li>
+              <li>Eye definition picks</li>
+              <li>Lip color essentials</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+{%- else -%}
+  <ul class="header__nav-list header__nav-list--editorial" role="list">
+    <li class="header__nav-item header__nav-item--has-mega">
+      <a href="{{ search_base }}{{ 'clothing apparel' | url_encode }}" class="header__nav-link"><span>Clothing &amp; Apparel</span><svg class="header__nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
+      <div class="header__mega-panel">
+        <div class="header__mega-panel-inner">
+          <div class="header__mega-columns">
+            <div class="header__mega-column">
+              <a href="{{ search_base }}{{ 'mens apparel' | url_encode }}" class="header__mega-title">Mens</a>
+              <ul class="header__mega-list" role="list">
+                <li><a href="{{ search_base }}{{ 'tailored blazers' | url_encode }}" class="header__mega-link">Tailored blazers</a></li>
+                <li><a href="{{ search_base }}{{ 'premium denim' | url_encode }}" class="header__mega-link">Premium denim</a></li>
+                <li><a href="{{ search_base }}{{ 'street activewear' | url_encode }}" class="header__mega-link">Street activewear</a></li>
+                <li><a href="{{ search_base }}{{ 'resort shirts' | url_encode }}" class="header__mega-link">Resort shirts</a></li>
+              </ul>
+            </div>
+            <div class="header__mega-column">
+              <a href="{{ search_base }}{{ 'womens apparel' | url_encode }}" class="header__mega-title">Womens</a>
+              <ul class="header__mega-list" role="list">
+                <li><a href="{{ search_base }}{{ 'occasion dresses' | url_encode }}" class="header__mega-link">Occasion dresses</a></li>
+                <li><a href="{{ search_base }}{{ 'co ord sets' | url_encode }}" class="header__mega-link">Co-ord sets</a></li>
+                <li><a href="{{ search_base }}{{ 'knit loungewear' | url_encode }}" class="header__mega-link">Knit loungewear</a></li>
+                <li><a href="{{ search_base }}{{ 'modest fashion' | url_encode }}" class="header__mega-link">Modest fashion</a></li>
+              </ul>
+            </div>
+            <div class="header__mega-column">
+              <a href="{{ search_base }}{{ 'kids clothing' | url_encode }}" class="header__mega-title">Kids</a>
+              <ul class="header__mega-list" role="list">
+                <li><a href="{{ search_base }}{{ 'school essentials for kids' | url_encode }}" class="header__mega-link">School essentials</a></li>
+                <li><a href="{{ search_base }}{{ 'playtime outfits' | url_encode }}" class="header__mega-link">Playtime outfits</a></li>
+                <li><a href="{{ search_base }}{{ 'mini festive wear' | url_encode }}" class="header__mega-link">Mini festive wear</a></li>
+                <li><a href="{{ search_base }}{{ 'baby gift sets' | url_encode }}" class="header__mega-link">Baby gift sets</a></li>
+              </ul>
+            </div>
+            <div class="header__mega-column">
+              <a href="{{ search_base }}{{ 'capsule wardrobes' | url_encode }}" class="header__mega-title">Capsule stories</a>
+              <ul class="header__mega-list" role="list">
+                <li><a href="{{ search_base }}{{ 'travel layers' | url_encode }}" class="header__mega-link">Travel layers</a></li>
+                <li><a href="{{ search_base }}{{ 'seasonal drops' | url_encode }}" class="header__mega-link">Seasonal drops</a></li>
+                <li><a href="{{ search_base }}{{ 'sustainable basics' | url_encode }}" class="header__mega-link">Sustainable basics</a></li>
+                <li><a href="{{ search_base }}{{ 'matching family outfits' | url_encode }}" class="header__mega-link">Matching family outfits</a></li>
+              </ul>
+            </div>
+          </div>
+          <aside class="header__mega-promo header__mega-promo--editorial">
+            <span class="header__mega-promo-label">Capsule drop</span>
+            <h3>Curated looks built for everyday stories.</h3>
+            <p>Move from workwear to weekend dressing with layered edits for men, women, and kids.</p>
+            <ul class="header__mega-feature-list" role="list">
+              <li>Desk-to-dinner sets</li>
+              <li>Family outfit themes</li>
+              <li>Fresh fabric trends</li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </li>
+
+    <li class="header__nav-item header__nav-item--has-mega">
+      <a href="{{ search_base }}{{ 'jewelry' | url_encode }}" class="header__nav-link"><span>Jewelry</span><svg class="header__nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
+      <div class="header__mega-panel">
+        <div class="header__mega-panel-inner">
+          <div class="header__mega-columns">
+            <div class="header__mega-column">
+              <a href="{{ search_base }}{{ 'fine jewelry' | url_encode }}" class="header__mega-title">Fine jewelry</a>
+              <ul class="header__mega-list" role="list">
+                <li><a href="{{ search_base }}{{ 'diamond pendants' | url_encode }}" class="header__mega-link">Diamond pendants</a></li>
+                <li><a href="{{ search_base }}{{ 'gold chains' | url_encode }}" class="header__mega-link">Gold chains</a></li>
+                <li><a href="{{ search_base }}{{ 'heirloom rings' | url_encode }}" class="header__mega-link">Heirloom rings</a></li>
+                <li><a href="{{ search_base }}{{ 'luxury bracelets' | url_encode }}" class="header__mega-link">Luxury bracelets</a></li>
+              </ul>
+            </div>
+            <div class="header__mega-column">
+              <a href="{{ search_base }}{{ 'everyday jewelry' | url_encode }}" class="header__mega-title">Everyday shine</a>
+              <ul class="header__mega-list" role="list">
+                <li><a href="{{ search_base }}{{ 'stacking rings' | url_encode }}" class="header__mega-link">Stacking rings</a></li>
+                <li><a href="{{ search_base }}{{ 'minimal hoops' | url_encode }}" class="header__mega-link">Minimal hoops</a></li>
+                <li><a href="{{ search_base }}{{ 'birthstone pieces' | url_encode }}" class="header__mega-link">Birthstone pieces</a></li>
+                <li><a href="{{ search_base }}{{ 'daily charms' | url_encode }}" class="header__mega-link">Daily charms</a></li>
+              </ul>
+            </div>
+            <div class="header__mega-column">
+              <a href="{{ search_base }}{{ 'bridal jewelry' | url_encode }}" class="header__mega-title">Bridal &amp; gifting</a>
+              <ul class="header__mega-list" role="list">
+                <li><a href="{{ search_base }}{{ 'wedding sets' | url_encode }}" class="header__mega-link">Wedding sets</a></li>
+                <li><a href="{{ search_base }}{{ 'anniversary gifts' | url_encode }}" class="header__mega-link">Anniversary gifts</a></li>
+                <li><a href="{{ search_base }}{{ 'personalized lockets' | url_encode }}" class="header__mega-link">Personalized lockets</a></li>
+                <li><a href="{{ search_base }}{{ 'watch and charm boxes' | url_encode }}" class="header__mega-link">Watch &amp; charm boxes</a></li>
+              </ul>
+            </div>
+          </div>
+          <aside class="header__mega-promo header__mega-promo--editorial">
+            <span class="header__mega-promo-label">Gift atelier</span>
+            <h3>Signature sparkle with modern layering in mind.</h3>
+            <p>Blend heirloom pieces, daily shine, and gifting ideas in a premium browsing experience.</p>
+            <ul class="header__mega-feature-list" role="list">
+              <li>Occasion-ready edits</li>
+              <li>Personalized keepsakes</li>
+              <li>Layered metal stories</li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </li>
+
+    <li class="header__nav-item header__nav-item--has-mega">
+      <a href="{{ search_base }}{{ 'fashion accessories' | url_encode }}" class="header__nav-link"><span>Fashion</span><svg class="header__nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
+      <div class="header__mega-panel">
+        <div class="header__mega-panel-inner">
+          <div class="header__mega-columns">
+            <div class="header__mega-column">
+              <a href="{{ search_base }}{{ 'footwear' | url_encode }}" class="header__mega-title">Footwear</a>
+              <ul class="header__mega-list" role="list">
+                <li><a href="{{ search_base }}{{ 'sneakers' | url_encode }}" class="header__mega-link">Sneakers</a></li>
+                <li><a href="{{ search_base }}{{ 'formal shoes' | url_encode }}" class="header__mega-link">Formal shoes</a></li>
+                <li><a href="{{ search_base }}{{ 'sandals' | url_encode }}" class="header__mega-link">Sandals</a></li>
+                <li><a href="{{ search_base }}{{ 'boots' | url_encode }}" class="header__mega-link">Boots</a></li>
+              </ul>
+            </div>
+            <div class="header__mega-column">
+              <a href="{{ search_base }}{{ 'bags and wallets' | url_encode }}" class="header__mega-title">Bags &amp; wallets</a>
+              <ul class="header__mega-list" role="list">
+                <li><a href="{{ search_base }}{{ 'crossbody bags' | url_encode }}" class="header__mega-link">Crossbody bags</a></li>
+                <li><a href="{{ search_base }}{{ 'work totes' | url_encode }}" class="header__mega-link">Work totes</a></li>
+                <li><a href="{{ search_base }}{{ 'travel duffels' | url_encode }}" class="header__mega-link">Travel duffels</a></li>
+                <li><a href="{{ search_base }}{{ 'slim wallets' | url_encode }}" class="header__mega-link">Slim wallets</a></li>
+              </ul>
+            </div>
+            <div class="header__mega-column">
+              <a href="{{ search_base }}{{ 'sunglasses and accessories' | url_encode }}" class="header__mega-title">Accent pieces</a>
+              <ul class="header__mega-list" role="list">
+                <li><a href="{{ search_base }}{{ 'sunglasses' | url_encode }}" class="header__mega-link">Sunglasses</a></li>
+                <li><a href="{{ search_base }}{{ 'statement belts' | url_encode }}" class="header__mega-link">Statement belts</a></li>
+                <li><a href="{{ search_base }}{{ 'scarves' | url_encode }}" class="header__mega-link">Scarves</a></li>
+                <li><a href="{{ search_base }}{{ 'caps and hats' | url_encode }}" class="header__mega-link">Caps &amp; hats</a></li>
+              </ul>
+            </div>
+          </div>
+          <aside class="header__mega-promo header__mega-promo--editorial">
+            <span class="header__mega-promo-label">Style lab</span>
+            <h3>Finish every outfit with smart, elevated accessories.</h3>
+            <p>Create complete look-based merchandising around footwear, bags, and signature accents.</p>
+            <ul class="header__mega-feature-list" role="list">
+              <li>Trend-forward footwear</li>
+              <li>Travel-ready carryalls</li>
+              <li>Seasonal accent picks</li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </li>
+
+    <li class="header__nav-item header__nav-item--has-mega">
+      <a href="{{ search_base }}{{ 'electronics' | url_encode }}" class="header__nav-link"><span>Electronics</span><svg class="header__nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
+      <div class="header__mega-panel">
+        <div class="header__mega-panel-inner">
+          <div class="header__mega-columns">
+            <div class="header__mega-column">
+              <a href="{{ search_base }}{{ 'smart home devices' | url_encode }}" class="header__mega-title">Smart living</a>
+              <ul class="header__mega-list" role="list">
+                <li><a href="{{ search_base }}{{ 'smart lighting' | url_encode }}" class="header__mega-link">Smart lighting</a></li>
+                <li><a href="{{ search_base }}{{ 'home security cameras' | url_encode }}" class="header__mega-link">Security cameras</a></li>
+                <li><a href="{{ search_base }}{{ 'robot vacuum' | url_encode }}" class="header__mega-link">Robot vacuum</a></li>
+                <li><a href="{{ search_base }}{{ 'voice assistants' | url_encode }}" class="header__mega-link">Voice assistants</a></li>
+              </ul>
+            </div>
+            <div class="header__mega-column">
+              <a href="{{ search_base }}{{ 'audio and gaming' | url_encode }}" class="header__mega-title">Audio &amp; gaming</a>
+              <ul class="header__mega-list" role="list">
+                <li><a href="{{ search_base }}{{ 'wireless earbuds' | url_encode }}" class="header__mega-link">Wireless earbuds</a></li>
+                <li><a href="{{ search_base }}{{ 'soundbars' | url_encode }}" class="header__mega-link">Soundbars</a></li>
+                <li><a href="{{ search_base }}{{ 'gaming accessories' | url_encode }}" class="header__mega-link">Gaming accessories</a></li>
+                <li><a href="{{ search_base }}{{ 'portable speakers' | url_encode }}" class="header__mega-link">Portable speakers</a></li>
+              </ul>
+            </div>
+            <div class="header__mega-column">
+              <a href="{{ search_base }}{{ 'mobile and work tech' | url_encode }}" class="header__mega-title">Mobile &amp; work tech</a>
+              <ul class="header__mega-list" role="list">
+                <li><a href="{{ search_base }}{{ 'fast chargers' | url_encode }}" class="header__mega-link">Fast chargers</a></li>
+                <li><a href="{{ search_base }}{{ 'tablet keyboards' | url_encode }}" class="header__mega-link">Tablet keyboards</a></li>
+                <li><a href="{{ search_base }}{{ 'monitor arms' | url_encode }}" class="header__mega-link">Monitor arms</a></li>
+                <li><a href="{{ search_base }}{{ 'webcam kits' | url_encode }}" class="header__mega-link">Webcam kits</a></li>
+              </ul>
+            </div>
+          </div>
+          <aside class="header__mega-promo header__mega-promo--editorial">
+            <span class="header__mega-promo-label">Tech picks</span>
+            <h3>Connected devices for home, play, and productivity.</h3>
+            <p>Give shoppers a cleaner path into smart-living bundles and desk-upgrade essentials.</p>
+            <ul class="header__mega-feature-list" role="list">
+              <li>Smart-home bundles</li>
+              <li>Desk setup upgrades</li>
+              <li>Immersive audio picks</li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </li>
+
+    <li class="header__nav-item header__nav-item--has-mega">
+      <a href="{{ search_base }}{{ 'pet supplies' | url_encode }}" class="header__nav-link"><span>Pet Supplies</span><svg class="header__nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
+      <div class="header__mega-panel">
+        <div class="header__mega-panel-inner">
+          <div class="header__mega-columns">
+            <div class="header__mega-column">
+              <a href="{{ search_base }}{{ 'cat toys and care' | url_encode }}" class="header__mega-title">Cat world</a>
+              <ul class="header__mega-list" role="list">
+                <li><a href="{{ search_base }}{{ 'cat teaser toys' | url_encode }}" class="header__mega-link">Teaser toys</a></li>
+                <li><a href="{{ search_base }}{{ 'cat towers' | url_encode }}" class="header__mega-link">Cat towers</a></li>
+                <li><a href="{{ search_base }}{{ 'litter solutions' | url_encode }}" class="header__mega-link">Litter solutions</a></li>
+                <li><a href="{{ search_base }}{{ 'calming beds for cats' | url_encode }}" class="header__mega-link">Calming beds</a></li>
+              </ul>
+            </div>
+            <div class="header__mega-column">
+              <a href="{{ search_base }}{{ 'dog training and toys' | url_encode }}" class="header__mega-title">Dog training</a>
+              <ul class="header__mega-list" role="list">
+                <li><a href="{{ search_base }}{{ 'training clickers' | url_encode }}" class="header__mega-link">Training clickers</a></li>
+                <li><a href="{{ search_base }}{{ 'agility sets' | url_encode }}" class="header__mega-link">Agility sets</a></li>
+                <li><a href="{{ search_base }}{{ 'interactive chew toys' | url_encode }}" class="header__mega-link">Interactive chew toys</a></li>
+                <li><a href="{{ search_base }}{{ 'treat pouches' | url_encode }}" class="header__mega-link">Treat pouches</a></li>
+              </ul>
+            </div>
+            <div class="header__mega-column">
+              <a href="{{ search_base }}{{ 'feeding and travel gear for pets' | url_encode }}" class="header__mega-title">Feeding &amp; travel</a>
+              <ul class="header__mega-list" role="list">
+                <li><a href="{{ search_base }}{{ 'slow feeder bowls' | url_encode }}" class="header__mega-link">Slow feeder bowls</a></li>
+                <li><a href="{{ search_base }}{{ 'pet water fountains' | url_encode }}" class="header__mega-link">Water fountains</a></li>
+                <li><a href="{{ search_base }}{{ 'pet carriers' | url_encode }}" class="header__mega-link">Pet carriers</a></li>
+                <li><a href="{{ search_base }}{{ 'car seat covers for pets' | url_encode }}" class="header__mega-link">Car seat covers</a></li>
+              </ul>
+            </div>
+          </div>
+          <aside class="header__mega-promo header__mega-promo--editorial">
+            <span class="header__mega-promo-label">Happy tails</span>
+            <h3>A smarter aisle for playful, well-trained pets.</h3>
+            <p>Organize cat enrichment, dog training, and travel gear into one useful mega menu.</p>
+            <ul class="header__mega-feature-list" role="list">
+              <li>Indoor enrichment</li>
+              <li>Behavior support tools</li>
+              <li>Travel-friendly gear</li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </li>
+
+    <li class="header__nav-item header__nav-item--has-mega">
+      <a href="{{ search_base }}{{ 'home appliances' | url_encode }}" class="header__nav-link"><span>Home Appliances</span><svg class="header__nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
+      <div class="header__mega-panel">
+        <div class="header__mega-panel-inner">
+          <div class="header__mega-columns">
+            <div class="header__mega-column">
+              <a href="{{ search_base }}{{ 'kitchen appliances' | url_encode }}" class="header__mega-title">Kitchen power</a>
+              <ul class="header__mega-list" role="list">
+                <li><a href="{{ search_base }}{{ 'air fryers' | url_encode }}" class="header__mega-link">Air fryers</a></li>
+                <li><a href="{{ search_base }}{{ 'espresso machines' | url_encode }}" class="header__mega-link">Espresso machines</a></li>
+                <li><a href="{{ search_base }}{{ 'food processors' | url_encode }}" class="header__mega-link">Food processors</a></li>
+                <li><a href="{{ search_base }}{{ 'smart blenders' | url_encode }}" class="header__mega-link">Smart blenders</a></li>
+              </ul>
+            </div>
+            <div class="header__mega-column">
+              <a href="{{ search_base }}{{ 'cleaning appliances' | url_encode }}" class="header__mega-title">Laundry &amp; cleaning</a>
+              <ul class="header__mega-list" role="list">
+                <li><a href="{{ search_base }}{{ 'steam mops' | url_encode }}" class="header__mega-link">Steam mops</a></li>
+                <li><a href="{{ search_base }}{{ 'cordless vacuums' | url_encode }}" class="header__mega-link">Cordless vacuums</a></li>
+                <li><a href="{{ search_base }}{{ 'garment steamers' | url_encode }}" class="header__mega-link">Garment steamers</a></li>
+                <li><a href="{{ search_base }}{{ 'washer dryer combos' | url_encode }}" class="header__mega-link">Washer-dryer combos</a></li>
+              </ul>
+            </div>
+            <div class="header__mega-column">
+              <a href="{{ search_base }}{{ 'air and comfort appliances' | url_encode }}" class="header__mega-title">Air &amp; comfort</a>
+              <ul class="header__mega-list" role="list">
+                <li><a href="{{ search_base }}{{ 'air purifiers' | url_encode }}" class="header__mega-link">Air purifiers</a></li>
+                <li><a href="{{ search_base }}{{ 'humidifiers' | url_encode }}" class="header__mega-link">Humidifiers</a></li>
+                <li><a href="{{ search_base }}{{ 'tower fans' | url_encode }}" class="header__mega-link">Tower fans</a></li>
+                <li><a href="{{ search_base }}{{ 'portable heaters' | url_encode }}" class="header__mega-link">Portable heaters</a></li>
+              </ul>
+            </div>
+          </div>
+          <aside class="header__mega-promo header__mega-promo--editorial">
+            <span class="header__mega-promo-label">Home reset</span>
+            <h3>Fast paths into kitchen, cleaning, and comfort essentials.</h3>
+            <p>Let shoppers browse appliances by home task instead of a flat generic navigation list.</p>
+            <ul class="header__mega-feature-list" role="list">
+              <li>Cook faster</li>
+              <li>Clean smarter</li>
+              <li>Stay comfortable</li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </li>
+
+    <li class="header__nav-item header__nav-item--has-mega">
+      <a href="{{ search_base }}{{ 'cosmetics' | url_encode }}" class="header__nav-link"><span>Cosmetics</span><svg class="header__nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
+      <div class="header__mega-panel">
+        <div class="header__mega-panel-inner">
+          <div class="header__mega-columns">
+            <div class="header__mega-column">
+              <a href="{{ search_base }}{{ 'complexion makeup cosmetics' | url_encode }}" class="header__mega-title">Complexion</a>
+              <ul class="header__mega-list" role="list">
+                <li><a href="{{ search_base }}{{ 'primer cosmetics' | url_encode }}" class="header__mega-link">Primers</a></li>
+                <li><a href="{{ search_base }}{{ 'foundation cosmetics' | url_encode }}" class="header__mega-link">Foundations</a></li>
+                <li><a href="{{ search_base }}{{ 'concealer cosmetics' | url_encode }}" class="header__mega-link">Concealers</a></li>
+                <li><a href="{{ search_base }}{{ 'setting powder cosmetics' | url_encode }}" class="header__mega-link">Setting powders</a></li>
+              </ul>
+            </div>
+            <div class="header__mega-column">
+              <a href="{{ search_base }}{{ 'eye makeup cosmetics' | url_encode }}" class="header__mega-title">Eyes</a>
+              <ul class="header__mega-list" role="list">
+                <li><a href="{{ search_base }}{{ 'mascara cosmetics' | url_encode }}" class="header__mega-link">Mascaras</a></li>
+                <li><a href="{{ search_base }}{{ 'eyeliner cosmetics' | url_encode }}" class="header__mega-link">Eyeliners</a></li>
+                <li><a href="{{ search_base }}{{ 'brow pencil cosmetics' | url_encode }}" class="header__mega-link">Brow definers</a></li>
+                <li><a href="{{ search_base }}{{ 'eyeshadow palettes cosmetics' | url_encode }}" class="header__mega-link">Eyeshadow palettes</a></li>
+              </ul>
+            </div>
+            <div class="header__mega-column">
+              <a href="{{ search_base }}{{ 'lip makeup and beauty tools cosmetics' | url_encode }}" class="header__mega-title">Lips &amp; tools</a>
+              <ul class="header__mega-list" role="list">
+                <li><a href="{{ search_base }}{{ 'lipstick cosmetics' | url_encode }}" class="header__mega-link">Lipsticks</a></li>
+                <li><a href="{{ search_base }}{{ 'lip liner cosmetics' | url_encode }}" class="header__mega-link">Lip liners</a></li>
+                <li><a href="{{ search_base }}{{ 'lip gloss cosmetics' | url_encode }}" class="header__mega-link">Lip gloss</a></li>
+                <li><a href="{{ search_base }}{{ 'makeup brushes cosmetics' | url_encode }}" class="header__mega-link">Brush sets</a></li>
+              </ul>
+            </div>
+          </div>
+          <aside class="header__mega-promo header__mega-promo--editorial">
+            <span class="header__mega-promo-label">Beauty edit</span>
+            <h3>Core beauty categories arranged the way shoppers actually browse.</h3>
+            <p>Lead with complexion, eyes, and lip essentials so the cosmetics menu feels closer to a real catalog structure.</p>
+            <ul class="header__mega-feature-list" role="list">
+              <li>Complexion staples</li>
+              <li>Eye definition picks</li>
+              <li>Lip color essentials</li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </li>
+  </ul>
+{%- endif -%}

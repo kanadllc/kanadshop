@@ -1,12 +1,14 @@
-<div class="blog-page">
-  <header class="blog-page__header">
+<div class="blog-page" data-editorial-section="blog">
+  <header class="blog-page__header" data-editorial-reveal>
+    <p class="blog-page__eyebrow">Editorial journal</p>
     <h1 class="blog-page__title">{{ blog.title | escape }}</h1>
+    <p class="blog-page__lead">Stories, insights, and merchandising context designed to extend the same premium tone beyond product pages.</p>
   </header>
 
   {%- paginate blog.articles by section.settings.articles_per_page -%}
-    <div class="blog-page__grid">
+    <div class="blog-page__grid" data-editorial-reveal>
       {%- for article in blog.articles -%}
-        <article class="blog-card">
+        <article class="blog-card" data-editorial-reveal>
           <a href="{{ article.url }}" class="blog-card__image-link" aria-label="Read more about {{ article.title | escape }}">
             {%- if article.image -%}
               <img
@@ -28,6 +30,12 @@
               {%- endif -%}
               {%- if section.settings.show_author -%}
                 <span class="blog-card__author">by {{ article.author }}</span>
+              {%- endif -%}
+            </div>
+            <div class="blog-card__meta-row" aria-hidden="true">
+              <span class="blog-card__pill">Feature</span>
+              {%- if article.comments_enabled? -%}
+                <span class="blog-card__pill">Comments open</span>
               {%- endif -%}
             </div>
             <h2 class="blog-card__title">

@@ -1,0 +1,18 @@
+<svg width="1600" height="720" viewBox="0 0 1600 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="720" fill="#F4F8FF"/>
+  <rect x="0" y="440" width="1600" height="280" fill="#E6EEF9"/>
+  <circle cx="1320" cy="140" r="150" fill="#B5D1FF"/>
+  <rect x="135" y="120" width="620" height="500" rx="54" fill="#FFFFFF" stroke="#C7D7F0" stroke-width="6"/>
+  <rect x="860" y="110" width="590" height="510" rx="54" fill="#FDFEFF"/>
+  <rect x="270" y="208" width="360" height="280" rx="140" fill="#F6B784"/>
+  <rect x="344" y="240" width="212" height="212" rx="106" fill="#FDE8D5"/>
+  <rect x="392" y="288" width="116" height="116" rx="58" fill="#6E86B7"/>
+  <path d="M398 178H502C520 178 534 192 534 210V234H366V210C366 192 380 178 398 178Z" fill="#6E86B7"/>
+  <rect x="930" y="210" width="230" height="22" rx="11" fill="#6E86B7" fill-opacity="0.28"/>
+  <rect x="930" y="255" width="320" height="18" rx="9" fill="#2B3D5B" fill-opacity="0.14"/>
+  <rect x="930" y="295" width="260" height="18" rx="9" fill="#2B3D5B" fill-opacity="0.14"/>
+  <rect x="930" y="360" width="170" height="76" rx="22" fill="#2B3D5B"/>
+  <rect x="1120" y="360" width="160" height="76" rx="22" fill="#F6B784"/>
+  <text x="930" y="515" fill="#21324A" font-family="Arial, sans-serif" font-size="68" font-weight="700">Everyday Shine</text>
+  <text x="930" y="566" fill="#6E86B7" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="4">GENERATED SVG VISUAL</text>
+</svg>

@@ -1,4 +1,21 @@
-<div class="collection-page">
+{%- liquid
+  assign collection_handle_downcase = collection.handle | downcase
+  assign collection_title_downcase = collection.title | downcase
+  assign is_pet_collection = false
+  assign is_jewelry_collection = false
+  assign is_home_appliances_collection = false
+  if collection_handle_downcase contains 'pet' or collection_title_downcase contains 'pet'
+    assign is_pet_collection = true
+  endif
+  if collection_handle_downcase contains 'jewel' or collection_handle_downcase contains 'jewelry' or collection_title_downcase contains 'jewel' or collection_title_downcase contains 'jewelry'
+    assign is_jewelry_collection = true
+  endif
+  if collection_handle_downcase contains 'appliance' or collection_handle_downcase contains 'home-appliance' or collection_handle_downcase contains 'home-appliances' or collection_title_downcase contains 'appliance' or collection_title_downcase contains 'home appliance' or collection_title_downcase contains 'home appliances'
+    assign is_home_appliances_collection = true
+  endif
+-%}
+
+<div class="collection-page {% if is_pet_collection %}collection-page--pet{% endif %} {% if is_jewelry_collection %}collection-page--jewelry{% endif %} {% if is_home_appliances_collection %}collection-page--appliances{% endif %}" data-editorial-section="collection">
   <div class="collection-page__inner">
     {%- liquid
       assign active_filter_count = 0
@@ -13,13 +30,364 @@
       endfor
     -%}
 
+    {%- unless is_pet_collection or is_jewelry_collection or is_home_appliances_collection -%}
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="{{ routes.root_url }}" title="Home">Home</a>
       <span aria-hidden="true">&rsaquo;</span>
       <span>{{ collection.title }}</span>
     </nav>
+    {%- endunless -%}
 
-    <header class="collection-hero">
+    {%- if is_pet_collection -%}
+      <div class="pet-collection">
+        <header class="pet-collection__hero" data-editorial-reveal>
+          <div class="pet-collection__hero-copy">
+            <p class="pet-collection__eyebrow">The companion series</p>
+            <h1 class="pet-collection__hero-title">Elevated Living for Kindred Spirits.</h1>
+            <p class="pet-collection__hero-text">We believe excellence should extend to every member of the home. {{ shop.name }} presents a curated collection where high function meets uncompromising safety.</p>
+            <div class="pet-collection__hero-actions">
+              <a href="{{ collection.url }}" class="pet-collection__button pet-collection__button--primary">Discover all</a>
+              <a href="{{ routes.root_url }}" class="pet-collection__button pet-collection__button--ghost">Our philosophy</a>
+            </div>
+          </div>
+
+          <div class="pet-collection__hero-media" data-editorial-reveal>
+            <div class="pet-collection__hero-frame">
+              <img src="{{ 'pet-hero-editorial.svg' | asset_url }}" alt="Pet collection editorial artwork" class="pet-collection__hero-image" loading="eager" width="1200" height="900">
+            </div>
+            <img src="{{ 'pet-badge-editorial.svg' | asset_url }}" alt="Kindred badge" class="pet-collection__hero-badge" loading="lazy" width="260" height="260">
+          </div>
+        </header>
+
+        <section class="pet-collection__trust" data-editorial-reveal>
+          <div class="pet-collection__section-head">
+            <div>
+              <h2 class="pet-collection__section-title">Built on a Foundation of Trust.</h2>
+              <p class="pet-collection__section-subtitle">Every thread is tested. Every buckle is balanced. Our commitment to safety is uncompromisingly assured aesthetics.</p>
+            </div>
+            <span class="pet-collection__section-kicker">Standards of excellence</span>
+          </div>
+
+          <div class="pet-collection__trust-grid">
+            <article class="pet-trust-card">
+              <div class="pet-trust-card__icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 4v5c0 5-3.5 8.7-7 10-3.5-1.3-7-5-7-10V7l7-4z"/><path d="m9.5 12 1.8 1.8L15 10.2"/></svg>
+              </div>
+              <h3>Safety Certified</h3>
+              <p>Rigorous material testing and hardware checks occur long before each product reaches home.</p>
+            </article>
+            <article class="pet-trust-card">
+              <div class="pet-trust-card__icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H15a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </div>
+              <h3>Non-Toxic Materials</h3>
+              <p>Soft-touch finishes and gentle fabrics chosen for durability without harsh surface chemicals.</p>
+            </article>
+            <article class="pet-trust-card">
+              <div class="pet-trust-card__icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m14 7 3 3"/><path d="M4 20l4-1 9-9-3-3-9 9-1 4z"/><path d="M14 4l3 3"/></svg>
+              </div>
+              <h3>Artisan Craft</h3>
+              <p>Refined construction details and elevated finishing create pet essentials that look at home anywhere.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="pet-collection__products" data-editorial-reveal>
+          <div class="pet-collection__section-head pet-collection__section-head--centered">
+            <div>
+              <p class="pet-collection__eyebrow">The collection</p>
+              <h2 class="pet-collection__section-title">Best Sellers for Companions</h2>
+            </div>
+          </div>
+
+          <div class="pet-products-grid">
+            {%- for product in collection.products limit: 4 -%}
+              <article class="pet-product-card" data-editorial-reveal>
+                <a href="{{ product.url }}" class="pet-product-card__media">
+                  {%- if forloop.first -%}
+                    <span class="pet-product-card__tag">Best seller</span>
+                  {%- endif -%}
+                  <img src="{{ product.featured_image | image_url: width: 900 }}" alt="{{ product.featured_image.alt | escape | default: product.title | escape }}" class="pet-product-card__image" loading="lazy" width="900" height="{{ 900 | divided_by: product.featured_image.aspect_ratio | ceil }}">
+                </a>
+                <div class="pet-product-card__info">
+                  <div>
+                    <h3 class="pet-product-card__title"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+                    {%- if product.vendor != blank -%}
+                      <p class="pet-product-card__vendor">{{ product.vendor }}</p>
+                    {%- endif -%}
+                  </div>
+                  <div class="pet-product-card__price">
+                    {%- if product.price_varies -%}
+                      {{ product.price_min | money }} - {{ product.price_max | money }}
+                    {%- else -%}
+                      {{ product.price | money }}
+                    {%- endif -%}
+                  </div>
+                </div>
+              </article>
+            {%- else -%}
+              <article class="empty-state__inner empty-state__inner--editorial">
+                <h2>No products found</h2>
+                <p>Try adding products to this collection to complete the pet landing page.</p>
+              </article>
+            {%- endfor -%}
+          </div>
+        </section>
+
+        <section class="pet-collection__testimonial" data-editorial-reveal>
+          <div class="pet-collection__testimonial-visual">
+            <img src="{{ 'pet-testimonial-editorial.svg' | asset_url }}" alt="Customer story artwork" loading="lazy" width="640" height="640">
+          </div>
+          <div class="pet-collection__testimonial-copy">
+            <span class="pet-collection__quote-mark">&ldquo;</span>
+            <blockquote>Finding pieces that matched the aesthetic of our home while providing the safety Winston needs was impossible until we found {{ shop.name }}. The quality is palpable.</blockquote>
+            <p class="pet-collection__citation">Eleanor &amp; Winston<br>London, UK</p>
+          </div>
+        </section>
+
+        <section class="pet-collection__cta" data-editorial-reveal>
+          <h2>The thread that binds us.</h2>
+          <p>Explore the complete Pet Collection and find the perfect piece for your closest companion.</p>
+          <div class="pet-collection__hero-actions pet-collection__hero-actions--centered">
+            <a href="{{ collection.url }}" class="pet-collection__button pet-collection__button--primary">Shop the lookbook</a>
+            <a href="{{ routes.root_url }}" class="pet-collection__button pet-collection__button--ghost">Join the inner circle</a>
+          </div>
+        </section>
+      </div>
+    {%- elsif is_jewelry_collection -%}
+      {%- liquid
+        assign jewelry_hero_image = collection.image
+        if jewelry_hero_image == blank and collection.products.first.featured_image != blank
+          assign jewelry_hero_image = collection.products.first.featured_image
+        endif
+        assign jewelry_subcategories = 'Fine jewelry|Everyday shine|Diamond pendants|Stacking rings|Gold chains|Minimal hoops|Heirloom rings|Birthstone pieces|Luxury bracelets|Daily charms|Bridal & gifting|Wedding sets|Anniversary gifts|Personalized lockets|Watch & charm boxes' | split: '|'
+      -%}
+      <div class="jewelry-collection">
+        <header class="jewelry-collection__hero" data-editorial-reveal>
+          <div class="jewelry-collection__hero-media">
+            {%- if jewelry_hero_image != blank -%}
+              <img src="{{ jewelry_hero_image | image_url: width: 1400 }}" alt="{{ jewelry_hero_image.alt | default: collection.title | escape }}" class="jewelry-collection__hero-image" loading="eager" width="1400" height="{{ 1400 | divided_by: jewelry_hero_image.aspect_ratio | ceil }}">
+            {%- else -%}
+              <img src="{{ 'jewelry-hero-editorial.svg' | asset_url }}" alt="Jewelry collection editorial artwork" class="jewelry-collection__hero-image" loading="eager" width="1200" height="900">
+            {%- endif -%}
+          </div>
+          <div class="jewelry-collection__hero-copy">
+            <p class="jewelry-collection__eyebrow">Volume IV — The adornment series</p>
+            <h1 class="jewelry-collection__hero-title">Refined Gilded Narratives</h1>
+            <p class="jewelry-collection__hero-text">A curation of sculptural metalwork and rare stones, designed to catch the light and hold a lifetime of stories. Explore the intersection of modern geometry and ancient alchemy.</p>
+            <a href="{{ collection.url }}" class="jewelry-collection__button">Discover the collection</a>
+          </div>
+        </header>
+
+        <section class="jewelry-collection__rail" data-editorial-reveal>
+          <div class="jewelry-collection__subcategory-list" aria-label="Jewelry subcategories">
+            {%- for subcategory in jewelry_subcategories -%}
+              <a href="{{ routes.search_url }}?q={{ collection.title | append: ' ' | append: subcategory | url_encode }}&type=product" class="jewelry-collection__subcategory-link">{{ subcategory }}</a>
+            {%- endfor -%}
+          </div>
+          <span class="jewelry-collection__results-count">{{ collection.products_count }} results found</span>
+        </section>
+
+        <section class="jewelry-collection__products" data-editorial-reveal>
+          <div class="jewelry-products-grid">
+            {%- for product in collection.products limit: 6 -%}
+              {%- if forloop.index == 5 -%}
+                <article class="jewelry-note-card" data-editorial-reveal>
+                  <p class="jewelry-note-card__eyebrow">The craft</p>
+                  <h3>Forged by hand, defined by time.</h3>
+                  <p>Each piece in our atelier is made to order using ancient techniques of wax carving and lost-wax casting.</p>
+                  <span class="jewelry-note-card__signature">Our process</span>
+                </article>
+              {%- endif -%}
+              <article class="jewelry-product-card jewelry-product-card--{{ forloop.index }}" data-editorial-reveal>
+                <a href="{{ product.url }}" class="jewelry-product-card__media">
+                  <img src="{{ product.featured_image | image_url: width: 1200 }}" alt="{{ product.featured_image.alt | escape | default: product.title | escape }}" class="jewelry-product-card__image" loading="lazy" width="1200" height="{{ 1200 | divided_by: product.featured_image.aspect_ratio | ceil }}">
+                </a>
+                <div class="jewelry-product-card__info">
+                  <div>
+                    <h3 class="jewelry-product-card__title"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+                    {%- if product.vendor != blank -%}
+                      <p class="jewelry-product-card__meta">{{ product.vendor }}</p>
+                    {%- elsif product.type != blank -%}
+                      <p class="jewelry-product-card__meta">{{ product.type }}</p>
+                    {%- endif -%}
+                  </div>
+                  <div class="jewelry-product-card__price">
+                    {%- if product.price_varies -%}
+                      {{ product.price_min | money }} - {{ product.price_max | money }}
+                    {%- else -%}
+                      {{ product.price | money }}
+                    {%- endif -%}
+                  </div>
+                </div>
+              </article>
+            {%- else -%}
+              <article class="empty-state__inner empty-state__inner--editorial">
+                <h2>No products found</h2>
+                <p>Add jewelry products to this collection to complete the editorial page.</p>
+              </article>
+            {%- endfor -%}
+          </div>
+        </section>
+
+        <section class="jewelry-collection__commission" data-editorial-reveal>
+          <p class="jewelry-collection__commission-label">Bespoke commissions</p>
+          <h2>Create a piece that breathes your unique story.</h2>
+          <p>Collaborate with our lead designer to craft a one-of-a-kind heirloom utilizing family stones or ethically sourced new materials.</p>
+          <a href="{{ routes.root_url }}" class="jewelry-collection__button jewelry-collection__button--ghost">Inquire now</a>
+        </section>
+      </div>
+    {%- elsif is_home_appliances_collection -%}
+      {%- liquid
+        assign appliances_hero_image = collection.image
+        if appliances_hero_image == blank and collection.products.first.featured_image != blank
+          assign appliances_hero_image = collection.products.first.featured_image
+        endif
+        assign appliances_zones = 'Espresso machines|Stand blenders|Air fryers|Food processors|Steam mops|Garment steamers|Cordless vacuums|Washer dryer combos|Air purifiers|Humidifiers|Tower fans|Portable heaters' | split: '|'
+      -%}
+      <div class="appliances-collection">
+        <header class="appliances-collection__hero" data-editorial-reveal>
+          <div class="appliances-collection__hero-media">
+            {%- if appliances_hero_image != blank -%}
+              <img src="{{ appliances_hero_image | image_url: width: 2000 }}" alt="{{ appliances_hero_image.alt | default: collection.title | escape }}" class="appliances-collection__hero-image" loading="eager" width="2000" height="{{ 2000 | divided_by: appliances_hero_image.aspect_ratio | ceil }}">
+            {%- else -%}
+              <img src="{{ 'home-appliances-hero-editorial.svg' | asset_url }}" alt="Home appliances editorial artwork" class="appliances-collection__hero-image" loading="eager" width="1200" height="900">
+            {%- endif -%}
+          </div>
+          <div class="appliances-collection__hero-copy">
+            <p class="appliances-collection__eyebrow">Curated home edit</p>
+            <h1 class="appliances-collection__hero-title">
+              <span>Elevated Living:</span>
+              <em>The Appliance Collection</em>
+            </h1>
+            <p class="appliances-collection__hero-text">A quieter take on domestic performance, shaped around the objects that power the kitchen, laundry room, and the atmosphere of home.</p>
+            <div class="appliances-collection__hero-actions">
+              <a href="{{ collection.url }}" class="appliances-collection__button appliances-collection__button--primary">View the edit</a>
+            </div>
+          </div>
+        </header>
+
+        <section class="appliances-collection__zones" data-editorial-reveal>
+          <div class="appliances-collection__zone-list" aria-label="Home appliance departments">
+            {%- for zone in appliances_zones -%}
+              <a href="{{ routes.search_url }}?q={{ collection.title | append: ' ' | append: zone | url_encode }}&type=product" class="appliances-collection__zone-link">{{ zone }}</a>
+            {%- endfor -%}
+          </div>
+        </section>
+
+        {%- if collection.products_count > 0 -%}
+          <section class="appliances-chapter appliances-chapter--kitchen" id="kitchen-power" data-editorial-reveal>
+            <div class="appliances-chapter__head">
+              <p class="appliances-chapter__eyebrow">Collection 01</p>
+              <h2 class="appliances-chapter__title">Kitchen Power</h2>
+            </div>
+            <div class="appliances-curation-grid appliances-curation-grid--kitchen">
+              {%- for product in collection.products limit: 4 -%}
+                {%- if forloop.index == 2 -%}
+                  <article class="appliances-promo-card appliances-promo-card--ember" data-editorial-reveal>
+                    <span class="appliances-promo-card__outline"></span>
+                    <p>Countertop<br>icons</p>
+                  </article>
+                {%- endif -%}
+                <article class="appliances-editorial-card appliances-editorial-card--kitchen-{{ forloop.index }}" data-editorial-reveal>
+                  <a href="{{ product.url }}" class="appliances-editorial-card__media">
+                    <img src="{{ product.featured_image | image_url: width: 1200 }}" alt="{{ product.featured_image.alt | escape | default: product.title | escape }}" class="appliances-editorial-card__image" loading="lazy" width="1200" height="{{ 1200 | divided_by: product.featured_image.aspect_ratio | ceil }}">
+                  </a>
+                  <div class="appliances-editorial-card__info">
+                    <div>
+                      <p class="appliances-editorial-card__kicker">{{ product.type | default: product.vendor | default: 'Kitchen appliance' }}</p>
+                      <h3 class="appliances-editorial-card__title"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+                    </div>
+                    <span class="appliances-editorial-card__price">
+                      {%- if product.price_varies -%}
+                        {{ product.price_min | money }} - {{ product.price_max | money }}
+                      {%- else -%}
+                        {{ product.price | money }}
+                      {%- endif -%}
+                    </span>
+                  </div>
+                </article>
+              {%- endfor -%}
+            </div>
+          </section>
+        {%- else -%}
+          <article class="empty-state__inner empty-state__inner--editorial">
+            <h2>No products found</h2>
+            <p>Add home appliance products to this collection to complete the editorial page.</p>
+          </article>
+        {%- endif -%}
+
+        {%- if collection.products_count > 4 -%}
+          <section class="appliances-chapter appliances-chapter--laundry" id="laundry-cleaning" data-editorial-reveal>
+            <div class="appliances-chapter__head appliances-chapter__head--split">
+              <div>
+                <p class="appliances-chapter__eyebrow">Collection 02</p>
+                <h2 class="appliances-chapter__title">Laundry &amp; Cleaning</h2>
+              </div>
+              <p class="appliances-chapter__aside">Made for the rooms that work hardest.</p>
+            </div>
+            <div class="appliances-curation-grid appliances-curation-grid--laundry">
+              {%- for product in collection.products offset: 4 limit: 4 -%}
+                {%- if forloop.index == 2 -%}
+                  <article class="appliances-promo-card appliances-promo-card--carmine" data-editorial-reveal>
+                    <span class="appliances-promo-card__outline"></span>
+                    <p>Safe<br>steam</p>
+                  </article>
+                {%- endif -%}
+                <article class="appliances-editorial-card appliances-editorial-card--laundry-{{ forloop.index }}" data-editorial-reveal>
+                  <a href="{{ product.url }}" class="appliances-editorial-card__media">
+                    <img src="{{ product.featured_image | image_url: width: 1200 }}" alt="{{ product.featured_image.alt | escape | default: product.title | escape }}" class="appliances-editorial-card__image" loading="lazy" width="1200" height="{{ 1200 | divided_by: product.featured_image.aspect_ratio | ceil }}">
+                  </a>
+                  <div class="appliances-editorial-card__info">
+                    <div>
+                      <p class="appliances-editorial-card__kicker">{{ product.type | default: product.vendor | default: 'Cleaning appliance' }}</p>
+                      <h3 class="appliances-editorial-card__title"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+                    </div>
+                    <span class="appliances-editorial-card__price">
+                      {%- if product.price_varies -%}
+                        {{ product.price_min | money }} - {{ product.price_max | money }}
+                      {%- else -%}
+                        {{ product.price | money }}
+                      {%- endif -%}
+                    </span>
+                  </div>
+                </article>
+              {%- endfor -%}
+            </div>
+          </section>
+        {%- endif -%}
+
+        {%- if collection.products_count > 8 -%}
+          <section class="appliances-chapter appliances-chapter--air" id="air-comfort" data-editorial-reveal>
+            <div class="appliances-chapter__head appliances-chapter__head--centered">
+              <p class="appliances-chapter__eyebrow">Collection 03</p>
+              <h2 class="appliances-chapter__title">Air &amp; Comfort</h2>
+              <p class="appliances-chapter__subtitle">Atmosphere-shaping objects for quieter rooms and cleaner breathing.</p>
+            </div>
+            <div class="appliances-air-grid">
+              {%- for product in collection.products offset: 8 limit: 4 -%}
+                <article class="appliances-air-card" data-editorial-reveal>
+                  <a href="{{ product.url }}" class="appliances-air-card__media">
+                    <img src="{{ product.featured_image | image_url: width: 900 }}" alt="{{ product.featured_image.alt | escape | default: product.title | escape }}" class="appliances-air-card__image" loading="lazy" width="900" height="{{ 900 | divided_by: product.featured_image.aspect_ratio | ceil }}">
+                  </a>
+                  <div class="appliances-air-card__info">
+                    <p class="appliances-air-card__kicker">{{ product.type | default: product.vendor | default: 'Comfort appliance' }}</p>
+                    <h3 class="appliances-air-card__title"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+                  </div>
+                </article>
+              {%- endfor -%}
+            </div>
+          </section>
+        {%- endif -%}
+
+        <section class="appliances-collection__closing" data-editorial-reveal>
+          <blockquote>&ldquo;True luxury is found in the quiet efficiency of the objects that surround us. At {{ shop.name }}, we celebrate the mechanical poetry of the home.&rdquo;</blockquote>
+          <a href="{{ routes.root_url }}" class="appliances-collection__closing-link">Request a curated appliance plan</a>
+        </section>
+      </div>
+    {%- else -%}
+    <header class="collection-hero" data-editorial-reveal>
       <div class="collection-hero__copy">
         {%- if section.settings.eyebrow != blank -%}
           <p class="collection-hero__eyebrow">{{ section.settings.eyebrow | escape }}</p>
@@ -35,6 +403,16 @@
           {%- if active_filter_count > 0 -%}
             <span><strong>{{ active_filter_count }}</strong> active filters</span>
           {%- endif -%}
+        </div>
+
+        <div class="collection-hero__storyline">
+          {%- if section.settings.sidebar_note != blank -%}
+            <p class="collection-hero__note">{{ section.settings.sidebar_note | escape }}</p>
+          {%- endif -%}
+          <div class="collection-hero__chips" aria-hidden="true">
+            <span>{{ current_tags | size | plus: 0 | default: 0 }} curated tags</span>
+            <span>{% if active_filter_count > 0 %}Refined selection{% else %}Full collection edit{% endif %}</span>
+          </div>
         </div>
 
         {%- if active_filter_count > 0 -%}
@@ -56,18 +434,24 @@
       </div>
 
       {%- if collection.image != blank or section.settings.sidebar_image != blank -%}
-        <div class="collection-hero__media">
+        <div class="collection-hero__media-shell" data-editorial-parallax>
+          <div class="collection-hero__media">
           {%- assign hero_image = collection.image | default: section.settings.sidebar_image -%}
           <img src="{{ hero_image | image_url: width: 1200 }}" alt="{{ hero_image.alt | escape | default: collection.title | escape }}" loading="lazy" width="1200" height="{{ 1200 | divided_by: hero_image.aspect_ratio | ceil }}">
+          </div>
+          <aside class="collection-hero__media-card">
+            <p class="collection-hero__media-kicker">Merchandising note</p>
+            <p>{{ section.settings.sidebar_note | default: collection.title | escape }}</p>
+          </aside>
         </div>
       {%- endif -%}
     </header>
 
-    <div class="collection-layout">
-      <aside class="collection-sidebar">
+    <div class="collection-layout" data-editorial-reveal>
+      <aside class="collection-sidebar" data-editorial-reveal>
         <form class="filter-form" method="get" data-collection-filters>
           {%- for filter in collection.filters -%}
-            <div class="filter-group">
+            <div class="filter-group" data-editorial-reveal>
               <h2 class="filter-group__title">{{ filter.label }}</h2>
               
               {%- case filter.type -%}
@@ -138,7 +522,7 @@
         {%- endif -%}
       </aside>
 
-      <div class="collection-main">
+      <div class="collection-main" data-editorial-reveal>
         {%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
         <div class="collection-toolbar">
           <div class="collection-toolbar__count" id="CollectionResultsCount">
@@ -167,7 +551,7 @@
         {%- paginate collection.products by section.settings.products_per_page -%}
           <div class="collection-grid">
             {%- for product in collection.products -%}
-              <div class="product-card">
+              <div class="product-card" data-editorial-reveal>
                 {%- if product.compare_at_price > product.price -%}
                   <div class="product-card__badge">Sale</div>
                 {%- endif -%}
@@ -230,6 +614,7 @@
         {%- endpaginate -%}
       </div>
     </div>
+    {%- endif -%}
   </div>
 </div>
 

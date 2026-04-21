@@ -1,7 +1,13 @@
-<section class="section-spacing">
-  <div class="page-width customer-auth">
-    <div class="customer-auth__panel">
+<section class="section-spacing account-shell" data-editorial-section="customer-register">
+  <div class="page-width customer-auth customer-auth--editorial">
+    <div class="customer-auth__hero" data-editorial-reveal>
+      <p class="account-page__eyebrow">Create an account</p>
       <h1>{{ 'customer.register.title' | t }}</h1>
+      <p class="account-page__lead">Save delivery details, revisit orders, and shorten every return visit.</p>
+    </div>
+
+    <div class="customer-auth__panel" data-editorial-reveal>
+      <h2>{{ 'customer.register.title' | t }}</h2>
       {%- form 'create_customer' -%}
         {{ form.errors | default_errors }}
         <div class="field-grid">

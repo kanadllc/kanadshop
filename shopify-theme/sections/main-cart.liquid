@@ -1,6 +1,6 @@
-<section class="cart-page section-spacing">
+<section class="cart-page section-spacing" data-editorial-section="cart">
   <div class="page-width">
-    <header class="cart-page__header">
+    <header class="cart-page__header" data-editorial-reveal>
       {%- if section.settings.eyebrow != blank -%}
         <p class="cart-page__eyebrow">{{ section.settings.eyebrow | escape }}</p>
       {%- endif -%}
@@ -18,7 +18,7 @@
     </header>
 
     {%- if cart.item_count == 0 -%}
-      <article class="empty-state__inner cart-empty-state">
+      <article class="empty-state__inner cart-empty-state" data-editorial-reveal>
         <p class="cart-empty-state__eyebrow">Cart is empty</p>
         <h2>{{ section.settings.empty_heading | escape }}</h2>
         <p>{{ section.settings.empty_text | escape }}</p>
@@ -30,16 +30,16 @@
         </div>
       </article>
     {%- else -%}
-      <div class="cart-page__summary-bar" aria-label="Cart summary overview">
+      <div class="cart-page__summary-bar" aria-label="Cart summary overview" data-editorial-reveal>
         <span><strong>{{ cart.item_count }}</strong> items</span>
         <span><strong>{{ cart.total_price | money }}</strong> current total</span>
       </div>
 
       {%- form 'cart', cart, class: 'cart-form' -%}
         <div class="cart-layout">
-          <div class="cart-items">
+          <div class="cart-items" data-editorial-reveal>
             {%- for item in cart.items -%}
-              <article class="cart-item">
+              <article class="cart-item" data-editorial-reveal>
                 <a class="cart-item__media" href="{{ item.url }}">
                   {%- if item.image -%}
                     <img src="{{ item.image | image_url: width: 320 }}" alt="{{ item.image.alt | escape | default: item.title | escape }}" loading="lazy" width="320" height="{{ 320 | divided_by: item.image.aspect_ratio | ceil }}">
@@ -51,6 +51,13 @@
                     <p class="cart-item__vendor">{{ item.product.vendor }}</p>
                   {%- endif -%}
                   <h2><a href="{{ item.url }}">{{ item.product.title }}</a></h2>
+
+                  <div class="cart-item__storyline" aria-hidden="true">
+                    <span class="cart-item__story-pill">{% if item.product.available %}Ready to ship{% else %}Unavailable{% endif %}</span>
+                    {%- if item.product.type != blank -%}
+                      <span class="cart-item__story-pill">{{ item.product.type }}</span>
+                    {%- endif -%}
+                  </div>
 
                   {%- if item.options_with_values.size > 0 -%}
                     <ul class="cart-meta-list">
@@ -104,11 +111,16 @@
             {%- endfor -%}
           </div>
 
-          <aside class="cart-summary">
+          <aside class="cart-summary" data-editorial-reveal>
             <div class="cart-summary__header">
               <p class="cart-summary__eyebrow">Order summary</p>
               <h2>{{ section.settings.summary_heading | escape }}</h2>
               <p>{{ section.settings.summary_text | escape }}</p>
+            </div>
+
+            <div class="cart-summary__confidence-strip" aria-hidden="true">
+              {%- if section.settings.highlight_1 != blank -%}<span>{{ section.settings.highlight_1 | escape }}</span>{%- endif -%}
+              {%- if section.settings.highlight_2 != blank -%}<span>{{ section.settings.highlight_2 | escape }}</span>{%- endif -%}
             </div>
 
             <label for="CartNote-{{ section.id }}">Order note</label>
