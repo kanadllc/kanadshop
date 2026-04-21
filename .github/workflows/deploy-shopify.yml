@@ -43,15 +43,14 @@ jobs:
 
       - name: Verify Shopify deploy secrets
         env:
-          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_STORE: kanaddev.myshopify.com
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
         run: |
-          test -n "$SHOPIFY_STORE" || (echo "Missing SHOPIFY_STORE secret" && exit 1)
           test -n "$SHOPIFY_CLI_THEME_TOKEN" || (echo "Missing SHOPIFY_CLI_THEME_TOKEN secret" && exit 1)
 
       - name: Print deploy diagnostics
         env:
-          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_STORE: kanaddev.myshopify.com
           SHOPIFY_MAIN_THEME_ID: 149599879319
         run: |
           set -euo pipefail
@@ -66,7 +65,7 @@ jobs:
 
       - name: Verify store access and theme visibility
         env:
-          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_STORE: kanaddev.myshopify.com
           SHOPIFY_MAIN_THEME_ID: 149599879319
         run: |
           set -euo pipefail
@@ -75,7 +74,7 @@ jobs:
 
       - name: Deploy to Shopify main theme
         env:
-          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_STORE: kanaddev.myshopify.com
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
           SHOPIFY_MAIN_THEME_ID: 149599879319
         run: |
@@ -108,17 +107,16 @@ jobs:
 
       - name: Verify Shopify live secrets
         env:
-          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_STORE: kanaddev.myshopify.com
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
           SHOPIFY_LIVE_THEME_ID: ${{ secrets.SHOPIFY_LIVE_THEME_ID }}
         run: |
-          test -n "$SHOPIFY_STORE" || (echo "Missing SHOPIFY_STORE secret" && exit 1)
           test -n "$SHOPIFY_CLI_THEME_TOKEN" || (echo "Missing SHOPIFY_CLI_THEME_TOKEN secret" && exit 1)
           test -n "$SHOPIFY_LIVE_THEME_ID" || (echo "Missing SHOPIFY_LIVE_THEME_ID secret" && exit 1)
 
       - name: Print live deploy diagnostics
         env:
-          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_STORE: kanaddev.myshopify.com
           SHOPIFY_LIVE_THEME_ID: ${{ secrets.SHOPIFY_LIVE_THEME_ID }}
         run: |
           set -euo pipefail
@@ -133,7 +131,7 @@ jobs:
 
       - name: Verify live store access and theme visibility
         env:
-          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_STORE: kanaddev.myshopify.com
           SHOPIFY_LIVE_THEME_ID: ${{ secrets.SHOPIFY_LIVE_THEME_ID }}
         run: |
           set -euo pipefail
@@ -142,7 +140,7 @@ jobs:
 
       - name: Deploy to Shopify live theme
         env:
-          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_STORE: kanaddev.myshopify.com
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
           SHOPIFY_LIVE_THEME_ID: ${{ secrets.SHOPIFY_LIVE_THEME_ID }}
         run: |
