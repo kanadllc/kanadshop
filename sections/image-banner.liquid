@@ -1,0 +1,158 @@
+<div
+  class="hero{% if section.settings.image == blank %} hero--placeholder{% endif %}"
+  style="min-height: {{ section.settings.min_height }}px;"
+>
+  <div class="hero__media">
+    {%- if section.settings.image != blank -%}
+      {{
+        section.settings.image
+        | image_url: width: 2000
+        | image_tag:
+          loading: 'eager',
+          fetchpriority: 'high',
+          sizes: '100vw',
+          widths: '375, 750, 1100, 1500, 1780, 2000',
+          alt: section.settings.image.alt | default: section.settings.heading
+      }}
+    {%- else -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg hero__placeholder-svg' }}
+    {%- endif -%}
+  </div>
+
+  {%- if section.settings.show_overlay -%}
+    <div class="hero__overlay" style="background: rgba(0,0,0,{{ section.settings.overlay_opacity | divided_by: 100.0 }});"></div>
+  {%- endif -%}
+
+  <div class="hero__content">
+    {%- if section.settings.subheading != blank -%}
+      <p class="hero__subheading">{{ section.settings.subheading }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.heading != blank -%}
+      <h2 class="hero__heading">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.text != blank -%}
+      <p class="hero__text">{{ section.settings.text }}</p>
+    {%- endif -%}
+
+    <div class="hero__buttons">
+      {%- if section.settings.button_label != blank -%}
+        <a
+          href="{{ section.settings.button_link | default: '#' }}"
+          class="button hero__btn{% if section.settings.button_style_secondary %} button--secondary{% else %} button--primary{% endif %}"
+          {% if section.settings.button_link == blank %}role="link" aria-disabled="true"{% endif %}
+        >
+          {{- section.settings.button_label | escape -}}
+        </a>
+      {%- endif -%}
+
+      {%- if section.settings.second_button_label != blank -%}
+        <a
+          href="{{ section.settings.second_button_link | default: '#' }}"
+          class="button hero__btn{% if section.settings.second_button_style_secondary %} button--secondary{% else %} button--primary{% endif %}"
+          {% if section.settings.second_button_link == blank %}role="link" aria-disabled="true"{% endif %}
+        >
+          {{- section.settings.second_button_label | escape -}}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.image-banner.name",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:sections.image-banner.settings.image.label"
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "min": 300,
+      "max": 800,
+      "step": 50,
+      "default": 560,
+      "unit": "px",
+      "label": "t:sections.image-banner.settings.min_height.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_overlay",
+      "default": true,
+      "label": "t:sections.image-banner.settings.show_overlay.label"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "default": 30,
+      "unit": "%",
+      "label": "t:sections.image-banner.settings.overlay_opacity.label"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:sections.image-banner.settings.subheading.label"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Image banner",
+      "label": "t:sections.image-banner.settings.heading.label"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "t:sections.image-banner.settings.text.label"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "default": "Shop now",
+      "label": "t:sections.image-banner.settings.button_label.label",
+      "info": "t:sections.image-banner.settings.button_label.info"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "t:sections.image-banner.settings.button_link.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_style_secondary",
+      "default": false,
+      "label": "t:sections.image-banner.settings.button_style_secondary.label"
+    },
+    {
+      "type": "text",
+      "id": "second_button_label",
+      "label": "t:sections.image-banner.settings.second_button_label.label",
+      "info": "t:sections.image-banner.settings.second_button_label.info"
+    },
+    {
+      "type": "url",
+      "id": "second_button_link",
+      "label": "t:sections.image-banner.settings.second_button_link.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "second_button_style_secondary",
+      "default": true,
+      "label": "t:sections.image-banner.settings.second_button_style_secondary.label"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.image-banner.presets.name"
+    }
+  ]
+}
+{% endschema %}

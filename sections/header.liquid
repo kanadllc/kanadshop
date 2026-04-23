@@ -1,0 +1,140 @@
+<header class="header" role="banner">
+  <div class="page-width">
+    <div class="header__wrapper">
+      {%- if section.settings.logo != blank -%}
+        <h1 class="header__heading">
+          <a href="{{ routes.root_url }}" class="header__heading-link">
+            {{
+              section.settings.logo
+              | image_url: width: 300
+              | image_tag: class: 'header__logo', alt: section.settings.logo_alt | default: shop.name, loading: 'eager'
+            }}
+          </a>
+        </h1>
+      {%- else -%}
+        <h1 class="header__heading">
+          <a href="{{ routes.root_url }}" class="header__heading-link">{{ shop.name }}</a>
+        </h1>
+      {%- endif -%}
+
+      {%- if section.settings.menu != blank -%}
+        <nav class="header__nav" role="navigation" aria-label="{{ 'accessibility.nav_main_menu' | t }}">
+          <ul class="header__nav-list" role="list">
+            {%- for link in linklists[section.settings.menu].links -%}
+              <li>
+                <a
+                  class="header__nav-link{% if link.active %} header__nav-link--active{% endif %}"
+                  href="{{ link.url }}"
+                  {% if link.current %}aria-current="page"{% endif %}
+                >
+                  {{- link.title -}}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+      {%- endif -%}
+
+      <div class="header__icons">
+        {%- if shop.customer_accounts_enabled -%}
+          <a
+            href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+            class="header__icon-btn"
+            aria-label="{{ 'customer.account.title' | t }}"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </a>
+        {%- endif -%}
+
+        <a href="{{ routes.search_url }}" class="header__icon-btn" aria-label="{{ 'general.search.search' | t }}">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+          </svg>
+        </a>
+
+        <button
+          class="header__icon-btn"
+          data-open-cart
+          aria-label="{{ 'sections.cart_icon_bubble.title' | t }}"
+          aria-controls="cart-drawer"
+          aria-expanded="false"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+          <span class="header__cart-count" data-cart-count aria-label="{{ 'sections.cart_icon_bubble.title' | t }}" style="display:none">0</span>
+        </button>
+
+        <button
+          class="header__hamburger"
+          aria-label="{{ 'sections.header.menu' | t }}"
+          aria-controls="mobile-nav"
+          aria-expanded="false"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {%- if section.settings.menu != blank -%}
+    <nav class="mobile-nav page-width" id="mobile-nav" aria-label="{{ 'accessibility.nav_mobile_menu' | t }}">
+      <ul class="mobile-nav__list" role="list">
+        {%- for link in linklists[section.settings.menu].links -%}
+          <li>
+            <a
+              class="mobile-nav__link"
+              href="{{ link.url }}"
+              {% if link.current %}aria-current="page"{% endif %}
+            >
+              {{- link.title -}}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+  {%- endif -%}
+</header>
+
+{% schema %}
+{
+  "name": "t:sections.header.name",
+  "class": "section-header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "t:sections.header.settings.logo.label"
+    },
+    {
+      "type": "text",
+      "id": "logo_alt",
+      "label": "t:sections.header.settings.logo_alt.label"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "default": 150,
+      "unit": "px",
+      "label": "t:sections.header.settings.logo_width.label"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "t:sections.header.settings.menu.label"
+    }
+  ]
+}
+{% endschema %}

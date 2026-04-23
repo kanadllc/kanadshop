@@ -1,0 +1,92 @@
+{
+  "sections": {
+    "image-banner": {
+      "type": "image-banner",
+      "settings": {
+        "heading": "Welcome to {{ shop.name }}",
+        "text": "Discover our curated collections.",
+        "button_label": "Shop now",
+        "button_link": "/collections/all",
+        "min_height": 560,
+        "show_overlay": true,
+        "overlay_opacity": 30
+      }
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Featured products",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "show_view_all": true
+      }
+    },
+    "rich-text": {
+      "type": "rich-text",
+      "settings": {
+        "heading": "Our Story",
+        "text": "<p>We are committed to bringing you high-quality products at fair prices. Welcome to {{ shop.name }}.</p>"
+      }
+    },
+    "collection-list": {
+      "type": "collection-list",
+      "settings": {
+        "heading": "Shop by collection",
+        "columns_desktop": 3
+      },
+      "blocks": {
+        "featured-collection-1": {
+          "type": "featured_collection",
+          "settings": {}
+        },
+        "featured-collection-2": {
+          "type": "featured_collection",
+          "settings": {}
+        },
+        "featured-collection-3": {
+          "type": "featured_collection",
+          "settings": {}
+        }
+      },
+      "blocks_order": ["featured-collection-1", "featured-collection-2", "featured-collection-3"]
+    },
+    "multicolumn": {
+      "type": "multicolumn",
+      "settings": {
+        "heading": "Why shop with us"
+      },
+      "blocks": {
+        "column-1": {
+          "type": "column",
+          "settings": {
+            "title": "Free shipping",
+            "text": "Free shipping on all orders over $50."
+          }
+        },
+        "column-2": {
+          "type": "column",
+          "settings": {
+            "title": "Easy returns",
+            "text": "Return items within 30 days for a full refund."
+          }
+        },
+        "column-3": {
+          "type": "column",
+          "settings": {
+            "title": "Secure checkout",
+            "text": "Your payment info is always safe and secure."
+          }
+        }
+      },
+      "blocks_order": ["column-1", "column-2", "column-3"]
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "heading": "Subscribe to our emails",
+        "text": "Be the first to know about new collections and exclusive offers."
+      }
+    }
+  },
+  "order": ["image-banner", "featured-collection", "rich-text", "collection-list", "multicolumn", "newsletter"]
+}
